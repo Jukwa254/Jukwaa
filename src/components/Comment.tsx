@@ -13,7 +13,7 @@ export const UserComments = () => {
           name={"Grace Njeri"}
           time={"3 hours"}
           comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure."
+            "The new highway project has significantly reduced my commute time 🚗🛣️. Kudos to the government for prioritizing infrastructure! 👏"
           }
           likes={200}
           dislike={12}
@@ -24,7 +24,7 @@ export const UserComments = () => {
           name={"Andrew Mbugua"}
           time={"5 hours"}
           comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure.  undertake a new project aimed at improving transportation infrastructure."
+            "I've noticed improved road markings and signage 🚸, making it safer for both drivers and pedestrians. Great initiative! 🌟"
           }
           likes={36}
           dislike={2}
@@ -35,7 +35,29 @@ export const UserComments = () => {
           name={"Joseph Kilumda"}
           time={"22 hours"}
           comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure."
+            "The new infrastructure has boosted local commerce 🏪💼. Our business has seen a noticeable increase in customers since the project's completion. 📈"
+          }
+          likes={1304}
+          dislike={34}
+          replays={1241}
+        />
+        <CommentComponent
+          image={Image}
+          name={"Andrew Mbugua"}
+          time={"5 hours"}
+          comment={
+            "The green spaces 🌳 and eco-friendly designs 🌿 incorporated into the project are commendable. A step in the right direction for sustainable development! ♻️"
+          }
+          likes={36}
+          dislike={2}
+          replays={17}
+        />
+        <CommentComponent
+          image={Image}
+          name={"Joseph Kilumda"}
+          time={"22 hours"}
+          comment={
+            "The government's engagement with the local community 👥 throughout the project was exemplary. Our concerns were heard, and the outcomes reflect that. 🗣️✅"
           }
           likes={1304}
           dislike={34}
@@ -57,29 +79,7 @@ export const UserComments = () => {
           name={"Joseph Kilumda"}
           time={"22 hours"}
           comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure."
-          }
-          likes={1304}
-          dislike={34}
-          replays={1241}
-        />
-        <CommentComponent
-          image={Image}
-          name={"Andrew Mbugua"}
-          time={"5 hours"}
-          comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure.  undertake a new project aimed at improving transportation infrastructure."
-          }
-          likes={36}
-          dislike={2}
-          replays={17}
-        />
-        <CommentComponent
-          image={Image}
-          name={"Joseph Kilumda"}
-          time={"22 hours"}
-          comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure."
+            "The integration of public transportation hubs 🚉 within the project is a game-changer. Easier city navigation using public transit now! 🚌🚇"
           }
           likes={1304}
           dislike={34}

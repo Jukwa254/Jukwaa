@@ -13,7 +13,6 @@ import {
 import { formatDistanceToNow } from "date-fns";
 
 export type RightPanelProps = {
-  cards: CardType[];
   selectedCard: CardType | null;
   isOpen: boolean;
   onClose: () => void;
@@ -110,6 +109,8 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     }
   };
 
+  const paragraphs = selectedCard?.projectDescription.split(/\n|\r\n/);
+
   return (
     <div
       className="lg:h-screen flex flex-col py-4 overflow-y-auto no-scrollbar"
@@ -165,9 +166,10 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 </div>
               </div>
               <div className="mt-2">
-                <p className="text-base mb-2">
-                  {selectedCard.projectDescription}
-                </p>
+                <h1 className="uppercase font-semibold text-xl py-2">
+                  {selectedCard.projectTitle}
+                </h1>
+                <p className="text-base mb-2">{paragraphs}</p>
                 <img
                   src={selectedCard.projectImage}
                   alt=""
@@ -183,9 +185,9 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                       >
                         {liked ? <LikeFilled /> : <LikeRegular />}
                       </span>
-                      <p>{likes + selectedCard.likes}</p>
+                      <p className="text-sm">{likes + selectedCard.likes}</p>
                     </div>
-                    <div className="flex items-center font-bold">
+                    <div className="flex items-center font-semibold">
                       <span
                         className="text-2xl cursor-pointer text-[#6C2D1B]"
                         onClick={handleDislike}
@@ -196,14 +198,16 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                           <ThumbsDownRegular />
                         )}
                       </span>
-                      <p>{dislikes + selectedCard.dislikes}</p>
+                      <p className="text-sm">
+                        {dislikes + selectedCard.dislikes}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex font-bold items-center">
-                    <span className="text-2xl">
+                  <div className="flex font-semibold items-center">
+                    <span className="">
                       <Message />
                     </span>
-                    <p>{selectedCard.projectComments}</p>
+                    <p className="text-sm">{selectedCard.projectComments}</p>
                   </div>
                 </div>
               </div>

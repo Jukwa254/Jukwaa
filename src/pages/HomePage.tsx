@@ -228,7 +228,6 @@ function HomePage() {
               <RightPanel
                 isOpen={isPanelOpen}
                 onClose={closePanel}
-                cards={cards}
                 selectedCard={selectedCard}
               />
             </div>
@@ -236,7 +235,6 @@ function HomePage() {
               <RightPanel
                 isOpen={isPanelOpen}
                 onClose={closePanel}
-                cards={cards}
                 selectedCard={selectedCard}
               />
             </div>

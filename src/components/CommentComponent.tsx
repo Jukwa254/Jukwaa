@@ -72,7 +72,9 @@ function CommentComponent(props: CommentProps) {
             <p className="font-semibold">{props.name}</p>
             <p className="text-xs font-medium text-[#796552]">{props.time}</p>
           </div>
-          <p className="text-textThree font-normal">{props.comment}</p>
+          <p className="text-textThree font-normal text-base">
+            {props.comment}
+          </p>
           <div className="flex justify-between items-center mt-2">
             <div className="flex gap-4 text-sm text-[#414141] items-center">
               <div

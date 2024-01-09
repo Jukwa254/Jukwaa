@@ -105,23 +105,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   >
                     {liked ? <LikeFilled /> : <LikeRegular />}
                   </span>
-                  <p>{likes + card.likes}</p>
+                  <p className="text-sm">{likes + card.likes}</p>
                 </div>
-                <div className="flex items-center font-bold">
+                <div className="flex items-center font-semibold">
                   <span
                     className="text-2xl cursor-pointer text-[#6C2D1B]"
                     onClick={handleDislike}
                   >
                     {disliked ? <ThumbsDownFilled /> : <ThumbsDownRegular />}
                   </span>
-                  <p>{dislikes + card.dislikes}</p>
+                  <p className="text-sm">{dislikes + card.dislikes}</p>
                 </div>
               </div>
-              <div className="flex font-bold items-center">
-                <span className="text-2xl">
+              <div className="flex font-semibold items-center">
+                <span className="">
                   <Message />
                 </span>
-                <p>{card.projectComments}</p>
+                <p className="text-sm">{card.projectComments}</p>
               </div>
             </div>
           </div>
