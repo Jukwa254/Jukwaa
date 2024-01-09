@@ -54,7 +54,26 @@ export const RightPanel: React.FC<RightPanelProps> = ({ isOpen, onClose }) => {
             : "fixed translate-x-full md:translate-x-0"
         }`}
       >
-        <div>
+        <div className="bg-BackgroundTwo p-6 rounded-xl">
+          <button onClick={onClose} className="md:hidden my-4">
+            <div className="flex gap-2 items-center font-medium  rounded-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              <p className="font-bold">Back</p>
+            </div>
+          </button>
           <PostComment />
         </div>
       </div>
@@ -80,7 +99,7 @@ function PostComment() {
 
   return (
     <div className="">
-      <div className="bg-[#F6F6F6] p-4">
+      <div className="">
         <div className="flex gap-4">
           <img src={Image} alt="" className="w-12 h-12 rounded-full" />
           <textarea
@@ -95,20 +114,10 @@ function PostComment() {
           ></textarea>
         </div>
         <div className="mt-2 flex justify-between items-start">
-          <div className="flex gap-2 mt-2">
-            {/* <span className="text-2xl text-[#6E7685]">
-              <BiImage />
-            </span>
-            <span className="text-2xl text-[#6E7685]">
-              <RiAttachmentLine />
-            </span>
-            <span className="text-2xl text-[#6E7685]">
-              <BiCamera />
-            </span> */}
-          </div>
+          <div className="flex gap-2 mt-2"></div>
           <a
             href=""
-            className="bg-[#6C2D1B] hover:bg-[#977268] px-4 py-1.5 text-white rounded-lg"
+            className="bg-[#6C2D1B] hover:bg-[#977268] px-4 py-1.5 text-BackgroundOne font-bold rounded-lg"
           >
             Post
           </a>

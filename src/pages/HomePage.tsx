@@ -4,8 +4,10 @@ import HomePageComponent from "./pageComponents/HomePageComponent";
 import PostPageComponent from "./pageComponents/PostPageComponent";
 import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
+import { CardType, cards } from "../components/SampleData";
 
 type MenuItem = {
+  id: number;
   name: string;
   image: JSX.Element;
   component: JSX.Element;
@@ -13,10 +15,9 @@ type MenuItem = {
 
 function HomePage() {
   const leftPanelRef = useRef<HTMLDivElement>(null);
-  const centerPanelRef = useRef<HTMLDivElement>(null);
-  const rightPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
 
   const getSavedScrollPosition = (key: string) => {
     return parseInt(localStorage.getItem(key) || "0", 10);
@@ -34,11 +35,10 @@ function HomePage() {
     };
 
     restoreScrollPosition(leftPanelRef, "leftPanelScroll");
-    restoreScrollPosition(centerPanelRef, "centerPanelScroll");
-    restoreScrollPosition(rightPanelRef, "rightPanelScroll");
   }, []);
 
-  const handleCardClick = () => {
+  const handleCardClick = (card: CardType) => {
+    setSelectedCard(card);
     setIsPanelOpen(true); // Open the right panel
 
     // setIsPanelOpen(true); // Open the right panel
@@ -50,15 +50,23 @@ function HomePage() {
 
   const menuItems: MenuItem[] = [
     {
+      id: 1,
       name: "Home",
       image: (
         <div>
           <HomeIcons />
         </div>
       ),
-      component: <HomePageComponent />,
+      component: (
+        <HomePageComponent
+          cards={cards}
+          onCardClick={handleCardClick}
+          selectedCard={selectedCard}
+        />
+      ),
     },
     {
+      id: 2,
       name: "New Posts",
       image: (
         <div>
@@ -68,6 +76,7 @@ function HomePage() {
       component: <PostPageComponent />,
     },
     {
+      id: 3,
       name: "Profile",
       image: (
         <div>
@@ -104,9 +113,9 @@ function HomePage() {
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
-        <div className="lg:px-4">
-          <div className="lg:grid grid-cols-11">
-            <div className="col-span-2 hidden lg:block" ref={leftPanelRef}>
+        <div className="lg:px-32">
+          <div className="lg:grid grid-cols-12">
+            <div className="col-span-3 hidden lg:block" ref={leftPanelRef}>
               <div className="h-screen py-4">
                 <div className="flex flex-col h-full">
                   <div className="bg-BackgroundTwo p-6 rounded-xl">
@@ -121,6 +130,7 @@ function HomePage() {
                     <div>
                       {menuItems.map((item) => (
                         <div
+                          key={item.id}
                           className={`w-full py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-lg my-1 cursor-pointer duration-200 ${
                             activeMenu === item.name
                               ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
@@ -154,8 +164,7 @@ function HomePage() {
                   </div>
 
                   <div className="bg-darkBackgroundOne p-6 rounded-xl mt-3 flex flex-col flex-1">
-                    <div className="flex-1">{/* <CommunityCard />{" "} */}</div>
-
+                    <div className="flex-1"></div>
                     <div>
                       <div className=" pt-4 flex justify-between items-center">
                         <p className="text-xs text-textTwo font-semibold">
@@ -181,6 +190,7 @@ function HomePage() {
                   {/* Mobile Bottom navidation Bar */}
                   {menuItems.map((item) => (
                     <div
+                      key={item.id}
                       className={`text-strokeLight p-2 ${
                         activeMenu === item.name
                           ? "hover:bg-none dark:hover:bg-none font-bold"
