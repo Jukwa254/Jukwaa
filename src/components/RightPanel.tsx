@@ -77,8 +77,8 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     adjustTextareaHeight();
   };
 
-  const [likes, setLikes] = useState(100);
-  const [dislikes, setDislikes] = useState(372);
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
@@ -176,14 +176,14 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
                 <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
                   <div className="flex gap-2 text-lg items-center">
-                    <div className="flex items-center font-bold">
+                    <div className="flex items-center font-semibold">
                       <span
                         className="cursor-pointer text-[#6C2D1B]"
                         onClick={handleLike}
                       >
                         {liked ? <LikeFilled /> : <LikeRegular />}
                       </span>
-                      <p>{likes}</p>
+                      <p>{likes + selectedCard.likes}</p>
                     </div>
                     <div className="flex items-center font-bold">
                       <span
@@ -196,7 +196,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                           <ThumbsDownRegular />
                         )}
                       </span>
-                      <p>{dislikes}</p>
+                      <p>{dislikes + selectedCard.dislikes}</p>
                     </div>
                   </div>
                   <div className="flex font-bold items-center">

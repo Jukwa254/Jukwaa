@@ -98,14 +98,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </div>
             <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
               <div className="flex gap-2 text-lg items-center">
-                <div className="flex items-center font-bold">
+                <div className="flex items-center font-semibold">
                   <span
                     className="cursor-pointer text-[#6C2D1B]"
                     onClick={handleLike}
                   >
                     {liked ? <LikeFilled /> : <LikeRegular />}
                   </span>
-                  <p>{likes}</p>
+                  <p>{likes + card.likes}</p>
                 </div>
                 <div className="flex items-center font-bold">
                   <span
@@ -114,7 +114,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   >
                     {disliked ? <ThumbsDownFilled /> : <ThumbsDownRegular />}
                   </span>
-                  <p>{dislikes}</p>
+                  <p>{dislikes + card.dislikes}</p>
                 </div>
               </div>
               <div className="flex font-bold items-center">
