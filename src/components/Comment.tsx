@@ -6,7 +6,7 @@ export const UserComments = () => {
     <div>
       <div>
         <div className="">
-          <p className="font-semibold text-xl">Comments</p>
+          <p className="font-bold">Comments</p>
         </div>
         <CommentComponent
           image={Image}

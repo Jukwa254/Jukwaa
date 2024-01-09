@@ -1,10 +1,10 @@
 import { useState } from "react";
 import {
+  LikeFilled,
+  LikeRegular,
   Message,
   ThumbsDownFilled,
   ThumbsDownRegular,
-  ThumbsUpFilled,
-  ThumbsUpRegular,
 } from "./Icons";
 import { CardType } from "./SampleData";
 import { formatDistanceToNow } from "date-fns";
@@ -59,7 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         // handleCardClick();
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 py-4 lg:p-6 rounded-xl hover:bg-BackgroundAccent ${
+      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 p-4 lg:p-6 rounded-xl hover:bg-BackgroundAccent ${
         selectedCard && selectedCard.id === card.id
           ? "bg-BackgroundAccent border border-accent"
           : "border-strokeOne"
@@ -74,7 +74,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               className="w-12 h-12 rounded-full"
             />
             <div>
-              <p className="text-xl font-medium text-[#2C444E]">
+              <p className="text-xl font-semibold text-[#2C444E]">
                 {card.organizationName}
               </p>
               <p className="text-xs text-[#796552]">
@@ -96,18 +96,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 className="h-80 w-full rounded-lg object-cover"
               />
             </div>
-            <div className="mt-6 flex justify-between mb-1 text-[#6C2D1B]">
-              <div className="flex gap-4 items-center">
-                <div className="flex items-center gap-1 font-bold">
+            <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
+              <div className="flex gap-2 text-lg items-center">
+                <div className="flex items-center font-bold">
                   <span
-                    className="text-2xl cursor-pointer text-[#6C2D1B]"
+                    className="cursor-pointer text-[#6C2D1B]"
                     onClick={handleLike}
                   >
-                    {liked ? <ThumbsUpFilled /> : <ThumbsUpRegular />}
+                    {liked ? <LikeFilled /> : <LikeRegular />}
                   </span>
                   <p>{likes}</p>
                 </div>
-                <div className="flex items-center gap-1 font-bold">
+                <div className="flex items-center font-bold">
                   <span
                     className="text-2xl cursor-pointer text-[#6C2D1B]"
                     onClick={handleDislike}
@@ -117,7 +117,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   <p>{dislikes}</p>
                 </div>
               </div>
-              <div className="flex gap-1 font-bold">
+              <div className="flex font-bold items-center">
                 <span className="text-2xl">
                   <Message />
                 </span>

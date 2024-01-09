@@ -185,7 +185,7 @@ function HomePage() {
 
             <div className="col-span-6">
               <div className="">{renderActiveComponent()}</div>
-              <div className=" fixed bottom-0 w-full lg:hidden">
+              <div className=" fixed bottom-0 w-screen lg:hidden">
                 <div className="grid grid-cols-3 bg-BackgroundOne ">
                   {/* Mobile Bottom navidation Bar */}
                   {menuItems.map((item) => (

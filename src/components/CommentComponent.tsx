@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {
+  LikeFilled,
+  LikeRegular,
   ThumbsDownFilled,
   ThumbsDownRegular,
-  ThumbsUpFilled,
-  ThumbsUpRegular,
 } from "./Icons";
 
 interface CommentProps {
@@ -72,15 +72,15 @@ function CommentComponent(props: CommentProps) {
             <p className="font-semibold">{props.name}</p>
             <p className="text-xs font-medium text-[#796552]">{props.time}</p>
           </div>
-          <p className="text-textThree font-medium">{props.comment}</p>
+          <p className="text-textThree font-normal">{props.comment}</p>
           <div className="flex justify-between items-center mt-2">
             <div className="flex gap-4 text-sm text-[#414141] items-center">
               <div
                 className="flex items-center gap-1 cursor-pointer font-bold"
                 onClick={handleLike}
               >
-                <span className="text-xl">
-                  {liked ? <ThumbsUpFilled /> : <ThumbsUpRegular />}
+                <span className="text-sm">
+                  {liked ? <LikeFilled /> : <LikeRegular />}
                 </span>
                 <p>{likes}</p>
               </div>
@@ -88,7 +88,7 @@ function CommentComponent(props: CommentProps) {
                 className="flex items-center gap-1 cursor-pointer font-bold"
                 onClick={handleDislike}
               >
-                <span className="text-xl">
+                <span className="text-sm">
                   {disliked ? <ThumbsDownFilled /> : <ThumbsDownRegular />}
                 </span>
                 <p>{dislikes}</p>
