@@ -59,9 +59,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         // handleCardClick();
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-300 mb-4 cursor-pointer border p-6 rounded-xl hover:bg-BackgroundAccent ${
+      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 py-4 lg:p-6 rounded-xl hover:bg-BackgroundAccent ${
         selectedCard && selectedCard.id === card.id
-          ? "bg-BackgroundAccent border-2 border-accent"
+          ? "bg-BackgroundAccent border border-accent"
           : "border-strokeOne"
       }`}
     >
@@ -98,30 +98,30 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </div>
             <div className="mt-6 flex justify-between mb-1 text-[#6C2D1B]">
               <div className="flex gap-4 items-center">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 font-bold">
                   <span
                     className="text-2xl cursor-pointer text-[#6C2D1B]"
                     onClick={handleLike}
                   >
                     {liked ? <ThumbsUpFilled /> : <ThumbsUpRegular />}
                   </span>
-                  <p>{likes} Likes</p>
+                  <p>{likes}</p>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 font-bold">
                   <span
                     className="text-2xl cursor-pointer text-[#6C2D1B]"
                     onClick={handleDislike}
                   >
                     {disliked ? <ThumbsDownFilled /> : <ThumbsDownRegular />}
                   </span>
-                  <p>{dislikes} Dislikes</p>
+                  <p>{dislikes}</p>
                 </div>
               </div>
-              <div className="flex gap-1">
+              <div className="flex gap-1 font-bold">
                 <span className="text-2xl">
                   <Message />
                 </span>
-                <p>{card.projectComments} Comments</p>
+                <p>{card.projectComments}</p>
               </div>
             </div>
           </div>
