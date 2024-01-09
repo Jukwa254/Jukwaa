@@ -1,12 +1,21 @@
 import { useEffect, useRef } from "react";
 import Image from "../assets/images/signup-image.png";
+import { CardType } from "./SampleData";
+import { UserComments } from "./Comment";
+import CenterPanelNavBar from "./CenterPanelNavBar";
 
 export type RightPanelProps = {
+  cards: CardType[];
+  selectedCard: CardType | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const RightPanel: React.FC<RightPanelProps> = ({ isOpen, onClose }) => {
+export const RightPanel: React.FC<RightPanelProps> = ({
+  isOpen,
+  onClose,
+  selectedCard,
+}) => {
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const saveScrollPosition = () => {
     if (rightPanelRef.current) {
@@ -54,28 +63,39 @@ export const RightPanel: React.FC<RightPanelProps> = ({ isOpen, onClose }) => {
             : "fixed translate-x-full md:translate-x-0"
         }`}
       >
-        <div className="bg-BackgroundTwo p-6 rounded-xl">
-          <button onClick={onClose} className="md:hidden my-4">
-            <div className="flex gap-2 items-center font-medium  rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                />
-              </svg>
-              <p className="font-bold">Back</p>
+        {selectedCard && (
+          <div className="bg-BackgroundTwo p-6 rounded-xl">
+            <div>
+              <div className="flex justify-between items-center w-full mb-4 border-BackgroundAccent">
+                <button onClick={onClose} className="md:hidden my-4">
+                  <div className="flex gap-2 items-center font-medium  rounded-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                      />
+                    </svg>
+                    <p className="font-bold">Back</p>
+                  </div>
+                </button>
+              </div>
             </div>
-          </button>
-          <PostComment />
-        </div>
+
+            <PostComment />
+
+            <div>
+              <UserComments />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -104,7 +124,7 @@ function PostComment() {
           <img src={Image} alt="" className="w-12 h-12 rounded-full" />
           <textarea
             ref={textareaRef}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B] w-full"
+            className="p-2 border text-sm border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B] w-full"
             style={{
               overflow: "hidden", // Hide the scrollbar
             }}

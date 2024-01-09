@@ -115,7 +115,7 @@ function HomePage() {
       <div className="bg-BackgroundOne text-textOne">
         <div className="lg:px-48">
           <div className="lg:grid grid-cols-12">
-            <div className="col-span-2 hidden lg:block" ref={leftPanelRef}>
+            <div className="col-span-3 hidden lg:block" ref={leftPanelRef}>
               <div className="h-screen py-4">
                 <div className="flex flex-col h-full">
                   <div className="bg-BackgroundTwo p-6 rounded-xl">
@@ -224,11 +224,21 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-span-4 hidden lg:block">
-              <RightPanel isOpen={isPanelOpen} onClose={closePanel} />
+            <div className="col-span-3 hidden lg:block">
+              <RightPanel
+                isOpen={isPanelOpen}
+                onClose={closePanel}
+                cards={cards}
+                selectedCard={selectedCard}
+              />
             </div>
-            <div className="md:hidden z-50">
-              <RightPanel isOpen={isPanelOpen} onClose={closePanel} />
+            <div className="md:hidden z-50 overflow-x-hidden">
+              <RightPanel
+                isOpen={isPanelOpen}
+                onClose={closePanel}
+                cards={cards}
+                selectedCard={selectedCard}
+              />
             </div>
           </div>
         </div>
