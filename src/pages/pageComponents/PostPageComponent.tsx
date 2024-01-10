@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { CardType } from "../../components/SampleData";
-// import ProjectCard from "../../components/ProjectCard";
+import { formatDistanceToNow } from "date-fns";
 
 export type NewProjectCardProps = {
   cards: CardType[];
@@ -106,7 +106,14 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
           className="w-10 h-10 rounded-full"
         />
         <div>
-          <h1 className="font-bold ">{card.projectTitle}</h1>
+          <div className="flex justify-between">
+            <h1 className="font-bold ">{card.projectTitle}</h1>
+            <p className="text-xs text-[#796552]">
+              {formatDistanceToNow(new Date(card.created_at), {
+                addSuffix: true,
+              })}
+            </p>
+          </div>
           <p>{subDescription}...</p>
           <div className="text-sm font-bold flex justify-between mt-2">
             <div className="flex gap-4">

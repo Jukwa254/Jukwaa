@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { ClockIcons, HomeIcons, ProfileIcons } from "../components/Icons";
+import {
+  ClockIcons,
+  HomeIcons,
+  ProfileIcons,
+  SearchIcon,
+} from "../components/Icons";
 import HomePageComponent from "./pageComponents/HomePageComponent";
 import PostPageComponent, {
   TrendingPostsComponent,
@@ -7,6 +12,7 @@ import PostPageComponent, {
 import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
 import { CardType, cards } from "../components/SampleData";
+import SearchPageComponent from "./pageComponents/SearchPageComponent";
 
 type MenuItem = {
   id: number;
@@ -75,7 +81,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
     },
     {
       id: 2,
-      name: "New Posts",
+      name: "New",
       image: (
         <div>
           <ClockIcons />
@@ -91,6 +97,16 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
     },
     {
       id: 3,
+      name: "Search",
+      image: (
+        <div>
+          <SearchIcon />
+        </div>
+      ),
+      component: <SearchPageComponent />,
+    },
+    {
+      id: 4,
       name: "Profile",
       image: (
         <div>
@@ -228,7 +244,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
             <div className="col-span-5">
               <div className="">{renderActiveComponent()}</div>
               <div className=" fixed bottom-0 w-screen lg:hidden">
-                <div className="grid grid-cols-3 bg-BackgroundOne ">
+                <div className="grid grid-cols-4 bg-BackgroundOne ">
                   {menuItems.map((item) => (
                     <div
                       key={item.id}
