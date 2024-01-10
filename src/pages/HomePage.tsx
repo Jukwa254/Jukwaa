@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ClockIcons, HomeIcons, ProfileIcons } from "../components/Icons";
 import HomePageComponent from "./pageComponents/HomePageComponent";
-import PostPageComponent from "./pageComponents/PostPageComponent";
+import PostPageComponent, {
+  TrendingPostsComponent,
+} from "./pageComponents/PostPageComponent";
 import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
 import { CardType, cards } from "../components/SampleData";
@@ -19,10 +21,7 @@ export type LeftPanelProps = {
   selectedCardType: CardType | null;
 };
 
-const HomePage: React.FC<LeftPanelProps> = ({
-  onCardClick,
-  selectedCardType,
-}) => {
+const HomePage: React.FC<LeftPanelProps> = ({}) => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -82,7 +81,13 @@ const HomePage: React.FC<LeftPanelProps> = ({
           <ClockIcons />
         </div>
       ),
-      component: <PostPageComponent />,
+      component: (
+        <PostPageComponent
+          cards={cards}
+          onCardClick={handleCardClick}
+          selectedCard={selectedCard}
+        />
+      ),
     },
     {
       id: 3,
@@ -140,7 +145,7 @@ const HomePage: React.FC<LeftPanelProps> = ({
                       {menuItems.map((item) => (
                         <div
                           key={item.id}
-                          className={`w-full py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-lg my-1 cursor-pointer duration-200 ${
+                          className={`w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
                             activeMenu === item.name
                               ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
                               : ""
@@ -180,33 +185,12 @@ const HomePage: React.FC<LeftPanelProps> = ({
                           <h1 className="font-bold mb-2">Trending Posts</h1>
                         </div>
                         {cards.slice(0, 3).map((card) => (
-                          <div
+                          <TrendingPostsComponent
                             key={card.id}
-                            onClick={() => {
-                              // handleCardClick();
-                              onCardClick(card);
-                              selectedCardType;
-                            }}
-                            className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
-                              selectedCard && selectedCard.id === card.id
-                            }`}
-                          >
-                            <div className="flex gap-2 items-center">
-                              <img
-                                src={card.organizationLogo}
-                                alt=""
-                                className="w-10 h-10 rounded-full"
-                              />
-                              <div>
-                                <h1 className="font-semibold ">
-                                  {card.projectTitle}
-                                </h1>
-                                <p className="text-sm">
-                                  {card.projectComments} Comments
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                            card={card}
+                            onCardClick={handleCardClick}
+                            selectedCard={selectedCard}
+                          />
                         ))}
                       </div>
                       <div className="mt-8">
@@ -214,33 +198,12 @@ const HomePage: React.FC<LeftPanelProps> = ({
                           <h1 className="font-bold mb-2">Recently Added</h1>
                         </div>
                         {cards.slice(0, 3).map((card) => (
-                          <div
+                          <TrendingPostsComponent
                             key={card.id}
-                            onClick={() => {
-                              // handleCardClick();
-                              onCardClick(card);
-                              selectedCardType;
-                            }}
-                            className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
-                              selectedCard && selectedCard.id === card.id
-                            }`}
-                          >
-                            <div className="flex gap-2 items-center">
-                              <img
-                                src={card.organizationLogo}
-                                alt=""
-                                className="w-10 h-10 rounded-full"
-                              />
-                              <div>
-                                <h1 className="font-semibold ">
-                                  {card.projectTitle}
-                                </h1>
-                                <p className="text-sm">
-                                  {card.projectComments} Comments
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                            card={card}
+                            onCardClick={handleCardClick}
+                            selectedCard={selectedCard}
+                          />
                         ))}
                       </div>
                     </div>

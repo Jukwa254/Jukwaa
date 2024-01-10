@@ -124,10 +124,13 @@ export const RightPanel: React.FC<RightPanelProps> = ({
         }`}
       >
         {selectedCard && (
-          <div className="bg-BackgroundTwo p-6 rounded-xl">
-            <div className="flex justify-between items-center w-full border-BackgroundAccent">
-              <button onClick={onClose} className="md:hidden my-4">
-                <div className="flex gap-2 items-center font-medium  rounded-full">
+          <div className="bg-BackgroundTwo p-4 lg:p-6 rounded-xl">
+            <div className="grid grid-cols-3 lg:block items-center w-full border-BackgroundAccent ">
+              <button
+                onClick={onClose}
+                className="md:hidden my-2 py-2.5 rounded-full "
+              >
+                <div className="flex gap-2 items-center font-medium rounded-full ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -145,6 +148,10 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                   <p className="font-bold">Back</p>
                 </div>
               </button>
+              <p className="font-bold text-lg text-center lg:text-left ">
+                Post
+              </p>
+              <div></div>
             </div>
 
             <div className="mt-4">

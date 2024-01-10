@@ -56,12 +56,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     <div
       key={card.id}
       onClick={() => {
-        // handleCardClick();
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 py-4 lg:pt-6 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
+      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border border-BackgroundAccent px-4 py-4 lg:pt-6 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
         selectedCard && selectedCard.id === card.id
-          ? "bg-BackgroundOne border border-accent"
+          ? "bg-BackgroundOne"
           : "border-strokeOne"
       }`}
     >

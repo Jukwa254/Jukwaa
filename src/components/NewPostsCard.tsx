@@ -1,12 +1,12 @@
 import { CardType } from "./SampleData";
 
-type ProjectCardProps = {
+export type NewProjectCardProps = {
   card: CardType;
   onCardClick: (card: CardType) => void;
   selectedCard: CardType | null;
 };
 
-export const NewPostsCard: React.FC<ProjectCardProps> = ({
+export const NewPostsCard: React.FC<NewProjectCardProps> = ({
   card,
   onCardClick,
   selectedCard,
