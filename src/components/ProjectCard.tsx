@@ -59,7 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         // handleCardClick();
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 p-4 lg:p-6 rounded-xl hover:bg-BackgroundAccent ${
+      className={`hover:-translate-y-1 transform duration-200 mb-4 cursor-pointer border px-4 py-4 lg:pt-6 lg:pb-3 rounded-xl hover:bg-BackgroundAccent ${
         selectedCard && selectedCard.id === card.id
           ? "bg-BackgroundAccent border border-accent"
           : "border-strokeOne"

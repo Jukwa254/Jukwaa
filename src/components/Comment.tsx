@@ -68,7 +68,7 @@ export const UserComments = () => {
           name={"Andrew Mbugua"}
           time={"5 hours"}
           comment={
-            "Our government proposes to undertake a new project aimed at improving transportation infrastructure.  undertake a new project aimed at improving transportation infrastructure."
+            "From a technical standpoint, the project's execution is impressive 🏗️. The engineering solutions adopted showcase innovation and foresight. 🔍📐"
           }
           likes={36}
           dislike={2}
