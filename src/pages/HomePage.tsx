@@ -146,7 +146,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
         <div className="lg:px-48">
           <div className="lg:grid grid-cols-12">
             <div className="col-span-3 hidden lg:block">
-              <div className="h-screen py-4">
+              <div className="h-screen py-4 overflow-y-auto no-scrollbar">
                 <div className="flex flex-col h-full">
                   <div className="bg-BackgroundTwo p-6 rounded-xl">
                     <div className="flex justify-between mb-12">
@@ -161,7 +161,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                       {menuItems.map((item) => (
                         <div
                           key={item.id}
-                          className={`w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
+                          className={`w-full lg:w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
                             activeMenu === item.name
                               ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
                               : ""
@@ -213,7 +213,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                         <div>
                           <h1 className="font-bold mb-2">Recently Added</h1>
                         </div>
-                        {cards.slice(0, 3).map((card) => (
+                        {cards.slice(3, 5).map((card) => (
                           <TrendingPostsComponent
                             key={card.id}
                             card={card}

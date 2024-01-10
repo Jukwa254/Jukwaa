@@ -106,15 +106,16 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
           className="w-10 h-10 rounded-full"
         />
         <div>
-          <div className="flex justify-between">
+          <div className="lg:flex justify-between">
             <h1 className="font-bold ">{card.projectTitle}</h1>
             <p className="text-xs text-[#796552]">
               {formatDistanceToNow(new Date(card.created_at), {
-                addSuffix: true,
-              })}
+                // addSuffix: true,
+              })}{" "}
+              ago
             </p>
           </div>
-          <p>{subDescription}...</p>
+          <p className="text-textThree">{subDescription}...</p>
           <div className="text-sm font-bold flex justify-between mt-2">
             <div className="flex gap-4">
               <p>{card.dislikes} Likes</p>
@@ -153,7 +154,9 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
         />
         <div>
           <h1 className="font-semibold ">{card.projectTitle}</h1>
-          <p className="text-sm">{card.projectComments} Comments</p>
+          <p className="text-sm text-textTwo">
+            {card.projectComments} Comments
+          </p>
         </div>
       </div>
     </div>

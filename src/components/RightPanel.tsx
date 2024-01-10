@@ -167,8 +167,9 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                   </p>
                   <p className="text-xs text-[#796552]">
                     {formatDistanceToNow(new Date(selectedCard.created_at), {
-                      addSuffix: true,
-                    })}
+                      // addSuffix: true,
+                    })}{" "}
+                    ago
                   </p>
                 </div>
               </div>
