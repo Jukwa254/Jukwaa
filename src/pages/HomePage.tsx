@@ -13,7 +13,16 @@ type MenuItem = {
   component: JSX.Element;
 };
 
-function HomePage() {
+export type LeftPanelProps = {
+  cards: CardType[];
+  onCardClick: (card: CardType) => void;
+  selectedCardType: CardType | null;
+};
+
+const HomePage: React.FC<LeftPanelProps> = ({
+  onCardClick,
+  selectedCardType,
+}) => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -115,7 +124,7 @@ function HomePage() {
       <div className="bg-BackgroundOne text-textOne">
         <div className="lg:px-48">
           <div className="lg:grid grid-cols-12">
-            <div className="col-span-3 hidden lg:block" ref={leftPanelRef}>
+            <div className="col-span-3 hidden lg:block">
               <div className="h-screen py-4">
                 <div className="flex flex-col h-full">
                   <div className="bg-BackgroundTwo p-6 rounded-xl">
@@ -163,8 +172,78 @@ function HomePage() {
                     </div>
                   </div>
 
-                  <div className="bg-darkBackgroundOne p-6 rounded-xl mt-3 flex flex-col flex-1">
-                    <div className="flex-1"></div>
+                  <div className="bg-BackgroundTwo p-6 rounded-xl mt-3 flex flex-col flex-1">
+                    <div className="flex-1">
+                      <div className=""></div>
+                      <div>
+                        <div>
+                          <h1 className="font-bold mb-2">Trending Posts</h1>
+                        </div>
+                        {cards.slice(0, 3).map((card) => (
+                          <div
+                            key={card.id}
+                            onClick={() => {
+                              // handleCardClick();
+                              onCardClick(card);
+                              selectedCardType;
+                            }}
+                            className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
+                              selectedCard && selectedCard.id === card.id
+                            }`}
+                          >
+                            <div className="flex gap-2 items-center">
+                              <img
+                                src={card.organizationLogo}
+                                alt=""
+                                className="w-10 h-10 rounded-full"
+                              />
+                              <div>
+                                <h1 className="font-semibold ">
+                                  {card.projectTitle}
+                                </h1>
+                                <p className="text-sm">
+                                  {card.projectComments} Comments
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-8">
+                        <div>
+                          <h1 className="font-bold mb-2">Recently Added</h1>
+                        </div>
+                        {cards.slice(0, 3).map((card) => (
+                          <div
+                            key={card.id}
+                            onClick={() => {
+                              // handleCardClick();
+                              onCardClick(card);
+                              selectedCardType;
+                            }}
+                            className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
+                              selectedCard && selectedCard.id === card.id
+                            }`}
+                          >
+                            <div className="flex gap-2 items-center">
+                              <img
+                                src={card.organizationLogo}
+                                alt=""
+                                className="w-10 h-10 rounded-full"
+                              />
+                              <div>
+                                <h1 className="font-semibold ">
+                                  {card.projectTitle}
+                                </h1>
+                                <p className="text-sm">
+                                  {card.projectComments} Comments
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                     <div>
                       <div className=" pt-4 flex justify-between items-center">
                         <p className="text-xs text-textTwo font-semibold">
@@ -183,11 +262,10 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-span-6">
+            <div className="col-span-5">
               <div className="">{renderActiveComponent()}</div>
               <div className=" fixed bottom-0 w-screen lg:hidden">
                 <div className="grid grid-cols-3 bg-BackgroundOne ">
-                  {/* Mobile Bottom navidation Bar */}
                   {menuItems.map((item) => (
                     <div
                       key={item.id}
@@ -224,7 +302,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-span-3 hidden lg:block">
+            <div className="col-span-4 hidden lg:block">
               <RightPanel
                 isOpen={isPanelOpen}
                 onClose={closePanel}
@@ -243,6 +321,6 @@ function HomePage() {
       </div>
     </div>
   );
-}
+};
 
 export default HomePage;

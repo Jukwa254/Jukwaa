@@ -173,7 +173,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 <img
                   src={selectedCard.projectImage}
                   alt=""
-                  className="rounded-xl h-96 object-cover"
+                  className="rounded-xl h-96 object-cover w-full"
                 />
 
                 <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
