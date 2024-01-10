@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
-import { CardType } from "../../components/SampleData";
 import { SearchIcon } from "../../components/Icons";
 
 const SearchPageComponent = () => {
