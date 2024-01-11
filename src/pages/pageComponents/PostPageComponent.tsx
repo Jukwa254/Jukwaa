@@ -146,14 +146,16 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
           : "border-strokeOne"
       }`}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-start">
         <img
           src={card.organizationLogo}
           alt=""
           className="w-10 h-10 rounded-full"
         />
         <div>
-          <h1 className="font-semibold ">{card.projectTitle}</h1>
+          <h1 className="font-semibold leading-none mb-2">
+            {card.projectTitle}
+          </h1>
           <p className="text-sm text-textTwo">
             {card.projectComments} Comments
           </p>

@@ -115,6 +115,18 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       ),
       component: <ProfilePageComponent />,
     },
+    {
+      id: 5,
+      name: "See All",
+      image: <></>,
+      component: (
+        <PostPageComponent
+          cards={cards}
+          onCardClick={handleCardClick}
+          selectedCard={selectedCard}
+        />
+      ),
+    },
   ];
 
   const renderActiveComponent = () => {
@@ -158,7 +170,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                       </div>
                     </div>
                     <div>
-                      {menuItems.map((item) => (
+                      {menuItems.slice(0, 3).map((item) => (
                         <div
                           key={item.id}
                           className={`w-full lg:w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
@@ -197,8 +209,20 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                     <div className="flex-1">
                       <div className=""></div>
                       <div>
-                        <div>
+                        <div className="flex justify-between ">
                           <h1 className="font-bold mb-2">Trending Posts</h1>
+                          <div>
+                            {menuItems.slice(4, 5).map((item) => (
+                              <div
+                                key={item.id}
+                                onClick={() => handleMenuClick(item.name)}
+                              >
+                                <p className="text-sm underline text-textTwo cursor-pointer hover:text-accent">
+                                  {item.name}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         {cards.slice(0, 3).map((card) => (
                           <TrendingPostsComponent
@@ -211,7 +235,21 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                       </div>
                       <div className="mt-8">
                         <div>
-                          <h1 className="font-bold mb-2">Recently Added</h1>
+                          <div className="flex justify-between ">
+                            <h1 className="font-bold mb-2">Trending Posts</h1>
+                            <div>
+                              {menuItems.slice(4, 5).map((item) => (
+                                <div
+                                  key={item.id}
+                                  onClick={() => handleMenuClick(item.name)}
+                                >
+                                  <p className="text-sm underline text-textTwo cursor-pointer hover:text-accent">
+                                    {item.name}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                         {cards.slice(3, 5).map((card) => (
                           <TrendingPostsComponent
@@ -245,7 +283,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
               <div className="">{renderActiveComponent()}</div>
               <div className=" fixed bottom-0 w-screen lg:hidden">
                 <div className="grid grid-cols-4 bg-BackgroundOne ">
-                  {menuItems.map((item) => (
+                  {menuItems.slice(0, 3).map((item) => (
                     <div
                       key={item.id}
                       className={`text-strokeLight p-2 ${
