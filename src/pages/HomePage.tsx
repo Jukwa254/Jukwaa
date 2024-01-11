@@ -170,7 +170,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                       </div>
                     </div>
                     <div>
-                      {menuItems.slice(0, 3).map((item) => (
+                      {menuItems.slice(0, 4).map((item) => (
                         <div
                           key={item.id}
                           className={`w-full lg:w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
@@ -283,7 +283,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
               <div className="">{renderActiveComponent()}</div>
               <div className=" fixed bottom-0 w-screen lg:hidden">
                 <div className="grid grid-cols-4 bg-BackgroundOne ">
-                  {menuItems.slice(0, 3).map((item) => (
+                  {menuItems.slice(0, 4).map((item) => (
                     <div
                       key={item.id}
                       className={`text-strokeLight p-2 ${
