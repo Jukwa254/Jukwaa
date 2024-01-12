@@ -10,6 +10,7 @@ const LoginAuth = ({ setToken }: any) => {
   });
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleChange(event: { target: { name: any; value: any } }) {
     setFormData((prevFormData) => {
@@ -22,6 +23,11 @@ const LoginAuth = ({ setToken }: any) => {
 
   async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
+    setErrorMessage("");
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setErrorMessage("Please fill in all fields.");
+      return; // Stop the function if any field is empty
+    }
 
     try {
       const { data } = await supabase.auth.signInWithPassword({
@@ -32,7 +38,11 @@ const LoginAuth = ({ setToken }: any) => {
       setToken(data);
       navigate("/home");
     } catch (error) {
-      alert(error);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
     }
   }
 
@@ -54,9 +64,11 @@ const LoginAuth = ({ setToken }: any) => {
               <h2 className="text-start text-3xl md:text-5xl font-bold pt-16 md:pt-28 pb-8 text-accent">
                 Login
               </h2>
-
+              {errorMessage && (
+                <div className="bg-errorTwo px-4 p-1">{errorMessage}</div>
+              )}
               <div className="flex flex-col py-4">
-                <label className="text-start text-base">Username / Email</label>
+                <label className="text-start text-base">Email</label>
                 <input
                   type="email"
                   name="email"

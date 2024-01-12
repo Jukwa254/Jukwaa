@@ -4,6 +4,7 @@ import LoginAuth from "./Auth/LoginAuth";
 import RegisterAuth from "./Auth/RegisterAuth";
 import HomePage, { LeftPanelProps } from "./pages/HomePage";
 import { Routes, Route } from "react-router-dom";
+import NoPageFound from "./components/NoPageFound";
 
 const App = (props: LeftPanelProps) => {
   const [token, setToken] = useState(false);
@@ -50,7 +51,7 @@ const App = (props: LeftPanelProps) => {
             }
           />
         ) : (
-          ""
+          <Route path="/nopage" element={<NoPageFound />} />
         )}
       </Routes>
     </>

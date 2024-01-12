@@ -9,6 +9,8 @@ const RegisterAuth = () => {
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   function handleChange(event: { target: { name: any; value: any } }) {
     setFormData((prevFormData) => {
@@ -21,6 +23,15 @@ const RegisterAuth = () => {
 
   async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
+    setErrorMessage("");
+    if (
+      !formData.fullName.trim() ||
+      !formData.email.trim() ||
+      !formData.password.trim()
+    ) {
+      setErrorMessage("Please fill in all fields.");
+      return; // Stop the function if any field is empty
+    }
 
     try {
       const {} = await supabase.auth.signUp({
@@ -32,9 +43,13 @@ const RegisterAuth = () => {
           },
         },
       });
-      alert("Check Your Email For Verification");
+      setSuccessMessage("Successful: Check Your Email For Verification");
     } catch (error) {
-      alert(error);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
     }
   }
 
@@ -56,6 +71,12 @@ const RegisterAuth = () => {
               <h2 className="text-start text-3xl md:text-5xl font-bold pt-16 md:pt-28 pb-8 text-accent">
                 Register
               </h2>
+              {successMessage && (
+                <div className="bg-successTwo px-4 p-1">{successMessage}</div>
+              )}
+              {errorMessage && (
+                <div className="bg-errorTwo px-4 p-1">{errorMessage}</div>
+              )}
               <div className="flex flex-col py-4">
                 <label className="text-start text-base">Full Name</label>
                 <input
