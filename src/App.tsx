@@ -9,16 +9,6 @@ import NoPageFound from "./components/NoPageFound";
 const App = (props: LeftPanelProps) => {
   const [token, setToken] = useState(false);
 
-  // if (token) {
-  //   sessionStorage.setItem("token", JSON.stringify(token));
-  // }
-
-  // useEffect(() => {
-  //   if (sessionStorage.getItem("token")) {
-  //     let data = JSON.parse(sessionStorage.getItem("token"));
-  //     setToken(data);
-  //   }
-  // }, []);
   useEffect(() => {
     const tokenData = sessionStorage.getItem("token");
     if (tokenData) {

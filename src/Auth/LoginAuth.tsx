@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../assets/images/signup-image.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
 
 const LoginAuth = ({ setToken }: any) => {
@@ -11,6 +11,17 @@ const LoginAuth = ({ setToken }: any) => {
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+
+  const isAuthenticated = () => {
+    const token = sessionStorage.getItem("token");
+    return !!token;
+  };
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/home");
+    }
+  }, []);
 
   function handleChange(event: { target: { name: any; value: any } }) {
     setFormData((prevFormData) => {
@@ -24,22 +35,34 @@ const LoginAuth = ({ setToken }: any) => {
   async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
     setErrorMessage("");
+
     if (!formData.email.trim() || !formData.password.trim()) {
       setErrorMessage("Please fill in all fields.");
-      return; // Stop the function if any field is empty
+      return;
     }
 
     try {
-      const { data } = await supabase.auth.signInWithPassword({
+      const response = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
-      console.log(data);
-      setToken(data);
-      navigate("/home");
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      if (response.data && response.data.user) {
+        console.log(response.data.user);
+        setToken(response.data.user);
+        navigate("/home");
+      } else {
+        setErrorMessage("Login failed. Please try again.");
+      }
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
+      } else if (typeof error === "string") {
+        setErrorMessage(error);
       } else {
         setErrorMessage("An unexpected error occurred.");
       }
