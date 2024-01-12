@@ -1,8 +1,15 @@
 import { useEffect, useRef } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePageComponent = () => {
+  function handleLogout() {
+    sessionStorage.removeItem("token");
+    navigate("/");
+  }
+
   const centerPanelRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -39,6 +46,11 @@ const ProfilePageComponent = () => {
       centerPanel?.removeEventListener("scroll", saveScrollPosition);
     };
   }, []);
+
+  // async function signOutUser() {
+  //   await supabase.auth.signOut();
+  //   navigate("/");
+  // }
   return (
     <div>
       <div>
@@ -47,6 +59,10 @@ const ProfilePageComponent = () => {
           ref={centerPanelRef}
         >
           <CenterPanelNavBar title={"User Profile"} />
+          <div>
+            {/* <button onClick={() => signOutUser()}> SignOut</button> */}
+            <button onClick={handleLogout}>Logout</button>
+          </div>
         </div>
       </div>
     </div>

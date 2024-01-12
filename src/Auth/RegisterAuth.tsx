@@ -1,15 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoginImage from "../assets/images/signup-image.png";
 import { useState } from "react";
 import supabase from "../config/superbaseClient";
 
-const LoginAuth = ({ setToken }: any) => {
+const RegisterAuth = () => {
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     password: "",
   });
-
-  const navigate = useNavigate();
 
   function handleChange(event: { target: { name: any; value: any } }) {
     setFormData((prevFormData) => {
@@ -24,13 +23,16 @@ const LoginAuth = ({ setToken }: any) => {
     e.preventDefault();
 
     try {
-      const { data } = await supabase.auth.signInWithPassword({
+      const {} = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            full_name: formData.fullName,
+          },
+        },
       });
-      console.log(data);
-      setToken(data);
-      navigate("/home");
+      alert("Check Your Email For Verification");
     } catch (error) {
       alert(error);
     }
@@ -52,9 +54,18 @@ const LoginAuth = ({ setToken }: any) => {
               </div>
 
               <h2 className="text-start text-3xl md:text-5xl font-bold pt-16 md:pt-28 pb-8 text-accent">
-                Login
+                Register
               </h2>
-
+              <div className="flex flex-col py-4">
+                <label className="text-start text-base">Full Name</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="John Doe"
+                  onChange={handleChange}
+                  className="text-base rounded-md mt-2 px-4 py-3 focus:bg-gray-100 focus:outline-2 focus:outline-[#6C2D1B] outline outline-1 outline-[#D9D9D9]"
+                />
+              </div>
               <div className="flex flex-col py-4">
                 <label className="text-start text-base">Username / Email</label>
                 <input
@@ -84,7 +95,7 @@ const LoginAuth = ({ setToken }: any) => {
                 type="submit"
                 className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl mt-16"
               >
-                Login
+                Register
               </button>
 
               <div className="flex justify-between">
@@ -92,8 +103,8 @@ const LoginAuth = ({ setToken }: any) => {
                   Forgot password?{" "}
                   <span className="text-[#6C2D1B] underline">Click here</span>
                 </p>
-                <Link to="/register">
-                  <p className="text-[#6C2D1B] underline">Register</p>
+                <Link to="/">
+                  <p className="text-[#6C2D1B] underline">Login</p>
                 </Link>
               </div>
             </form>
@@ -121,4 +132,4 @@ const LoginAuth = ({ setToken }: any) => {
   );
 };
 
-export default LoginAuth;
+export default RegisterAuth;

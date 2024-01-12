@@ -152,6 +152,22 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       setActiveMenu(savedMenu);
     }
   }, []);
+
+  // const [user, setUser] = useState({});
+  // // const user = useUser();
+
+  // useEffect(() => {
+  //   async function getUserData() {
+  //     await supabase.auth.getUser().then((value) => {
+  //       if (value.data?.user) {
+  //         console.log(value.data.user);
+  //         setUser(value.data.user);
+  //       }
+  //     });
+  //   }
+  //   getUserData();
+  // }, []);
+
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
