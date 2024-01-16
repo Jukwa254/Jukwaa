@@ -64,7 +64,6 @@ const ProfilePageComponent = () => {
         >
           <CenterPanelNavBar title={"User Profile"} />
           <div className="flex justify-between">
-            {/* <button onClick={() => signOutUser()}> SignOut</button> */}
             <div>
               <button
                 onClick={openModal}
@@ -97,22 +96,23 @@ export interface ImageData {
 }
 
 export interface ProjectItem {
-  project_title: string;
-  project_description: string;
-  project_category: string;
-  project_image: string;
+  projectTitle: string;
+  projectDescription: string;
+  projectCategory: string;
+  projectImage: string;
 }
 
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [project_title, setProjectTitle] = useState<string>("");
-  const [project_description, setProjectDescription] = useState<string>("");
-  const [project_category, setProjectCategory] = useState<string>("");
-  const [projectImage, setProjectImage] = useState<ImageData[]>([]);
+  const [projectTitle, setProjectTitle] = useState<string>("");
+  const [projectDescription, setProjectDescription] = useState<string>("");
+  const [projectCategory, setProjectCategory] = useState<string>("");
+  const [projectMainImage, setProjectMainImage] = useState<ImageData[]>([]);
   const user = useUser();
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     let timer: number | undefined;
@@ -125,41 +125,41 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
 
     if (
-      !project_title ||
-      !project_category ||
-      !project_description ||
-      projectImage.length === 0
+      !projectTitle ||
+      !projectCategory ||
+      !projectDescription ||
+      !projectMainImage.length === false
     ) {
-      setErrorMessage("Please fill in all the fields and upload one image");
+      setErrorMessage("Please fill in all the fields");
       return;
     }
 
-    const project_image = projectImage[0].url;
-
+    const projectImage = projectMainImage[0].url;
     const { data, error } = await supabase.from("project").insert([
       {
-        project_title,
-        project_description,
-        project_category,
-        project_image,
+        projectTitle,
+        projectDescription,
+        projectCategory,
+        projectImage,
       },
     ]);
+
     if (error) {
       setErrorMessage("Error inserting data: " + error.message);
     } else if (data) {
-      console.log("Inserted data:", data);
+      // console.log("Inserted data:", data);
+      setSuccessMessage("Post Created Successfully");
       setProjectTitle("");
       setProjectCategory("");
       setProjectDescription("");
-      setProjectImage([]);
+      setProjectMainImage([]);
+      onClose();
     }
-
-    onClose(); // Close modal after submit
   };
 
   async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -167,24 +167,25 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
       let file = e.target.files[0];
       const imageId = uuidv4();
       const { data, error } = await supabase.storage
-        .from("project_images")
+        .from("project-images")
         .upload(user.id + "/" + imageId, file);
 
       if (error) {
         console.error("Upload error:", error);
       } else if (data) {
-        const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/project_images/${user.id}/${imageId}`;
+        const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/project-images/${user.id}/${imageId}`;
         const newImageData: ImageData = {
           id: imageId,
           url: newImageUrl,
         };
-        setProjectImage((prev) => [...prev, newImageData]);
+        setProjectMainImage((prev) => [...prev, newImageData]);
       }
     }
   }
-  useEffect(() => {
-    console.log("Current images state:", projectImage);
-  }, [projectImage]);
+
+  // useEffect(() => {
+  //   console.log("Current images state:", projectMainImage);
+  // }, [projectMainImage]);
 
   if (!isOpen) return null;
 
@@ -204,9 +205,10 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
             </button>
           </div>
           {errorMessage && (
-            <div className="bg-errorTwo px-4 p-1 mt-4">
-              <p>{errorMessage}</p>
-            </div>
+            <div className="bg-errorTwo px-4 p-1 mt-4">{errorMessage}</div>
+          )}
+          {successMessage && (
+            <div className="bg-successTwo px-4 p-1">{successMessage}</div>
           )}
           <form onSubmit={handleSubmit}>
             <div className="mb-4 mt-8">
@@ -214,21 +216,23 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
               <input
                 type="text"
                 name="projectTitle"
-                value={project_title}
+                value={projectTitle}
                 onChange={(e) => setProjectTitle(e.target.value)}
                 className="mt-2 p-2 border rounded border-strokeOne w-full"
                 placeholder="Project Title"
+                required
               />
             </div>
             <div>
               <label htmlFor="projectDescription">Description</label>
               <textarea
-                value={project_description}
+                value={projectDescription}
                 rows={4}
                 name="projectDescription"
                 onChange={(e) => setProjectDescription(e.target.value)}
                 className="mt-2 p-2 border rounded w-full border-strokeOne"
                 placeholder="Project Description"
+                required
               />
             </div>
             <div className="mb-4">
@@ -236,10 +240,11 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
               <input
                 type="text"
                 name="projectCategory"
-                value={project_category}
+                value={projectCategory}
                 onChange={(e) => setProjectCategory(e.target.value)}
                 className="mt-2 p-2 border rounded border-strokeOne w-full"
                 placeholder="Health"
+                required
               />
             </div>
             <div className="mb-4">
@@ -252,9 +257,10 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
               <input
                 className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
                 type="file"
+                name="image"
                 id="imageUpload"
                 onChange={uploadImage}
-                accept="image/png, image/jpeg"
+                accept="image/png, image/jpeg, image/jpg"
               />
             </div>
 
