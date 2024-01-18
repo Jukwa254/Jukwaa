@@ -1,20 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProjectCard from "../../components/ProjectCard";
-import { CardType } from "../../components/SampleData";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
+import { PostItem } from "./ProfilePageComponent";
+import supabase from "../../config/superbaseClient";
+import Skeleton from "react-loading-skeleton";
 
 export type CenterPanelProps = {
-  cards: CardType[];
-  onCardClick: (card: CardType) => void;
-  selectedCard: CardType | null;
+  onCardClick: (card: PostItem) => void;
+  selectedCard: PostItem | null;
 };
 
 const HomePageComponent: React.FC<CenterPanelProps> = ({
-  cards,
   onCardClick,
   selectedCard,
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
+  const [postCards, setPostCards] = useState<PostItem[] | null>(null);
+  const [fetchError, setFetchError] = useState<string>("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -52,6 +56,44 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const fetchPlatformData = async () => {
+      const { data, error } = await supabase.from("posts").select("*");
+      // .eq("user_id", user?.id);
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        setPostCards(data);
+      }
+    };
+
+    fetchPlatformData();
+  }, [supabase]);
+
+  useEffect(() => {
+    const fetchPlatformCards = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase.from("posts").select();
+
+      if (error) {
+        setFetchError(error.message);
+        setPostCards(null);
+        console.log(error);
+        setIsLoading(false);
+      } else if (data) {
+        setPostCards(data);
+        setFetchError("");
+        setIsLoading(false);
+
+        localStorage.setItem("postCards", JSON.stringify(data));
+        console.log(data);
+      }
+    };
+
+    fetchPlatformCards();
+  }, []);
+
   return (
     <div
       className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 bg-BackgroundTwo lg:rounded-xl p-2 lg:p-4"
@@ -61,16 +103,27 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
         <div>
           <CenterPanelNavBar title={"Explore"} />
         </div>
-        <div className="">
-          {cards.map((card) => (
-            <ProjectCard
-              key={card.id}
-              card={card}
-              onCardClick={onCardClick}
-              selectedCard={selectedCard}
-            />
-          ))}
-        </div>
+        {fetchError && <p>{fetchError}</p>}
+        {isLoading ? (
+          <div className="">
+            <Skeleton height={320} />
+            <Skeleton height={320} />
+            <Skeleton height={320} />
+          </div>
+        ) : postCards && postCards.length > 0 ? (
+          <div className="">
+            {postCards?.map((card) => (
+              <ProjectCard
+                key={card.id}
+                card={card}
+                onCardClick={onCardClick}
+                selectedCard={selectedCard}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>Fetching Posts ...</p>
+        )}
       </div>
     </div>
   );

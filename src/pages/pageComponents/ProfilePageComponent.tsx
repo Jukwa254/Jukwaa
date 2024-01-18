@@ -3,7 +3,6 @@ import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/superbaseClient";
 import { v4 as uuidv4 } from "uuid";
-// import { useUser } from "@supabase/auth-helpers-react";
 import { AddIcon } from "../../components/Icons";
 
 const ProfilePageComponent = () => {
@@ -75,7 +74,12 @@ const ProfilePageComponent = () => {
 
               <ProjectFormModal isOpen={isModalOpen} onClose={closeModal} />
             </div>
-            <button onClick={handleLogout}>Logout</button>
+            <button
+              onClick={handleLogout}
+              className="border px-4 border-strokeOne rounded-lg"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>
@@ -95,11 +99,15 @@ export interface ImageData {
   url: string;
 }
 
-export interface ProjectItem {
+export interface PostItem {
+  id: number;
+  created_at: string;
   projectTitle: string;
   projectDescription: string;
   projectCategory: string;
   projectImage: string;
+  likes: number;
+  dislikes: number;
 }
 
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
@@ -111,17 +119,19 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   const [projectCategory, setProjectCategory] = useState<string>("");
   const [projectMainImage, setProjectMainImage] = useState<ImageData[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     let timer: number | undefined;
     if (errorMessage) {
       timer = setTimeout(() => {
         setErrorMessage("");
-      }, 3000);
+      }, 3000) as unknown as number; // Type assertion
     }
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [errorMessage]);
 
   async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -171,38 +181,51 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     });
     setErrorMessage("");
 
-    if (!projectTitle || !projectCategory || !projectDescription) {
-      setErrorMessage("Please fill in all the non-file fields");
-      return;
-    }
-    if (projectMainImage.length === 0) {
-      setErrorMessage("No image has been uploaded");
-      return;
-    }
+    try {
+      if (!projectTitle || !projectCategory || !projectDescription) {
+        setErrorMessage("Please fill in all the non-file fields");
+        return;
+      }
+      if (projectMainImage.length === 0) {
+        setErrorMessage("No image has been uploaded");
+        return;
+      }
 
-    const projectImage = projectMainImage[0]?.url;
-    const { data, error } = await supabase.from("posts").insert([
-      {
-        projectTitle: projectTitle,
-        projectDescription: projectDescription,
-        projectCategory: projectCategory,
-        projectImage: projectImage,
-      },
-    ]);
+      const projectImage = projectMainImage[0]?.url;
+      const { data, error } = await supabase.from("posts").insert([
+        {
+          projectTitle: projectTitle,
+          projectDescription: projectDescription,
+          projectCategory: projectCategory,
+          projectImage: projectImage,
+        },
+      ]);
 
-    if (error) {
-      setErrorMessage("Error inserting data: " + error.message);
-    } else if (data) {
-      console.log("Inserted data:", data);
-      setSuccessMessage("Post Created Successfully");
-      setProjectTitle("");
-      setProjectCategory("");
-      setProjectDescription("");
-      setProjectMainImage([]);
+      if (error) {
+        setErrorMessage("Error inserting data: " + error.message);
+      } else if (data) {
+        console.log("Inserted data:", data);
+        setProjectTitle("");
+        setProjectCategory("");
+        setProjectDescription("");
+        setProjectMainImage([]);
+        setFormSubmitted(true);
 
-      onClose();
+        console.log("Calling onClose to close the modal"); // Debugging statement
+        onClose(); // Attempt to close the modal
+      }
+    } catch (error) {
+      console.error("Error in form submission:", error);
+      setErrorMessage("An unexpected error occurred during form submission.");
     }
   };
+
+  useEffect(() => {
+    if (formSubmitted) {
+      onClose();
+      setFormSubmitted(false); // Reset the form submission state
+    }
+  }, [formSubmitted, onClose]);
 
   if (!isOpen) return null;
 
@@ -224,9 +247,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
           {errorMessage && (
             <div className="bg-errorTwo px-4 p-1 mt-4">{errorMessage}</div>
           )}
-          {successMessage && (
-            <div className="bg-successTwo px-4 p-1">{successMessage}</div>
-          )}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4 mt-8">
               <label htmlFor="projectTitle">Title</label>

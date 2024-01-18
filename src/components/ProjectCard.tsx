@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LikeFilled,
   LikeRegular,
@@ -6,13 +6,14 @@ import {
   ThumbsDownFilled,
   ThumbsDownRegular,
 } from "./Icons";
-import { CardType } from "./SampleData";
 import { formatDistanceToNow } from "date-fns";
+import supabase from "../config/superbaseClient";
+import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
 
 type ProjectCardProps = {
-  card: CardType;
-  onCardClick: (card: CardType) => void;
-  selectedCard: CardType | null;
+  card: PostItem;
+  onCardClick: (card: PostItem) => void;
+  selectedCard: PostItem | null;
 };
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -24,6 +25,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [dislikes, setDislikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [, setPostItems] = useState<PostItem[]>([]);
+  const [, setPostCards] = useState<PostItem[] | null>(null);
+  const [, setFetchError] = useState<string>("");
 
   const handleLike = () => {
     if (!liked) {
@@ -52,6 +56,42 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       setDisliked(false);
     }
   };
+
+  useEffect(() => {
+    const fetchPlatformData = async () => {
+      const { data, error } = await supabase.from("posts").select("*");
+      // .eq("user_id", user?.id);
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        setPostItems(data);
+      }
+    };
+
+    fetchPlatformData();
+  }, [supabase]);
+
+  useEffect(() => {
+    const fetchPlatformCards = async () => {
+      const { data, error } = await supabase.from("posts").select();
+
+      if (error) {
+        setFetchError(error.message);
+        setPostCards(null);
+        console.log(error);
+      } else if (data) {
+        setPostCards(data);
+        setFetchError("");
+
+        localStorage.setItem("postCards", JSON.stringify(data));
+        console.log(data);
+      }
+    };
+
+    fetchPlatformCards();
+  }, []);
+
   return (
     <div
       key={card.id}
@@ -68,13 +108,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="bg-white rounded-lg">
           <div className="flex gap-2 ">
             <img
-              src={card.organizationLogo}
+              src={card.projectImage}
               alt=""
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 rounded-full object-cover"
             />
             <div>
               <p className="text-xl font-semibold text-[#2C444E]">
-                {card.organizationName}
+                Name Will Appear Here
               </p>
               <p className="text-xs text-[#796552]">
                 {formatDistanceToNow(new Date(card.created_at), {
@@ -121,7 +161,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <span className="">
                   <Message />
                 </span>
-                <p className="text-sm">{card.projectComments}</p>
+                <p className="text-sm">200</p>
               </div>
             </div>
           </div>

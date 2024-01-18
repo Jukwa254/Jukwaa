@@ -1,20 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
-import { CardType } from "../../components/SampleData";
 import { formatDistanceToNow } from "date-fns";
+import { PostItem } from "./ProfilePageComponent";
+import supabase from "../../config/superbaseClient";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export type NewProjectCardProps = {
-  cards: CardType[];
-  onCardClick: (card: CardType) => void;
-  selectedCard: CardType | null;
+  onCardClick: (card: PostItem) => void;
+  selectedCard: PostItem | null;
 };
 
 const PostPageComponent: React.FC<NewProjectCardProps> = ({
-  cards,
   onCardClick,
   selectedCard,
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
+  const [, setFetchError] = useState<string>("");
+  const [postCards, setPostCards] = useState<PostItem[] | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -51,6 +56,52 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
       centerPanel?.removeEventListener("scroll", saveScrollPosition);
     };
   }, []);
+
+  useEffect(() => {
+    const centerPanel = centerPanelRef.current;
+    centerPanel?.addEventListener("scroll", saveScrollPosition);
+    return () => {
+      centerPanel?.removeEventListener("scroll", saveScrollPosition);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchPlatformData = async () => {
+      const { data, error } = await supabase.from("posts").select("*");
+      // .eq("user_id", user?.id);
+
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        setPostCards(data);
+      }
+    };
+
+    fetchPlatformData();
+  }, [supabase]);
+
+  useEffect(() => {
+    const fetchPlatformCards = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase.from("posts").select();
+
+      if (error) {
+        setFetchError(error.message);
+        setPostCards(null);
+        console.log(error);
+        setIsLoading(false);
+      } else if (data) {
+        setPostCards(data);
+        setFetchError("");
+        setIsLoading(false);
+
+        localStorage.setItem("postCards", JSON.stringify(data));
+        console.log(data);
+      }
+    };
+
+    fetchPlatformCards();
+  }, []);
   return (
     <div>
       <div
@@ -59,14 +110,27 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
       >
         <CenterPanelNavBar title={"New Posts"} />
         <div>
-          {cards.map((card) => (
-            <NewPostsComponent
-              key={card.id}
-              card={card}
-              onCardClick={onCardClick}
-              selectedCard={selectedCard}
-            />
-          ))}
+          {isLoading ? (
+            <div>
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+            </div>
+          ) : postCards && postCards.length > 0 ? (
+            <div className="">
+              {postCards?.map((card) => (
+                <NewPostsComponent
+                  key={card.id}
+                  card={card}
+                  onCardClick={onCardClick}
+                  selectedCard={selectedCard}
+                />
+              ))}
+            </div>
+          ) : (
+            <p>Fetching Posts...</p>
+          )}
         </div>
       </div>
     </div>
@@ -76,9 +140,9 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
 export default PostPageComponent;
 
 export type ProjectCardPropsProps = {
-  card: CardType;
-  onCardClick: (card: CardType) => void;
-  selectedCard: CardType | null;
+  card: PostItem;
+  onCardClick: (card: PostItem) => void;
+  selectedCard: PostItem | null;
 };
 
 export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
@@ -101,9 +165,9 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
     >
       <div className="flex gap-2 items-start">
         <img
-          src={card.organizationLogo}
+          src={card.projectImage}
           alt=""
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full object-cover"
         />
         <div>
           <div className="lg:flex justify-between">
@@ -121,7 +185,7 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
               <p>{card.dislikes} Likes</p>
               <p>{card.likes} Dislikes</p>
             </div>
-            <p>{card.projectComments} Comments</p>
+            <p>200 Comments</p>
           </div>
         </div>
       </div>
@@ -148,7 +212,7 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
     >
       <div className="flex gap-2 items-start">
         <img
-          src={card.organizationLogo}
+          src={card.projectImage}
           alt=""
           className="w-10 h-10 rounded-full"
         />
@@ -156,9 +220,7 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
           <h1 className="font-semibold leading-none mb-2">
             {card.projectTitle}
           </h1>
-          <p className="text-sm text-textTwo">
-            {card.projectComments} Comments
-          </p>
+          <p className="text-sm text-textTwo">2002 Comments</p>
         </div>
       </div>
     </div>

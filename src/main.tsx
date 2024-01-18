@@ -7,11 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App
-      // cards={cards}
-      // onCardClick={onCardClick}
-      // selectedCardType={SelectedType}
-      />
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { CardType } from "./SampleData";
 import { UserComments } from "./Comment";
 import {
   AddIcon,
@@ -11,9 +10,10 @@ import {
   ThumbsDownRegular,
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
+import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
 
 export type RightPanelProps = {
-  selectedCard: CardType | null;
+  selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -157,14 +157,12 @@ export const RightPanel: React.FC<RightPanelProps> = ({
             <div className="mt-4">
               <div className="flex items-center gap-2">
                 <img
-                  src={selectedCard.organizationLogo}
+                  src={selectedCard.projectImage}
                   alt=""
                   className="w-10 h-10 rounded-full"
                 />
                 <div>
-                  <p className="font-bold text-lg">
-                    {selectedCard.organizationName}
-                  </p>
+                  <p className="font-bold text-lg">This is Name</p>
                   <p className="text-xs text-[#796552]">
                     {formatDistanceToNow(new Date(selectedCard.created_at), {
                       // addSuffix: true,
@@ -215,7 +213,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                     <span className="">
                       <Message />
                     </span>
-                    <p className="text-sm">{selectedCard.projectComments}</p>
+                    {/* <p className="text-sm">{selectedCard.projectComments}</p> */}
                   </div>
                 </div>
               </div>

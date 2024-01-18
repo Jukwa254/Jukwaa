@@ -6,12 +6,11 @@ import {
   SearchIcon,
 } from "../components/Icons";
 import HomePageComponent from "./pageComponents/HomePageComponent";
-import PostPageComponent, {
-  TrendingPostsComponent,
-} from "./pageComponents/PostPageComponent";
-import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
+import PostPageComponent from "./pageComponents/PostPageComponent";
+import ProfilePageComponent, {
+  PostItem,
+} from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
-import { CardType, cards } from "../components/SampleData";
 import SearchPageComponent from "./pageComponents/SearchPageComponent";
 
 type MenuItem = {
@@ -22,16 +21,15 @@ type MenuItem = {
 };
 
 export type LeftPanelProps = {
-  cards: CardType[];
-  onCardClick: (card: CardType) => void;
-  selectedCardType: CardType | null;
+  onCardClick: (card: PostItem) => void;
+  selectedCardType: PostItem | null;
 };
 
-const HomePage: React.FC<LeftPanelProps> = ({}) => {
+const HomePage = () => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
+  const [selectedCard, setSelectedCard] = useState<PostItem | null>(null);
 
   const getSavedScrollPosition = (key: string) => {
     return parseInt(localStorage.getItem(key) || "0", 10);
@@ -51,7 +49,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
     restoreScrollPosition(leftPanelRef, "leftPanelScroll");
   }, []);
 
-  const handleCardClick = (card: CardType) => {
+  const handleCardClick = (card: PostItem) => {
     setSelectedCard(card);
     setIsPanelOpen(true); // Open the right panel
 
@@ -73,7 +71,6 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       ),
       component: (
         <HomePageComponent
-          cards={cards}
           onCardClick={handleCardClick}
           selectedCard={selectedCard}
         />
@@ -89,7 +86,6 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       ),
       component: (
         <PostPageComponent
-          cards={cards}
           onCardClick={handleCardClick}
           selectedCard={selectedCard}
         />
@@ -103,7 +99,12 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
           <SearchIcon />
         </div>
       ),
-      component: <SearchPageComponent />,
+      component: (
+        <SearchPageComponent
+          onCardClick={handleCardClick}
+          selectedCard={selectedCard}
+        />
+      ),
     },
     {
       id: 4,
@@ -121,7 +122,6 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       image: <></>,
       component: (
         <PostPageComponent
-          cards={cards}
           onCardClick={handleCardClick}
           selectedCard={selectedCard}
         />
@@ -152,21 +152,6 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
       setActiveMenu(savedMenu);
     }
   }, []);
-
-  // const [user, setUser] = useState({});
-  // // const user = useUser();
-
-  // useEffect(() => {
-  //   async function getUserData() {
-  //     await supabase.auth.getUser().then((value) => {
-  //       if (value.data?.user) {
-  //         console.log(value.data.user);
-  //         setUser(value.data.user);
-  //       }
-  //     });
-  //   }
-  //   getUserData();
-  // }, []);
 
   return (
     <div>
@@ -224,7 +209,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                   <div className="bg-BackgroundTwo p-6 rounded-xl mt-3 flex flex-col flex-1">
                     <div className="flex-1">
                       <div className=""></div>
-                      <div>
+                      {/* <div>
                         <div className="flex justify-between ">
                           <h1 className="font-bold mb-2">Trending Posts</h1>
                           <div>
@@ -240,7 +225,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                             ))}
                           </div>
                         </div>
-                        {cards.slice(0, 3).map((card) => (
+                        {postCards?.slice(0, 3).map((card) => (
                           <TrendingPostsComponent
                             key={card.id}
                             card={card}
@@ -248,8 +233,8 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                             selectedCard={selectedCard}
                           />
                         ))}
-                      </div>
-                      <div className="mt-8">
+                      </div> */}
+                      {/* <div className="mt-8">
                         <div>
                           <div className="flex justify-between ">
                             <h1 className="font-bold mb-2">Trending Posts</h1>
@@ -267,7 +252,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                             </div>
                           </div>
                         </div>
-                        {cards.slice(3, 5).map((card) => (
+                        {postCards?.slice(3, 5).map((card) => (
                           <TrendingPostsComponent
                             key={card.id}
                             card={card}
@@ -275,7 +260,7 @@ const HomePage: React.FC<LeftPanelProps> = ({}) => {
                             selectedCard={selectedCard}
                           />
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                     <div>
                       <div className=" pt-4 flex justify-between items-center">
