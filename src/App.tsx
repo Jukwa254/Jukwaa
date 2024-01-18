@@ -26,7 +26,7 @@ const App = (props: LeftPanelProps) => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LoginAuth setToken={setToken} />} />
+        <Route path="/" element={<LoginAuth />} />
         <Route path="/register" element={<RegisterAuth />} />
         {token ? (
           <Route

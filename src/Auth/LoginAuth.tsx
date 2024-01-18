@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../assets/images/signup-image.png";
 import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
+import { User } from "@supabase/supabase-js";
 
-const LoginAuth = ({ setToken }: any) => {
+const LoginAuth = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -11,6 +12,10 @@ const LoginAuth = ({ setToken }: any) => {
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+
+  const setToken = (user: User) => {
+    sessionStorage.setItem("token", JSON.stringify(user)); // Store the entire user object
+  };
 
   const isAuthenticated = () => {
     const token = sessionStorage.getItem("token");
@@ -21,7 +26,7 @@ const LoginAuth = ({ setToken }: any) => {
     if (isAuthenticated()) {
       navigate("/home");
     }
-  }, []);
+  }, [navigate]);
 
   function handleChange(event: { target: { name: any; value: any } }) {
     setFormData((prevFormData) => {
@@ -53,8 +58,10 @@ const LoginAuth = ({ setToken }: any) => {
 
       if (response.data && response.data.user) {
         console.log(response.data.user);
-        setToken(response.data.user);
+        setToken(response.data.user); // Save user data in sessionStorage
         navigate("/home");
+
+        window.location.reload();
       } else {
         setErrorMessage("Login failed. Please try again.");
       }

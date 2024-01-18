@@ -3,7 +3,7 @@ import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/superbaseClient";
 import { v4 as uuidv4 } from "uuid";
-import { useUser } from "@supabase/auth-helpers-react";
+// import { useUser } from "@supabase/auth-helpers-react";
 import { AddIcon } from "../../components/Icons";
 
 const ProfilePageComponent = () => {
@@ -110,7 +110,6 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   const [projectDescription, setProjectDescription] = useState<string>("");
   const [projectCategory, setProjectCategory] = useState<string>("");
   const [projectMainImage, setProjectMainImage] = useState<ImageData[]>([]);
-  const user = useUser();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -125,67 +124,85 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
+  async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const userToken = sessionStorage.getItem("token");
+    let user = null;
+
+    if (userToken) {
+      user = JSON.parse(userToken);
+    }
+    console.log("User authenticated:", user);
+    console.log("Files selected:", e.target.files);
+
+    console.log("User authenticated:", user);
+    if (e.target.files && e.target.files[0] && user) {
+      let file = e.target.files[0];
+      const imageId = uuidv4();
+      const { data, error } = await supabase.storage
+        .from("post-images")
+        .upload(user.id + "/" + imageId, file);
+
+      if (error) {
+        setErrorMessage("Image upload failed: " + error.message); // Display error message
+      } else if (data) {
+        const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/post-images/${user.id}/${imageId}`;
+        const newImageData = {
+          id: imageId,
+          url: newImageUrl,
+        };
+        setProjectMainImage((prev) => [...prev, newImageData]);
+      }
+    } else {
+      console.log("No file selected or user is not authenticated");
+    }
+  }
+
+  useEffect(() => {
+    console.log("Current images state:", projectMainImage);
+  }, [projectMainImage]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Submitting form with state:", {
+      projectTitle,
+      projectCategory,
+      projectDescription,
+      projectMainImage,
+    });
     setErrorMessage("");
 
-    if (
-      !projectTitle ||
-      !projectCategory ||
-      !projectDescription ||
-      !projectMainImage.length === false
-    ) {
-      setErrorMessage("Please fill in all the fields");
+    if (!projectTitle || !projectCategory || !projectDescription) {
+      setErrorMessage("Please fill in all the non-file fields");
+      return;
+    }
+    if (projectMainImage.length === 0) {
+      setErrorMessage("No image has been uploaded");
       return;
     }
 
-    const projectImage = projectMainImage[0].url;
-    const { data, error } = await supabase.from("project").insert([
+    const projectImage = projectMainImage[0]?.url;
+    const { data, error } = await supabase.from("posts").insert([
       {
-        projectTitle,
-        projectDescription,
-        projectCategory,
-        projectImage,
+        projectTitle: projectTitle,
+        projectDescription: projectDescription,
+        projectCategory: projectCategory,
+        projectImage: projectImage,
       },
     ]);
 
     if (error) {
       setErrorMessage("Error inserting data: " + error.message);
     } else if (data) {
-      // console.log("Inserted data:", data);
+      console.log("Inserted data:", data);
       setSuccessMessage("Post Created Successfully");
       setProjectTitle("");
       setProjectCategory("");
       setProjectDescription("");
       setProjectMainImage([]);
+
       onClose();
     }
   };
-
-  async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files[0] && user) {
-      let file = e.target.files[0];
-      const imageId = uuidv4();
-      const { data, error } = await supabase.storage
-        .from("project-images")
-        .upload(user.id + "/" + imageId, file);
-
-      if (error) {
-        console.error("Upload error:", error);
-      } else if (data) {
-        const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/project-images/${user.id}/${imageId}`;
-        const newImageData: ImageData = {
-          id: imageId,
-          url: newImageUrl,
-        };
-        setProjectMainImage((prev) => [...prev, newImageData]);
-      }
-    }
-  }
-
-  // useEffect(() => {
-  //   console.log("Current images state:", projectMainImage);
-  // }, [projectMainImage]);
 
   if (!isOpen) return null;
 
@@ -220,7 +237,6 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                 onChange={(e) => setProjectTitle(e.target.value)}
                 className="mt-2 p-2 border rounded border-strokeOne w-full"
                 placeholder="Project Title"
-                required
               />
             </div>
             <div>
@@ -232,7 +248,6 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                 onChange={(e) => setProjectDescription(e.target.value)}
                 className="mt-2 p-2 border rounded w-full border-strokeOne"
                 placeholder="Project Description"
-                required
               />
             </div>
             <div className="mb-4">
@@ -244,7 +259,6 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                 onChange={(e) => setProjectCategory(e.target.value)}
                 className="mt-2 p-2 border rounded border-strokeOne w-full"
                 placeholder="Health"
-                required
               />
             </div>
             <div className="mb-4">
