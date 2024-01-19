@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { SearchIcon } from "../../components/Icons";
 import { PostItem } from "./ProfilePageComponent";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Skeleton from "react-loading-skeleton";
 import { NewPostsComponent } from "./PostPageComponent";
 import { CenterPanelProps } from "./HomePageComponent";
+import supabase from "../../config/superbaseClient";
 
 const SearchPageComponent: React.FC<CenterPanelProps> = ({
   onCardClick,
@@ -13,7 +13,6 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<PostItem[]>([]);
-  const supabase = useSupabaseClient();
   const [isLoading, setIsLoading] = useState(false);
 
   let debounceTimeout: string | number | NodeJS.Timeout | undefined;
@@ -22,7 +21,7 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
     if (debounceTimeout) clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
       performSearch(term);
-    }, 500);
+    }, 300);
   };
 
   const performSearch = async (term: any) => {
@@ -30,7 +29,7 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
     const { data, error } = await supabase
       .from("posts")
       .select()
-      .ilike("projectCategory", `%${term}%`);
+      .ilike("projectTitle", `%${term}%`);
 
     if (error) {
       console.error("Search error:", error);
