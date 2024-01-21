@@ -280,9 +280,9 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="col-span-5">
+            <div className="col-span-5 h-screen">
               <div className="">{renderActiveComponent()}</div>
-              <div className=" fixed bottom-0 w-screen lg:hidden">
+              <div className="fixed bottom-0 w-screen lg:hidden">
                 <div className="grid grid-cols-4 bg-BackgroundOne ">
                   {menuItems.slice(0, 4).map((item) => (
                     <div

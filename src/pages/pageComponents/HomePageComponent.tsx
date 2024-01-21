@@ -96,10 +96,10 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
 
   return (
     <div
-      className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 bg-BackgroundTwo lg:rounded-xl p-2 lg:p-4"
+      className="h-screen text-strokeLight overflow-y-auto no-scrollbar lg:py-4 pb-10"
       ref={centerPanelRef}
     >
-      <div className="">
+      <div className="bg-BackgroundTwo p-4 lg:p-6 lg:rounded-xl lg:mx-3">
         <div>
           <CenterPanelNavBar title={"Explore"} />
         </div>
