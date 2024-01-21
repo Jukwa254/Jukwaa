@@ -109,7 +109,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     }
   };
 
-  const paragraphs = selectedCard?.projectDescription.split(/\n|\r\n/);
+  const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
 
   return (
     <div
@@ -157,7 +157,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
             <div className="mt-4">
               <div className="flex items-center gap-2">
                 <img
-                  src={selectedCard.projectImage}
+                  src={selectedCard.post_image}
                   alt=""
                   className="w-10 h-10 rounded-full"
                 />
@@ -173,11 +173,11 @@ export const RightPanel: React.FC<RightPanelProps> = ({
               </div>
               <div className="mt-2">
                 <h1 className="uppercase font-semibold text-xl py-2">
-                  {selectedCard.projectTitle}
+                  {selectedCard.post_title}
                 </h1>
                 <p className="text-base mb-2">{paragraphs}</p>
                 <img
-                  src={selectedCard.projectImage}
+                  src={selectedCard.post_image}
                   alt=""
                   className="rounded-xl h-96 object-cover w-full"
                 />

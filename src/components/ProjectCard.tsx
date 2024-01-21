@@ -108,7 +108,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="bg-white rounded-lg">
           <div className="flex gap-2 ">
             <img
-              src={card.projectImage}
+              src={card.post_image}
               alt=""
               className="w-12 h-12 rounded-full object-cover"
             />
@@ -126,12 +126,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
           <div className="mt-4 text-[#2C444E]">
             <h1 className="uppercase font-semibold text-xl py-2">
-              {card.projectTitle}
+              {card.post_title}
             </h1>
-            <p className="text-base">{card.projectDescription}</p>
+            <p className="text-base">{card.post_description}</p>
             <div className="mt-4">
               <img
-                src={card.projectImage}
+                src={card.post_image}
                 alt=""
                 className="h-80 w-full rounded-lg object-cover"
               />

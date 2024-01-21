@@ -100,12 +100,12 @@ export interface ImageData {
 }
 
 export interface PostItem {
-  id: number;
+  id: string;
   created_at: string;
-  projectTitle: string;
-  projectDescription: string;
-  projectCategory: string;
-  projectImage: string;
+  post_title: string;
+  post_description: string;
+  post_category: string;
+  post_image: string;
   likes: number;
   dislikes: number;
 }
@@ -194,10 +194,10 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
       const projectImage = projectMainImage[0]?.url;
       const { data, error } = await supabase.from("posts").insert([
         {
-          projectTitle: projectTitle,
-          projectDescription: projectDescription,
-          projectCategory: projectCategory,
-          projectImage: projectImage,
+          post_title: projectTitle,
+          post_description: projectDescription,
+          post_category: projectCategory,
+          post_image: projectImage,
         },
       ]);
 

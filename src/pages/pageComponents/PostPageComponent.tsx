@@ -150,7 +150,7 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
   onCardClick,
   selectedCard,
 }) => {
-  const subDescription = card.projectDescription.substring(0, 120);
+  const subDescription = card.post_description.substring(0, 120);
   return (
     <div
       key={card.id}
@@ -165,13 +165,13 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
     >
       <div className="flex gap-2 items-start">
         <img
-          src={card.projectImage}
+          src={card.post_image}
           alt=""
           className="w-10 h-10 rounded-full object-cover"
         />
         <div>
           <div className="lg:flex justify-between">
-            <h1 className="font-bold ">{card.projectTitle}</h1>
+            <h1 className="font-bold ">{card.post_title}</h1>
             <p className="text-xs text-[#796552]">
               {formatDistanceToNow(new Date(card.created_at), {
                 // addSuffix: true,
@@ -211,15 +211,9 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
       }`}
     >
       <div className="flex gap-2 items-start">
-        <img
-          src={card.projectImage}
-          alt=""
-          className="w-10 h-10 rounded-full"
-        />
+        <img src={card.post_image} alt="" className="w-10 h-10 rounded-full" />
         <div>
-          <h1 className="font-semibold leading-none mb-2">
-            {card.projectTitle}
-          </h1>
+          <h1 className="font-semibold leading-none mb-2">{card.post_title}</h1>
           <p className="text-sm text-textTwo">2002 Comments</p>
         </div>
       </div>

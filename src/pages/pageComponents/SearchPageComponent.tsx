@@ -29,7 +29,7 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
     const { data, error } = await supabase
       .from("posts")
       .select()
-      .ilike("projectTitle", `%${term}%`);
+      .ilike("post_title, post_category", `%${term}%`);
 
     if (error) {
       console.error("Search error:", error);
