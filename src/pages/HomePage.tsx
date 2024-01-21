@@ -283,7 +283,7 @@ const HomePage = () => {
             <div className="col-span-5 h-screen">
               <div className="">{renderActiveComponent()}</div>
               <div className="fixed bottom-0 w-screen lg:hidden">
-                <div className="grid grid-cols-4 bg-BackgroundOne ">
+                <div className="grid grid-cols-4 bg-BackgroundOne">
                   {menuItems.slice(0, 4).map((item) => (
                     <div
                       key={item.id}
@@ -322,13 +322,15 @@ const HomePage = () => {
 
             <div className="col-span-4 hidden lg:block">
               <RightPanel
+                cards={[]}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
               />
             </div>
-            <div className="md:hidden z-50 overflow-x-hidden">
+            <div className="md:hidden z-50">
               <RightPanel
+                cards={[]}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}

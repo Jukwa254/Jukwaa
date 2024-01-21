@@ -13,12 +13,14 @@ import { formatDistanceToNow } from "date-fns";
 import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
 
 export type RightPanelProps = {
+  cards: PostItem[];
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const RightPanel: React.FC<RightPanelProps> = ({
+  cards,
   isOpen,
   onClose,
   selectedCard,
@@ -113,7 +115,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
   return (
     <div
-      className="lg:h-screen flex flex-col py-4 overflow-y-auto no-scrollbar"
+      className="lg:h-screen flex flex-col text-strokeLight py-4 overflow-y-auto no-scrollbar"
       ref={rightPanelRef}
     >
       <div
