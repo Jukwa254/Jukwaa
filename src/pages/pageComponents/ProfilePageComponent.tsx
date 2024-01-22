@@ -192,14 +192,17 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
       }
 
       const projectImage = projectMainImage[0]?.url;
-      const { data, error } = await supabase.from("posts").insert([
-        {
-          post_title: projectTitle,
-          post_description: projectDescription,
-          post_category: projectCategory,
-          post_image: projectImage,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from("posts")
+        .insert([
+          {
+            post_title: projectTitle,
+            post_description: projectDescription,
+            post_category: projectCategory,
+            post_image: projectImage,
+          },
+        ])
+        .select();
 
       if (error) {
         setErrorMessage("Error inserting data: " + error.message);

@@ -27,6 +27,13 @@ export const RightPanel: React.FC<RightPanelProps> = ({
   selectedCard,
 }) => {
   const rightPanelRef = useRef<HTMLDivElement>(null);
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  const [commentDescription, setCommentDescription] = useState<string>("");
+  const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
+
   const saveScrollPosition = () => {
     if (rightPanelRef.current) {
       localStorage.setItem(
@@ -79,11 +86,6 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     adjustTextareaHeight();
   };
 
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
-
   const handleLike = () => {
     if (!liked) {
       setLikes(likes + 1);
@@ -112,25 +114,25 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     }
   };
 
-  const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
-
-  const [commentDescription, setCommentDescription] = useState<string>("");
-
-  const handleSubimtComment = async (e: React.FormEvent) => {
+  const handleSubimtComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (commentDescription) {
-      const { data, error } = await supabase
-        .from("comments")
-        .insert([{ comment_description: commentDescription, post_id: postId }]);
-
-      if (error) {
-        console.log("Error submitting comment:", error);
-      } else if (data) {
-        setCommentDescription("");
-        console.log(data);
-      } // Clear the input field after submission
+    if (!commentDescription) {
+      console.log("Empty");
+      return;
     }
+
+    const { data, error } = await supabase
+      .from("comments")
+      .insert([{ comment_description: commentDescription, post_id: postId }])
+      .select();
+
+    if (error) {
+      console.log("Error submitting comment:" + error.message);
+    } else if (data) {
+      console.log("Inserted Comment:", data);
+      setCommentDescription("");
+    } // Clear the input field after submission
   };
 
   return (
@@ -241,7 +243,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
               </div>
             </div>
             <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
-            <div>
+            <form onClick={handleSubimtComment}>
               <div className="flex ">
                 <p
                   className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
@@ -251,7 +253,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                   <span>Post Comment</span>
                 </p>
               </div>
-              <form onClick={handleSubimtComment}>
+              <div>
                 {isCommenting && (
                   <div className="mt-4">
                     <textarea
@@ -279,8 +281,8 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                     </div>
                   </div>
                 )}
-              </form>
-            </div>
+              </div>
+            </form>
             <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
             <div>
               <UserComments />
