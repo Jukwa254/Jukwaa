@@ -322,7 +322,6 @@ const HomePage = () => {
 
             <div className="col-span-4 hidden lg:block">
               <RightPanel
-                cards={[]}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
@@ -330,7 +329,6 @@ const HomePage = () => {
             </div>
             <div className="md:hidden z-50">
               <RightPanel
-                cards={[]}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}

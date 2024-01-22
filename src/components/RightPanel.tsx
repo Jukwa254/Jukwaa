@@ -11,16 +11,15 @@ import {
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
 import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
+import supabase from "../config/superbaseClient";
 
 export type RightPanelProps = {
-  cards: PostItem[];
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const RightPanel: React.FC<RightPanelProps> = ({
-  cards,
   isOpen,
   onClose,
   selectedCard,
@@ -61,11 +60,11 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     };
   }, []);
 
-  const [isReplying, setReplying] = useState(false);
+  const [isCommenting, setCommenting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const toggleReply = () => {
-    setReplying(!isReplying);
+  const toggleComment = () => {
+    setCommenting(!isCommenting);
   };
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
@@ -74,7 +73,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     }
   };
 
-  const handleReplyChange = () => {
+  const handleCommentChange = () => {
     adjustTextareaHeight();
   };
 
@@ -112,6 +111,26 @@ export const RightPanel: React.FC<RightPanelProps> = ({
   };
 
   const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
+
+  const [commentDescription, setCommentDescription] = useState<string>("");
+
+  async function handleSubimtComment() {
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .insert([{ comment_description: commentDescription }])
+        .select();
+
+      if (data) {
+        console.log("Inserted data:", data);
+        setCommentDescription("");
+      } else if (error) {
+        console.log("Error inserting data: " + error.message);
+      }
+    } catch (error) {
+      console.log("Error in comment submission", error);
+    }
+  }
 
   return (
     <div
@@ -225,20 +244,21 @@ export const RightPanel: React.FC<RightPanelProps> = ({
               <div className="flex ">
                 <p
                   className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
-                  onClick={toggleReply}
+                  onClick={toggleComment}
                 >
                   <AddIcon />
                   <span>Post Comment</span>
                 </p>
               </div>
-              <div>
-                {isReplying && (
+              <form onClick={handleSubimtComment}>
+                {isCommenting && (
                   <div className="mt-4">
                     <textarea
+                      value={commentDescription}
                       ref={textareaRef}
                       rows={2}
                       placeholder="Post Your Comment"
-                      onChange={handleReplyChange}
+                      onChange={(e) => setCommentDescription(e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B]"
                       style={{
                         overflow: "hidden", // Hide the scrollbar
@@ -248,7 +268,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                       <button
                         className="flex items-center gap-2 px-4 py-2 bg-[#6C2D1B] text-BackgroundAccent rounded-full hover:bg-[#57281b] font-bold"
                         onClick={() => {
-                          setReplying(false);
+                          setCommenting(false);
                         }}
                       >
                         <SendIcon />
@@ -257,7 +277,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                     </div>
                   </div>
                 )}
-              </div>
+              </form>
             </div>
             <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
             <div>
