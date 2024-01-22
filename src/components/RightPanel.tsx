@@ -17,11 +17,13 @@ export type RightPanelProps = {
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
+  postId: string | undefined;
 };
 
 export const RightPanel: React.FC<RightPanelProps> = ({
   isOpen,
   onClose,
+  postId,
   selectedCard,
 }) => {
   const rightPanelRef = useRef<HTMLDivElement>(null);
@@ -114,23 +116,22 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
   const [commentDescription, setCommentDescription] = useState<string>("");
 
-  async function handleSubimtComment() {
-    try {
+  const handleSubimtComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (commentDescription) {
       const { data, error } = await supabase
         .from("comments")
-        .insert([{ comment_description: commentDescription }])
-        .select();
+        .insert([{ comment_description: commentDescription, post_id: postId }]);
 
-      if (data) {
-        console.log("Inserted data:", data);
+      if (error) {
+        console.log("Error submitting comment:", error);
+      } else if (data) {
         setCommentDescription("");
-      } else if (error) {
-        console.log("Error inserting data: " + error.message);
-      }
-    } catch (error) {
-      console.log("Error in comment submission", error);
+        console.log(data);
+      } // Clear the input field after submission
     }
-  }
+  };
 
   return (
     <div
@@ -266,10 +267,11 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                     />
                     <div className="mt-2 flex justify-end">
                       <button
+                        type="submit"
                         className="flex items-center gap-2 px-4 py-2 bg-[#6C2D1B] text-BackgroundAccent rounded-full hover:bg-[#57281b] font-bold"
-                        onClick={() => {
-                          setCommenting(false);
-                        }}
+                        // onClick={() => {
+                        //   setCommenting(false);
+                        // }}
                       >
                         <SendIcon />
                         <p>Post</p>

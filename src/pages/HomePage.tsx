@@ -25,7 +25,7 @@ export type LeftPanelProps = {
   selectedCardType: PostItem | null;
 };
 
-const HomePage = () => {
+const HomePage = ({}) => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -322,6 +322,7 @@ const HomePage = () => {
 
             <div className="col-span-4 hidden lg:block">
               <RightPanel
+                postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
@@ -329,6 +330,7 @@ const HomePage = () => {
             </div>
             <div className="md:hidden z-50">
               <RightPanel
+                postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
