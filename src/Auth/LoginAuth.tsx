@@ -13,6 +13,19 @@ const LoginAuth = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
+  useEffect(() => {
+    let timer: number | undefined;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 3000) as unknown as number; // Type assertion
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [errorMessage]);
+
   const setToken = (user: User) => {
     sessionStorage.setItem("token", JSON.stringify(user)); // Store the entire user object
   };

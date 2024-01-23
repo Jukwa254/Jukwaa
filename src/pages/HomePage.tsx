@@ -156,7 +156,7 @@ const HomePage = ({}) => {
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
-        <div className="lg:px-48">
+        <div className="lg:px-40">
           <div className="lg:grid grid-cols-12">
             <div className="col-span-3 hidden lg:block">
               <div className="h-screen py-4 overflow-y-auto no-scrollbar">

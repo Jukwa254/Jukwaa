@@ -34,7 +34,7 @@ const RegisterAuth = () => {
     }
 
     try {
-      const {} = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -43,7 +43,12 @@ const RegisterAuth = () => {
           },
         },
       });
-      setSuccessMessage("Successful: Check Your Email For Verification");
+      if (error) {
+        console.log(error.message);
+      } else if (data)
+        setSuccessMessage("Successful: Check Your Email For Verification");
+      setFormData({ fullName: "", email: "", password: "" });
+      console.log(data);
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -53,7 +58,7 @@ const RegisterAuth = () => {
     }
   }
 
-  console.log(formData);
+  // console.log(formData);
 
   return (
     <div>
@@ -88,7 +93,7 @@ const RegisterAuth = () => {
                 />
               </div>
               <div className="flex flex-col py-4">
-                <label className="text-start text-base">Username / Email</label>
+                <label className="text-start text-base">Email</label>
                 <input
                   type="email"
                   name="email"
@@ -111,13 +116,14 @@ const RegisterAuth = () => {
                 <input className="mr-2" type="checkbox" />
                 Remember Me
               </p>
-
-              <button
-                type="submit"
-                className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl mt-16"
-              >
-                Register
-              </button>
+              <div className="mt-16">
+                <button
+                  type="submit"
+                  className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl"
+                >
+                  Register
+                </button>
+              </div>
 
               <div className="flex justify-between">
                 <p>

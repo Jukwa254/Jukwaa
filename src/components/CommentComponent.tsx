@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   LikeFilled,
   LikeRegular,
@@ -6,33 +6,19 @@ import {
   ThumbsDownRegular,
 } from "./Icons";
 
-interface CommentProps {
-  image: string;
-  name: string;
-  time: string;
-  comment: string;
+export interface CommentItem {
+  id: string;
+  created_at: string;
+  comment_description: string;
   likes: number;
   dislike: number;
-  replays: number;
 }
 
-function CommentComponent(props: CommentProps) {
-  const [isReplying, setReplying] = useState(false);
-  const [replyText, setReplyText] = useState("");
+function CommentComponent(props: CommentItem) {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-
-  const toggleReply = () => {
-    setReplying(!isReplying);
-  };
-
-  const handleReplyChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setReplyText(e.target.value);
-  };
 
   const handleLike = () => {
     if (!liked) {
@@ -67,13 +53,15 @@ function CommentComponent(props: CommentProps) {
       <div>
         <div className="">
           <div className="flex gap-2 items-center">
-            <img src={props.image} alt="" className="w-8 h-8 rounded-full " />
+            {/* <img src={props.image} alt="" className="w-8 h-8 rounded-full " /> */}
 
-            <p className="font-semibold">{props.name}</p>
-            <p className="text-xs font-medium text-[#796552]">{props.time}</p>
+            {/* <p className="font-semibold">{props.name}</p> */}
+            <p className="text-xs font-medium text-[#796552]">
+              {props.created_at}
+            </p>
           </div>
           <p className="text-textThree font-normal text-base">
-            {props.comment}
+            {props.comment_description}
           </p>
           <div className="flex justify-between items-center mt-2">
             <div className="flex gap-4 text-sm text-[#414141] items-center">
@@ -84,7 +72,7 @@ function CommentComponent(props: CommentProps) {
                 <span className="text-sm">
                   {liked ? <LikeFilled /> : <LikeRegular />}
                 </span>
-                <p>{likes}</p>
+                <p>{likes + props.likes}</p>
               </div>
               <div
                 className="flex items-center gap-1 cursor-pointer font-bold"
@@ -93,39 +81,10 @@ function CommentComponent(props: CommentProps) {
                 <span className="text-sm">
                   {disliked ? <ThumbsDownFilled /> : <ThumbsDownRegular />}
                 </span>
-                <p>{dislikes}</p>
+                <p>{dislikes + props.dislike}</p>
               </div>
-              <p className="font-medium">{props.replays} Replies</p>
-            </div>
-            <div>
-              <p
-                className="text-sm text-[#6C2D1B] font-bold cursor-pointer hover:bg-[#6C2D1B] px-2 hover:text-BackgroundTwo rounded-full"
-                onClick={toggleReply}
-              >
-                Reply
-              </p>
             </div>
           </div>
-          {isReplying && (
-            <div className="mt-4">
-              <textarea
-                placeholder="Write your reply here..."
-                value={replyText}
-                onChange={handleReplyChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B]"
-              />
-              <div className="mt-2">
-                <button
-                  className="px-4 py-2 bg-[#6C2D1B] text-white rounded hover:bg-[#977268] font-bold"
-                  onClick={() => {
-                    setReplying(false);
-                  }}
-                >
-                  Reply
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
