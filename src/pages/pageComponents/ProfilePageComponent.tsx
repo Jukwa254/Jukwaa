@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { AddIcon } from "../../components/Icons";
 import { User } from "@supabase/auth-helpers-react";
 import Skeleton from "react-loading-skeleton";
+import { SignupFormData } from "../../Auth/RegisterAuth";
 
 interface Post {
   post_title: string;
@@ -13,16 +14,16 @@ interface Post {
   post_category: string;
   post_image: string;
   user_id: string;
-  users: {
+  profiles: {
     email: string;
-    user_name: string;
+    full_name: string;
   }[]; // Adjust this according to the actual structure
 }
 
-interface UserDetailsItem {
-  email: string;
-  user_name: string;
-}
+// interface UserDetailsItem {
+//   email: string;
+//   user_name: string;
+// }
 
 const ProfilePageComponent = () => {
   function handleLogout() {
@@ -34,7 +35,7 @@ const ProfilePageComponent = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [postCard, setPosts] = useState<Post[]>([]);
-  const [userDetails, setUserDetails] = useState<UserDetailsItem | null>(null);
+  const [userDetails, setUserDetails] = useState<SignupFormData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const saveScrollPosition = () => {
@@ -97,7 +98,7 @@ const ProfilePageComponent = () => {
                     post_category,
                     post_image,
                     user_id,
-                    users (email, user_name)
+                    profiles (*)
                 `
           )
           .eq("user_id", user.id);
@@ -131,9 +132,9 @@ const ProfilePageComponent = () => {
 
         // Fetch user profile from Supabase
         const { data, error } = await supabase
-          .from("users")
+          .from("profiles")
           .select("*")
-          .eq("id", userId)
+          .eq("user_id", userId)
           .single();
 
         if (error) throw error;
@@ -199,10 +200,18 @@ const ProfilePageComponent = () => {
                       <p className="">County</p>
                       <p className="text-textTwo">Kakamega</p>
                     </div>
+                    <div className="flex justify-between items-center mt-10">
+                      <p>Logout</p>
+                      <button
+                        onClick={handleLogout}
+                        className="border px-4 py-2 border-strokeOne rounded-lg"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
-              {/* <p>Fetching Profile Details ...</p> */}
 
               <div className="my-8 bg-BackgroundOne p-4 rounded-lg">
                 <div className=""></div>
@@ -217,15 +226,24 @@ const ProfilePageComponent = () => {
                       </div>
                     </div>
                   ) : postCard && postCard.length > 0 ? (
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="">
                       {postCard.map((post, index) => (
-                        <div key={index}>
-                          <p>{post.post_title}</p>
-                          <img
-                            src={post.post_image}
-                            alt=""
-                            className="w-40 object-cover"
-                          />
+                        <div
+                          key={index}
+                          className="border-b-4 pb-4 border-BackgroundTwo"
+                        >
+                          <p className="mt-4 font-bold mb-2">
+                            {post.post_title}
+                          </p>
+                          <div className="flex gap-2">
+                            <p>{post.post_description}</p>
+                            <img
+                              src={post.post_image}
+                              alt=""
+                              className="w-40 object-cover rounded"
+                            />
+                          </div>
+
                           {/* <p>
                             Posted by: {post.users[0]?.user_name || "Unknown"}
                           </p> */}
@@ -233,19 +251,17 @@ const ProfilePageComponent = () => {
                       ))}
                     </div>
                   ) : (
-                    <p>No Posts ...</p>
+                    <div>
+                      <p className="pb-5">No Posts ...</p>
+                      <button
+                        onClick={openModal}
+                        className="bg-accent text-BackgroundOne p-2 rounded flex"
+                      >
+                        <AddIcon />
+                        <p>Add a Post</p>
+                      </button>
+                    </div>
                   )}
-                </div>
-              </div>
-              <div className="">
-                <div className="flex justify-between items-center">
-                  <p>Logout</p>
-                  <button
-                    onClick={handleLogout}
-                    className="border px-4 py-2 border-strokeOne rounded-lg"
-                  >
-                    Logout
-                  </button>
                 </div>
               </div>
             </div>
@@ -278,6 +294,10 @@ export interface PostItem {
   likes: number;
   dislikes: number;
   user_id: string | undefined;
+  profiles: {
+    user_name: string;
+    email: string;
+  };
 }
 
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({

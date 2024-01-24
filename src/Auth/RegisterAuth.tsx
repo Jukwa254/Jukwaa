@@ -2,61 +2,75 @@ import { Link } from "react-router-dom";
 import LoginImage from "../assets/images/signup-image.png";
 import { useState } from "react";
 import supabase from "../config/superbaseClient";
-
+export interface SignupFormData {
+  user_name: string;
+  email: string;
+  location: string;
+  password: string;
+}
 const RegisterAuth = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-  });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  function handleChange(event: { target: { name: any; value: any } }) {
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        [event.target.name]: event.target.value,
-      };
-    });
-  }
+  const [formData, setFormData] = useState({
+    user_name: "",
+    email: "",
+    // location: "",
+    password: "",
+  });
 
-  async function handleSubmit(e: { preventDefault: () => void }) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
     if (
-      !formData.fullName.trim() ||
+      !formData.user_name.trim() ||
       !formData.email.trim() ||
       !formData.password.trim()
     ) {
       setErrorMessage("Please fill in all fields.");
-      return; // Stop the function if any field is empty
+      return;
     }
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-          },
-        },
-      });
-      if (error) {
-        console.log(error.message);
-      } else if (data)
-        setSuccessMessage("Successful: Check Your Email For Verification");
-      setFormData({ fullName: "", email: "", password: "" });
-      console.log(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage("An unexpected error occurred.");
-      }
+    // Sign up user using Supabase Auth
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (signUpError) {
+      console.error("Error during signup:", signUpError);
+      return;
     }
-  }
+
+    // Check if data contains user and user.id
+    if (data && data.user && data.user.id) {
+      const { error: profileError } = await supabase.from("profiles").insert([
+        {
+          user_id: data.user.id,
+          user_name: formData.user_name,
+          email: formData.email,
+          // location: formData.location,
+        },
+      ]);
+
+      if (profileError) {
+        console.error("Error storing additional user details:", profileError);
+      } else {
+        setSuccessMessage(
+          "User signed up successfully. Check Your Email For Verification"
+        );
+      }
+    } else {
+      console.log("Signup was successful, but no user data was returned.");
+    }
+  };
 
   // console.log(formData);
 
@@ -86,7 +100,8 @@ const RegisterAuth = () => {
                 <label className="text-start text-base">Full Name</label>
                 <input
                   type="text"
-                  name="fullName"
+                  value={formData.user_name}
+                  name="user_name"
                   placeholder="John Doe"
                   onChange={handleChange}
                   className="text-base rounded-md mt-2 px-4 py-3 focus:bg-gray-100 focus:outline-2 focus:outline-[#6C2D1B] outline outline-1 outline-[#D9D9D9]"
@@ -97,6 +112,7 @@ const RegisterAuth = () => {
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
                   placeholder="Joe@gmail.com"
                   onChange={handleChange}
                   className="text-base rounded-md mt-2 px-4 py-3 focus:bg-gray-100 focus:outline-2 focus:outline-[#6C2D1B] outline outline-1 outline-[#D9D9D9]"
@@ -107,6 +123,7 @@ const RegisterAuth = () => {
                 <input
                   type="password"
                   name="password"
+                  value={formData.password}
                   onChange={handleChange}
                   placeholder="**********"
                   className="text-base rounded-md mt-2 px-4 py-3 focus:bg-gray-100 focus:outline-2 focus:outline-[#6C2D1B] outline outline-1 outline-[#D9D9D9]"
