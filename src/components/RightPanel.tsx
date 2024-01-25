@@ -9,15 +9,18 @@ import {
   ThumbsDownRegular,
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
-import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
+
 import supabase from "../config/superbaseClient";
 import { CommentItem } from "./CommentComponent";
+import { PostItem } from "./dataComponent";
+import { User } from "@supabase/auth-helpers-react";
 
 export type RightPanelProps = {
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
   postId: string | undefined;
+  userId: string | undefined;
 };
 
 export type CommentlProps = {
@@ -113,6 +116,14 @@ export const RightPanel: React.FC<RightPanelProps> = ({
   const handleSubimtComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const storedUser = sessionStorage.getItem("token");
+    if (!storedUser) {
+      throw new Error("No user data found in session storage.");
+    }
+
+    const user = JSON.parse(storedUser) as User;
+    const userId = user.id;
+
     if (!commentDescription) {
       console.log("Please write a comment");
       return;
@@ -120,7 +131,15 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
     const { data, error } = await supabase
       .from("comments")
-      .insert([{ comment_description: commentDescription, post_id: postId }])
+      .insert([
+        {
+          comment_description: commentDescription,
+          post_id: postId,
+          user_id: userId,
+        },
+      ])
+      .eq("user_id", userId)
+      // .single()
       .select();
 
     if (error) {
@@ -128,6 +147,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     } else if (data) {
       console.log("Inserted Comment:", data);
       setCommentDescription("");
+      onClose();
     }
   };
 
