@@ -10,17 +10,6 @@ export type CenterPanelProps = {
   selectedCard: PostItem | null;
 };
 
-// export interface Comments {
-//   id: string;
-//   created_at: Date;
-//   comment_description: string;
-//   likes: number;
-//   dislikes: number;
-//   user_id: {
-//     user_name: string;
-//   };
-// }
-
 const HomePageComponent: React.FC<CenterPanelProps> = ({
   onCardClick,
   selectedCard,

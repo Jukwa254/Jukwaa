@@ -7,11 +7,10 @@ import {
 } from "../components/Icons";
 import HomePageComponent from "./pageComponents/HomePageComponent";
 import PostPageComponent from "./pageComponents/PostPageComponent";
-import ProfilePageComponent, {
-  PostItem,
-} from "./pageComponents/ProfilePageComponent";
+import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
 import SearchPageComponent from "./pageComponents/SearchPageComponent";
+import { Comments, PostItem } from "../components/dataComponent";
 
 type MenuItem = {
   id: number;
@@ -325,6 +324,7 @@ const HomePage = ({}) => {
                 postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
+                userId={selectedCard?.id}
                 selectedCard={selectedCard}
               />
             </div>
@@ -334,6 +334,7 @@ const HomePage = ({}) => {
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
+                userId={selectedCard?.id}
               />
             </div>
           </div>

@@ -11,7 +11,6 @@ import {
 import { formatDistanceToNow } from "date-fns";
 
 import supabase from "../config/superbaseClient";
-import { CommentItem } from "./CommentComponent";
 import { PostItem } from "./dataComponent";
 import { User } from "@supabase/auth-helpers-react";
 
@@ -20,16 +19,13 @@ export type RightPanelProps = {
   isOpen: boolean;
   onClose: () => void;
   postId: string | undefined;
-  userId: string | undefined;
 };
 
 export type CommentlProps = {
-  cards: CommentItem[];
-  onCardClick: (card: CommentItem) => void;
-  selectedCard: CommentItem | null;
+  userId: string | undefined;
 };
 
-export const RightPanel: React.FC<RightPanelProps> = ({
+export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
   isOpen,
   onClose,
   postId,
@@ -153,7 +149,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
   return (
     <div
-      className="lg:h-screen flex flex-col text-strokeLight py-4 overflow-y-auto no-scrollbar"
+      className="h-screen flex flex-col text-strokeLight py-4 overflow-y-auto no-scrollbar"
       ref={rightPanelRef}
     >
       <div
@@ -165,7 +161,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
       >
         {selectedCard && (
           <div className="bg-BackgroundTwo p-4 lg:p-6 rounded-xl flex flex-col h-full">
-            <div className="flex-0">
+            <div className="">
               <div className="grid grid-cols-3 lg:block items-center w-full border-BackgroundAccent ">
                 <button
                   onClick={onClose}
@@ -263,7 +259,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
               <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
             </div>
 
-            <div className="flex-0">
+            <div className="">
               <form onClick={handleSubimtComment}>
                 <div className="flex ">
                   <p
@@ -307,8 +303,15 @@ export const RightPanel: React.FC<RightPanelProps> = ({
               <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
             </div>
             <div className="flex-1">
-              {/* <UserComments /> */}
-              <div></div>
+              <div>
+                {selectedCard.comments.map((cards, index) => (
+                  <div key={index}>
+                    <p>{cards.comment_description}</p>
+                    <p>{cards.user_id.user_name}</p>
+                    <p>{new Date(cards.created_at).toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

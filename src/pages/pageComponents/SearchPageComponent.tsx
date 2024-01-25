@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { SearchIcon } from "../../components/Icons";
-import { PostItem } from "./ProfilePageComponent";
 import Skeleton from "react-loading-skeleton";
 import { NewPostsComponent } from "./PostPageComponent";
 import { CenterPanelProps } from "./HomePageComponent";
 import supabase from "../../config/superbaseClient";
+import { PostItem } from "../../components/dataComponent";
 
 const SearchPageComponent: React.FC<CenterPanelProps> = ({
   onCardClick,
