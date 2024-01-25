@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import LoginImage from "../assets/images/signup-image.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
 export interface SignupFormData {
   user_name: string;
@@ -11,6 +11,7 @@ export interface SignupFormData {
 const RegisterAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     user_name: "",
@@ -26,15 +27,30 @@ const RegisterAuth = () => {
     });
   };
 
+  useEffect(() => {
+    let timer: number | undefined;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 3000) as unknown as number; // Type assertion
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [errorMessage]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
+    setIsSubmitting(true);
     if (
       !formData.user_name.trim() ||
       !formData.email.trim() ||
       !formData.password.trim()
     ) {
       setErrorMessage("Please fill in all fields.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -66,6 +82,7 @@ const RegisterAuth = () => {
         setSuccessMessage(
           "User signed up successfully. Check Your Email For Verification"
         );
+        setIsSubmitting(false);
       }
     } else {
       console.log("Signup was successful, but no user data was returned.");
@@ -134,11 +151,18 @@ const RegisterAuth = () => {
                 Remember Me
               </p>
               <div className="mt-16">
-                <button
+                {/* <button
                   type="submit"
                   className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl"
                 >
                   Register
+                </button> */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl"
+                >
+                  {isSubmitting ? <Spinner /> : "Register"}
                 </button>
               </div>
 
@@ -177,3 +201,9 @@ const RegisterAuth = () => {
 };
 
 export default RegisterAuth;
+
+export const Spinner = () => (
+  <div className="flex justify-center">
+    <div className="border-4 border-blue-500 rounded-full w-6 h-6 border-t-transparent animate-spin"></div>
+  </div>
+);

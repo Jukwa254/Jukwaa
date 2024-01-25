@@ -169,7 +169,7 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
           alt=""
           className="w-10 h-10 rounded-full object-cover"
         />
-        <div>
+        <div className="w-full">
           <div className="lg:flex justify-between">
             <h1 className="font-bold ">{card.post_title}</h1>
             <p className="text-xs text-[#796552]">

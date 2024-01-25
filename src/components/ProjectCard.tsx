@@ -26,7 +26,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [, setPostItems] = useState<PostItem[]>([]);
-  const [, setPostCards] = useState<PostItem[] | null>(null);
   const [, setFetchError] = useState<string>("");
 
   const handleLike = () => {
@@ -66,7 +65,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
       if (error) {
         console.error("Error fetching data:", error);
-        setPostCards(null);
+        // setPostItems(null);
         console.log(error);
       } else {
         setPostItems(data);

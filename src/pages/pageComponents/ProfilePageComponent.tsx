@@ -293,7 +293,7 @@ export interface PostItem {
   post_image: string;
   likes: number;
   dislikes: number;
-  user_id: string | undefined;
+  // user_id: string | undefined;
   profiles: {
     user_name: string;
     email: string;
