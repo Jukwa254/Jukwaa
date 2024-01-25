@@ -3,6 +3,7 @@ import LoginImage from "../assets/images/signup-image.png";
 import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
 import { User } from "@supabase/supabase-js";
+import { Spinner } from "./RegisterAuth";
 
 const LoginAuth = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,20 @@ const LoginAuth = () => {
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    let timer: number | undefined;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 3000) as unknown as number; // Type assertion
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [errorMessage]);
 
   const setToken = (user: User) => {
     sessionStorage.setItem("token", JSON.stringify(user)); // Store the entire user object
@@ -40,9 +55,11 @@ const LoginAuth = () => {
   async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
     setErrorMessage("");
+    setIsSubmitting(true);
 
     if (!formData.email.trim() || !formData.password.trim()) {
       setErrorMessage("Please fill in all fields.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -60,6 +77,7 @@ const LoginAuth = () => {
         console.log(response.data.user);
         setToken(response.data.user); // Save user data in sessionStorage
         navigate("/home");
+        setIsSubmitting(false);
 
         window.location.reload();
       } else {
@@ -124,9 +142,10 @@ const LoginAuth = () => {
 
               <button
                 type="submit"
-                className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl mt-16"
+                disabled={isSubmitting}
+                className="w-full my-5 py-4 bg-[#6C2D1B] shadow-lg hover:shadow-[#6C2D1B]/40 text-BackgroundOne font-semibold rounded-md text-xl"
               >
-                Login
+                {isSubmitting ? <Spinner /> : "Login"}
               </button>
 
               <div className="flex justify-between">

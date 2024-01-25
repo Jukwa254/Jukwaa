@@ -25,7 +25,7 @@ export type LeftPanelProps = {
   selectedCardType: PostItem | null;
 };
 
-const HomePage = () => {
+const HomePage = ({}) => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -156,7 +156,7 @@ const HomePage = () => {
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
-        <div className="lg:px-48">
+        <div className="lg:px-40">
           <div className="lg:grid grid-cols-12">
             <div className="col-span-3 hidden lg:block">
               <div className="h-screen py-4 overflow-y-auto no-scrollbar">
@@ -322,7 +322,7 @@ const HomePage = () => {
 
             <div className="col-span-4 hidden lg:block">
               <RightPanel
-                cards={[]}
+                postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
@@ -330,7 +330,7 @@ const HomePage = () => {
             </div>
             <div className="md:hidden z-50">
               <RightPanel
-                cards={[]}
+                postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}

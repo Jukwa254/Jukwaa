@@ -57,7 +57,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
   }, []);
 
   useEffect(() => {
-    const fetchPlatformData = async () => {
+    const fetchPostData = async () => {
       const { data, error } = await supabase.from("posts").select("*");
       // .eq("user_id", user?.id);
 
@@ -68,11 +68,11 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
       }
     };
 
-    fetchPlatformData();
+    fetchPostData();
   }, [supabase]);
 
   useEffect(() => {
-    const fetchPlatformCards = async () => {
+    const fetchPostCards = async () => {
       setIsLoading(true);
       const { data, error } = await supabase.from("posts").select();
 
@@ -91,7 +91,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
       }
     };
 
-    fetchPlatformCards();
+    fetchPostCards();
   }, []);
 
   return (

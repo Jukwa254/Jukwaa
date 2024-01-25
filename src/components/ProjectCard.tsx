@@ -26,7 +26,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [, setPostItems] = useState<PostItem[]>([]);
-  const [, setPostCards] = useState<PostItem[] | null>(null);
   const [, setFetchError] = useState<string>("");
 
   const handleLike = () => {
@@ -59,29 +58,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   useEffect(() => {
     const fetchPlatformData = async () => {
-      const { data, error } = await supabase.from("posts").select("*");
+      const { data, error } = await supabase
+        .from("posts")
+        .select(`*, profiles(*)`);
       // .eq("user_id", user?.id);
 
       if (error) {
         console.error("Error fetching data:", error);
+        // setPostItems(null);
+        console.log(error);
       } else {
         setPostItems(data);
-      }
-    };
-
-    fetchPlatformData();
-  }, [supabase]);
-
-  useEffect(() => {
-    const fetchPlatformCards = async () => {
-      const { data, error } = await supabase.from("posts").select();
-
-      if (error) {
-        setFetchError(error.message);
-        setPostCards(null);
-        console.log(error);
-      } else if (data) {
-        setPostCards(data);
         setFetchError("");
 
         localStorage.setItem("postCards", JSON.stringify(data));
@@ -89,8 +76,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       }
     };
 
-    fetchPlatformCards();
-  }, []);
+    fetchPlatformData();
+  }, [supabase]);
 
   return (
     <div
@@ -114,7 +101,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             />
             <div>
               <p className="text-xl font-semibold text-[#2C444E]">
-                Name Will Appear Here
+                {card.profiles?.user_name}
               </p>
               <p className="text-xs text-[#796552]">
                 {formatDistanceToNow(new Date(card.created_at), {

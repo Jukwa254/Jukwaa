@@ -4,6 +4,26 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../../config/superbaseClient";
 import { v4 as uuidv4 } from "uuid";
 import { AddIcon } from "../../components/Icons";
+import { User } from "@supabase/auth-helpers-react";
+import Skeleton from "react-loading-skeleton";
+import { SignupFormData } from "../../Auth/RegisterAuth";
+
+interface Post {
+  post_title: string;
+  post_description: string;
+  post_category: string;
+  post_image: string;
+  user_id: string;
+  profiles: {
+    email: string;
+    full_name: string;
+  }[]; // Adjust this according to the actual structure
+}
+
+// interface UserDetailsItem {
+//   email: string;
+//   user_name: string;
+// }
 
 const ProfilePageComponent = () => {
   function handleLogout() {
@@ -14,6 +34,9 @@ const ProfilePageComponent = () => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postCard, setPosts] = useState<Post[]>([]);
+  const [userDetails, setUserDetails] = useState<SignupFormData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -54,32 +77,194 @@ const ProfilePageComponent = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  useEffect(() => {
+    const fetchPostsData = async () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        console.log("User not logged in");
+        return;
+      }
+
+      // Parse the token to get the user object
+      const user = JSON.parse(token) as User;
+
+      if (user) {
+        const { data, error } = await supabase
+          .from("posts")
+          .select(
+            `
+                    post_title,
+                    post_description,
+                    post_category,
+                    post_image,
+                    user_id,
+                    profiles (*)
+                `
+          )
+          .eq("user_id", user.id);
+
+        if (error) {
+          console.error("Error fetching posts:", error);
+        } else if (data) {
+          setPosts(data);
+          console.log("Fetch Successful");
+        }
+        setIsLoading(false);
+      }
+    };
+
+    fetchPostsData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        setIsLoading(true);
+
+        // Retrieve user data from session storage
+        const storedUser = sessionStorage.getItem("token");
+        if (!storedUser) {
+          throw new Error("No user data found in session storage.");
+        }
+
+        const user = JSON.parse(storedUser) as User;
+        const userId = user.id;
+
+        // Fetch user profile from Supabase
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_id", userId)
+          .single();
+
+        if (error) throw error;
+        setUserDetails(data);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <div>
       <div>
         <div
-          className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 bg-BackgroundTwo lg:rounded-xl p-2 lg:p-4"
+          className="h-screen text-strokeLight overflow-y-auto no-scrollbar lg:py-4"
           ref={centerPanelRef}
         >
-          <CenterPanelNavBar title={"User Profile"} />
-          <div className="flex justify-between">
-            <div>
+          <div className="lg:mx-3">
+            <CenterPanelNavBar title={"Profile"} />
+          </div>
+          <div className="bg-BackgroundTwo p-4 lg:px-6 lg:rounded-b-xl lg:mx-3 h-full">
+            <div className=" my-4 flex justify-end">
               <button
                 onClick={openModal}
                 className="bg-accent text-BackgroundOne p-2 rounded flex"
               >
                 <AddIcon />
-                <p>Add Project</p>
+                <p>Add a Post</p>
               </button>
 
               <ProjectFormModal isOpen={isModalOpen} onClose={closeModal} />
             </div>
-            <button
-              onClick={handleLogout}
-              className="border px-4 border-strokeOne rounded-lg"
-            >
-              Logout
-            </button>
+            <div className="flex flex-col h-full">
+              {isLoading ? (
+                <div>
+                  <div className="">
+                    <Skeleton height={50} />
+                    <Skeleton height={50} />
+                    <Skeleton height={50} />
+                  </div>
+                </div>
+              ) : (
+                <div className="">
+                  <div className="bg-BackgroundOne p-4 rounded-lg ">
+                    <p className="text-lg font-bold pb-4">User Details</p>
+                    <div className="flex justify-between items-center py-2">
+                      <p className="">User Name</p>
+                      <p className="text-textTwo">{userDetails?.user_name}</p>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <p className="">Email</p>
+                      <p className="text-textTwo">{userDetails?.email}</p>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <p className="">Phone</p>
+                      <p className="text-textTwo">0759000575</p>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <p className="">County</p>
+                      <p className="text-textTwo">Kakamega</p>
+                    </div>
+                    <div className="flex justify-between items-center mt-10">
+                      <p>Logout</p>
+                      <button
+                        onClick={handleLogout}
+                        className="border px-4 py-2 border-strokeOne rounded-lg"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="my-8 bg-BackgroundOne p-4 rounded-lg">
+                <div className=""></div>
+                <p className="text-lg font-bold">My Posts</p>
+                <div>
+                  {isLoading ? (
+                    <div>
+                      <div className="">
+                        <Skeleton height={100} />
+                        <Skeleton height={100} />
+                        <Skeleton height={100} />
+                      </div>
+                    </div>
+                  ) : postCard && postCard.length > 0 ? (
+                    <div className="">
+                      {postCard.map((post, index) => (
+                        <div
+                          key={index}
+                          className="border-b-4 pb-4 border-BackgroundTwo"
+                        >
+                          <p className="mt-4 font-bold mb-2">
+                            {post.post_title}
+                          </p>
+                          <div className="flex gap-2">
+                            <p>{post.post_description}</p>
+                            <img
+                              src={post.post_image}
+                              alt=""
+                              className="w-40 object-cover rounded"
+                            />
+                          </div>
+
+                          {/* <p>
+                            Posted by: {post.users[0]?.user_name || "Unknown"}
+                          </p> */}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="pb-5">No Posts ...</p>
+                      <button
+                        onClick={openModal}
+                        className="bg-accent text-BackgroundOne p-2 rounded flex"
+                      >
+                        <AddIcon />
+                        <p>Add a Post</p>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -108,6 +293,11 @@ export interface PostItem {
   post_image: string;
   likes: number;
   dislikes: number;
+  // user_id: string | undefined;
+  profiles: {
+    user_name: string;
+    email: string;
+  };
 }
 
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
@@ -191,15 +381,28 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
         return;
       }
 
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        setErrorMessage("User not logged in");
+        return;
+      }
+
+      // Parse the token to get the user object
+      const user = JSON.parse(token) as User;
+
       const projectImage = projectMainImage[0]?.url;
-      const { data, error } = await supabase.from("posts").insert([
-        {
-          post_title: projectTitle,
-          post_description: projectDescription,
-          post_category: projectCategory,
-          post_image: projectImage,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from("posts")
+        .insert([
+          {
+            post_title: projectTitle,
+            post_description: projectDescription,
+            post_category: projectCategory,
+            post_image: projectImage,
+            user_id: user.id,
+          },
+        ])
+        .select();
 
       if (error) {
         setErrorMessage("Error inserting data: " + error.message);
@@ -235,7 +438,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
         <div className="mt-3">
           <div className="flex justify-between">
             <h3 className="text-xl leading-6 text-accent font-bold">
-              Add Project
+              Add Post
             </h3>
             <button
               onClick={onClose}
