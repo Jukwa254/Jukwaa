@@ -1,14 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import ProjectCard from "../../components/ProjectCard";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
-import { PostItem } from "./ProfilePageComponent";
 import supabase from "../../config/superbaseClient";
 import Skeleton from "react-loading-skeleton";
+import { PostItem } from "../../components/dataComponent";
 
 export type CenterPanelProps = {
   onCardClick: (card: PostItem) => void;
   selectedCard: PostItem | null;
 };
+
+// export interface Comments {
+//   id: string;
+//   created_at: Date;
+//   comment_description: string;
+//   likes: number;
+//   dislikes: number;
+//   user_id: {
+//     user_name: string;
+//   };
+// }
 
 const HomePageComponent: React.FC<CenterPanelProps> = ({
   onCardClick,
@@ -16,9 +27,9 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
   const [postCards, setPostCards] = useState<PostItem[] | null>(null);
-  const [fetchError, setFetchError] = useState<string>("");
+  const [fetchError] = useState<string>("");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -56,43 +67,40 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     };
   }, []);
 
+  // useEffect(() => {
+  //   const fetchPostData = async () => {
+  //     const { data, error } = await supabase.from("posts").select("*");
+  //     // .eq("user_id", user?.id);
+
+  //     if (error) {
+  //       console.error("Error fetching data:", error);
+  //     } else {
+  //       setPostCards(data);
+  //     }
+  //   };
+
+  //   fetchPostData();
+  // }, [supabase]);
   useEffect(() => {
     const fetchPostData = async () => {
-      const { data, error } = await supabase.from("posts").select("*");
-      // .eq("user_id", user?.id);
-
+      const { data, error } = await supabase.from("posts").select(`
+      *,
+      profiles(*),
+      comments!comments_post_id_fkey(*,
+        user_id (
+          user_name
+        )
+    )
+    `);
       if (error) {
         console.error("Error fetching data:", error);
       } else {
-        setPostCards(data);
+        console.log(data);
+        setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
       }
     };
-
     fetchPostData();
   }, [supabase]);
-
-  useEffect(() => {
-    const fetchPostCards = async () => {
-      setIsLoading(true);
-      const { data, error } = await supabase.from("posts").select();
-
-      if (error) {
-        setFetchError(error.message);
-        setPostCards(null);
-        console.log(error);
-        setIsLoading(false);
-      } else if (data) {
-        setPostCards(data);
-        setFetchError("");
-        setIsLoading(false);
-
-        localStorage.setItem("postCards", JSON.stringify(data));
-        console.log(data);
-      }
-    };
-
-    fetchPostCards();
-  }, []);
 
   return (
     <div
@@ -120,6 +128,8 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
                 selectedCard={selectedCard}
               />
             ))}
+
+            <div></div>
           </div>
         ) : (
           <p>Fetching Posts ...</p>

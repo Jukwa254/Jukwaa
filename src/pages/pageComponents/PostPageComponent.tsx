@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { formatDistanceToNow } from "date-fns";
-import { PostItem } from "./ProfilePageComponent";
 import supabase from "../../config/superbaseClient";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { PostItem } from "../../components/dataComponent";
 
 export type NewProjectCardProps = {
   onCardClick: (card: PostItem) => void;
@@ -16,10 +16,9 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
   selectedCard,
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
-  const [, setFetchError] = useState<string>("");
   const [postCards, setPostCards] = useState<PostItem[] | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const saveScrollPosition = () => {
     if (centerPanelRef.current) {
@@ -80,28 +79,6 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
     fetchPlatformData();
   }, [supabase]);
 
-  useEffect(() => {
-    const fetchPlatformCards = async () => {
-      setIsLoading(true);
-      const { data, error } = await supabase.from("posts").select();
-
-      if (error) {
-        setFetchError(error.message);
-        setPostCards(null);
-        console.log(error);
-        setIsLoading(false);
-      } else if (data) {
-        setPostCards(data);
-        setFetchError("");
-        setIsLoading(false);
-
-        localStorage.setItem("postCards", JSON.stringify(data));
-        console.log(data);
-      }
-    };
-
-    fetchPlatformCards();
-  }, []);
   return (
     <div>
       <div

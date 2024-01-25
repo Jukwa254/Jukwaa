@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   LikeFilled,
   LikeRegular,
@@ -7,8 +7,7 @@ import {
   ThumbsDownRegular,
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
-import supabase from "../config/superbaseClient";
-import { PostItem } from "../pages/pageComponents/ProfilePageComponent";
+import { PostItem } from "./dataComponent";
 
 type ProjectCardProps = {
   card: PostItem;
@@ -25,8 +24,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [dislikes, setDislikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const [, setPostItems] = useState<PostItem[]>([]);
-  const [, setFetchError] = useState<string>("");
 
   const handleLike = () => {
     if (!liked) {
@@ -55,29 +52,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       setDisliked(false);
     }
   };
-
-  useEffect(() => {
-    const fetchPlatformData = async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select(`*, profiles(*)`);
-      // .eq("user_id", user?.id);
-
-      if (error) {
-        console.error("Error fetching data:", error);
-        // setPostItems(null);
-        console.log(error);
-      } else {
-        setPostItems(data);
-        setFetchError("");
-
-        localStorage.setItem("postCards", JSON.stringify(data));
-        console.log(data);
-      }
-    };
-
-    fetchPlatformData();
-  }, [supabase]);
 
   return (
     <div
@@ -150,6 +124,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 </span>
                 <p className="text-sm">200</p>
               </div>
+            </div>
+            <div className="comments">
+              {card.comments.map((comment, index) => (
+                <div key={index} className="comment">
+                  <p>{comment.user_id?.user_name}</p>{" "}
+                  <p>{comment.comment_description}</p>
+                  <p>{new Date(comment.created_at).toLocaleString()}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

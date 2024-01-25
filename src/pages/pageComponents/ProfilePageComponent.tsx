@@ -284,22 +284,6 @@ export interface ImageData {
   url: string;
 }
 
-export interface PostItem {
-  id: string;
-  created_at: string;
-  post_title: string;
-  post_description: string;
-  post_category: string;
-  post_image: string;
-  likes: number;
-  dislikes: number;
-  // user_id: string | undefined;
-  profiles: {
-    user_name: string;
-    email: string;
-  };
-}
-
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   isOpen,
   onClose,
