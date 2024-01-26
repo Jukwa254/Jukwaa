@@ -155,7 +155,7 @@ const HomePage = ({}) => {
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
-        <div className="lg:px-40">
+        <div className="xl:px-40">
           <div className="lg:grid grid-cols-12">
             <div className="col-span-3 hidden lg:block">
               <div className="h-screen py-4 overflow-y-auto no-scrollbar">
@@ -173,7 +173,7 @@ const HomePage = ({}) => {
                       {menuItems.slice(0, 4).map((item) => (
                         <div
                           key={item.id}
-                          className={`w-full lg:w-1/2 py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
+                          className={`w-full py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
                             activeMenu === item.name
                               ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
                               : ""

@@ -56,20 +56,6 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   const fetchPostData = async () => {
-  //     const { data, error } = await supabase.from("posts").select("*");
-  //     // .eq("user_id", user?.id);
-
-  //     if (error) {
-  //       console.error("Error fetching data:", error);
-  //     } else {
-  //       setPostCards(data);
-  //     }
-  //   };
-
-  //   fetchPostData();
-  // }, [supabase]);
   useEffect(() => {
     const fetchPostData = async () => {
       const { data, error } = await supabase
@@ -114,7 +100,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
             <Skeleton height={320} />
           </div>
         ) : postCards && postCards.length > 0 ? (
-          <div className="">
+          <div>
             {postCards?.map((card) => (
               <ProjectCard
                 key={card.id}
@@ -124,7 +110,6 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
               />
             ))}
 
-            <div>{}</div>
           </div>
         ) : (
           <p>Fetching Posts ...</p>
