@@ -28,7 +28,17 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
     setIsLoading(true);
     const { data, error } = await supabase
       .from("posts")
-      .select()
+      .select(
+        `
+      *,
+      profiles(*),
+      comments!comments_post_id_fkey(*,
+        user_id (
+          user_name
+        )
+    )
+    `
+      )
       .ilike("post_title, post_category", `%${term}%`);
 
     if (error) {
