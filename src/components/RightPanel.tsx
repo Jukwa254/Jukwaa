@@ -4,6 +4,7 @@ import {
   BackIcon,
   LikeFilled,
   LikeRegular,
+  Message,
   SendIcon,
   ThumbsDownFilled,
   ThumbsDownRegular,
@@ -205,8 +206,45 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
                     className="h-80 w-full rounded-lg object-cover my-4"
                   />
 
+                  <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
+                    <div className="flex gap-2 text-lg items-center">
+                      <div className="flex items-center font-semibold">
+                        <span
+                          className="cursor-pointer text-[#6C2D1B]"
+                          onClick={handleLike}
+                        >
+                          {liked ? <LikeFilled /> : <LikeRegular />}
+                        </span>
+                        <p className="text-sm">{likes + selectedCard.likes}</p>
+                      </div>
+                      <div className="flex items-center font-semibold">
+                        <span
+                          className="text-2xl cursor-pointer text-[#6C2D1B]"
+                          onClick={handleDislike}
+                        >
+                          {disliked ? (
+                            <ThumbsDownFilled />
+                          ) : (
+                            <ThumbsDownRegular />
+                          )}
+                        </span>
+                        <p className="text-sm">
+                          {dislikes + selectedCard.dislikes}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex font-semibold items-center">
+                      <span className="">
+                        <Message />
+                      </span>
+                      <p className="text-sm">
+                        {selectedCard.comments.length} Comments
+                      </p>
+                    </div>
+                  </div>
+
                   <form onClick={handleSubimtComment}>
-                    <div className="flex ">
+                    <div className="flex py-4">
                       <p
                         className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
                         onClick={toggleComment}

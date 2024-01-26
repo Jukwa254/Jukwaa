@@ -122,7 +122,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <span className="">
                   <Message />
                 </span>
-                <p className="text-sm">200</p>
+                <p className="text-sm">{card.comments.length} Comments</p>
               </div>
             </div>
             {/* <div className="comments">

@@ -213,7 +213,7 @@ const ProfilePageComponent = () => {
                 </div>
               )}
 
-              <div className="my-8 bg-BackgroundOne p-4 rounded-lg">
+              <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
                 <div className=""></div>
                 <p className="text-lg font-bold">My Posts</p>
                 <div>
@@ -235,12 +235,12 @@ const ProfilePageComponent = () => {
                           <p className="mt-4 font-bold mb-2">
                             {post.post_title}
                           </p>
-                          <div className="flex gap-2">
+                          <div className="lg:flex gap-2">
                             <p>{post.post_description}</p>
                             <img
                               src={post.post_image}
                               alt=""
-                              className="w-40 object-cover rounded"
+                              className="w-full lg:w-40 object-cover rounded my-2"
                             />
                           </div>
 

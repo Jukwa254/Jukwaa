@@ -124,7 +124,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
               />
             ))}
 
-            <div></div>
+            <div>{}</div>
           </div>
         ) : (
           <p>Fetching Posts ...</p>
