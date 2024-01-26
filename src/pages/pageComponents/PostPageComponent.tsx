@@ -65,18 +65,24 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
   }, []);
 
   useEffect(() => {
-    const fetchPlatformData = async () => {
-      const { data, error } = await supabase.from("posts").select("*");
-      // .eq("user_id", user?.id);
-
+    const fetchPostData = async () => {
+      const { data, error } = await supabase.from("posts").select(`
+      *,
+      profiles(*),
+      comments!comments_post_id_fkey(*,
+        user_id (
+          user_name
+        )
+    )
+    `);
       if (error) {
         console.error("Error fetching data:", error);
       } else {
-        setPostCards(data);
+        console.log(data);
+        setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
       }
     };
-
-    fetchPlatformData();
+    fetchPostData();
   }, [supabase]);
 
   return (

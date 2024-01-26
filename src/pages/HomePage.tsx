@@ -319,7 +319,7 @@ const HomePage = ({}) => {
               </div>
             </div>
 
-            <div className="col-span-4 hidden lg:block">
+            <div className="col-span-4 hidden lg:block h-screen">
               <RightPanel
                 postId={selectedCard?.id}
                 isOpen={isPanelOpen}

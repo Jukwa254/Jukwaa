@@ -72,7 +72,10 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
   // }, [supabase]);
   useEffect(() => {
     const fetchPostData = async () => {
-      const { data, error } = await supabase.from("posts").select(`
+      const { data, error } = await supabase
+        .from("posts")
+        .select(
+          `
       *,
       profiles(*),
       comments!comments_post_id_fkey(*,
@@ -80,7 +83,10 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
           user_name
         )
     )
-    `);
+    `
+        )
+        .order("created_at", { ascending: false });
+
       if (error) {
         console.error("Error fetching data:", error);
       } else {
