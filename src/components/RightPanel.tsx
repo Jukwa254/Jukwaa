@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   AddIcon,
+  BackIcon,
   LikeFilled,
   LikeRegular,
-  Message,
   SendIcon,
   ThumbsDownFilled,
   ThumbsDownRegular,
@@ -148,169 +148,156 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
   };
 
   return (
-    <div
-      className="h-screen flex flex-col text-strokeLight py-4 overflow-y-auto no-scrollbar"
-      ref={rightPanelRef}
-    >
+    <div className="h-screen overflow-y-auto " ref={rightPanelRef}>
       <div
-        className={`md:relative transform top-0 right-0 w-full h-full transition-transform duration-300 ${
+        // className={`transform top-0 right-0 w-full h-full transition-transform duration-300 overflow-y-auto ${
+        //   isOpen
+        //     ? "fixed z-50 translate-x-0" // Use fixed to keep it in place even when scrolling
+        //     : "absolute translate-x-full md:translate-x-0" // Use absolute for the closed state on mobile
+        // } bg-BackgroundTwo`}
+        className={`transform top-0 right-0 w-full h-full transition-transform duration-300 overflow-y-auto no-scrollbar ${
           isOpen
-            ? "absolute translate-x-0"
-            : "fixed translate-x-full md:translate-x-0"
-        }`}
+            ? "fixed z-50 translate-x-0" // Use 'fixed' to keep it in place even when scrolling
+            : "translate-x-full"
+        } bg-white md:static md:translate-x-0`} // 'md:static' resets positioning on medium screens and up
       >
         {selectedCard && (
-          <div className="bg-BackgroundTwo p-4 lg:p-6 rounded-xl flex flex-col h-full">
-            <div className="">
-              <div className="grid grid-cols-3 lg:block items-center w-full border-BackgroundAccent ">
+          <div className="flex flex-col h-full w-full">
+            <div className="bg-BackgroundTwo p-6 rounded-xl flex flex-col">
+              <div className="flex-0">
                 <button
                   onClick={onClose}
                   className="md:hidden my-2 py-2.5 rounded-full "
                 >
                   <div className="flex gap-2 items-center font-medium rounded-full ">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                      />
-                    </svg>
+                    <BackIcon />
                     <p className="font-bold">Back</p>
                   </div>
                 </button>
-                <p className="font-bold text-lg text-center lg:text-left ">
-                  Post
-                </p>
-                <div></div>
               </div>
-
-              <div className="mt-4">
-                <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <div className="flex gap-4 items-center">
                   <img
                     src={selectedCard.post_image}
                     alt=""
-                    className="w-10 h-10 rounded-full"
+                    className="w-14 h-14 object-cover rounded-full"
                   />
                   <div>
-                    <p className="font-bold text-lg">This is Name</p>
+                    <p className="text-2xl font-bold">
+                      {selectedCard.profiles?.user_name}
+                    </p>
                     <p className="text-xs text-[#796552]">
-                      {formatDistanceToNow(
-                        new Date(selectedCard.created_at),
-                        {}
-                      )}{" "}
+                      {formatDistanceToNow(new Date(selectedCard.created_at), {
+                        // addSuffix: true,
+                      })}{" "}
                       ago
                     </p>
                   </div>
                 </div>
-                <div className="mt-2">
-                  <h1 className="uppercase font-semibold text-xl py-2">
-                    {selectedCard.post_title}
-                  </h1>
-                  <p className="text-base mb-2">{paragraphs}</p>
-                  <img
-                    src={selectedCard.post_image}
-                    alt=""
-                    className="rounded-xl h-96 object-cover w-full"
-                  />
+                <h1 className="uppercase font-semibold text-xl py-2 mt-4">
+                  {selectedCard.post_title}
+                </h1>
+                <p className="">{paragraphs}</p>
+                <img
+                  src={selectedCard.post_image}
+                  alt=""
+                  className="h-80 w-full rounded-lg object-cover my-4"
+                />
 
-                  <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
-                    <div className="flex gap-2 text-lg items-center">
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="cursor-pointer text-[#6C2D1B]"
-                          onClick={handleLike}
-                        >
-                          {liked ? <LikeFilled /> : <LikeRegular />}
-                        </span>
-                        <p className="text-sm">{likes + selectedCard.likes}</p>
+                <form onClick={handleSubimtComment}>
+                  <div className="flex ">
+                    <p
+                      className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
+                      onClick={toggleComment}
+                    >
+                      <AddIcon />
+                      <span>Post Comment</span>
+                    </p>
+                  </div>
+                  <div>
+                    {isCommenting && (
+                      <div className="mt-4">
+                        <textarea
+                          value={commentDescription}
+                          ref={textareaRef}
+                          rows={2}
+                          placeholder="Post Your Comment"
+                          onChange={(e) =>
+                            setCommentDescription(e.target.value)
+                          }
+                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B]"
+                          style={{
+                            overflow: "hidden",
+                          }}
+                        />
+                        <div className="mt-2 flex justify-end">
+                          <button
+                            type="submit"
+                            className="flex items-center gap-2 px-4 py-2 bg-[#6C2D1B] text-BackgroundAccent rounded-full hover:bg-[#57281b] font-bold"
+                          >
+                            <SendIcon />
+                            <p>Post</p>
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="text-2xl cursor-pointer text-[#6C2D1B]"
-                          onClick={handleDislike}
-                        >
-                          {disliked ? (
-                            <ThumbsDownFilled />
-                          ) : (
-                            <ThumbsDownRegular />
-                          )}
-                        </span>
-                        <p className="text-sm">
-                          {dislikes + selectedCard.dislikes}
+                    )}
+                  </div>
+                </form>
+                <div className="w-full bg-BackgroundOne h-0.5 my-4"></div>
+                <div className="">
+                  {selectedCard.comments.map((cards, index) => (
+                    <div key={index}>
+                      <div className="py-4 border-b border-b-BackgroundOne ">
+                        <div className="flex gap-2 items-center">
+                          <img
+                            src={selectedCard.post_image}
+                            alt=""
+                            className="w-8 h-8 rounded-full "
+                          />
+                          <div className="">
+                            <p className="font-semibold">
+                              {cards.user_id.user_name}
+                            </p>
+                            <p className="text-xs text-[#796552]">
+                              {formatDistanceToNow(
+                                new Date(cards.created_at),
+                                {}
+                              )}{" "}
+                              ago
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-textThree font-normal text-base py-2">
+                          {cards.comment_description}
                         </p>
+                        <div className="flex justify-between items-center mt-2">
+                          <div className="flex gap-4 text-sm text-[#414141] items-center">
+                            <div
+                              className="flex items-center gap-1 cursor-pointer font-bold"
+                              onClick={handleLike}
+                            >
+                              <span className="text-sm">
+                                {liked ? <LikeFilled /> : <LikeRegular />}
+                              </span>
+                            </div>
+                            <div
+                              className="flex items-center gap-1 cursor-pointer font-bold"
+                              onClick={handleDislike}
+                            >
+                              <span className="text-sm">
+                                {disliked ? (
+                                  <ThumbsDownFilled />
+                                ) : (
+                                  <ThumbsDownRegular />
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex font-semibold items-center">
-                      <span className="">
-                        <Message />
-                      </span>
-                      {/* <p className="text-sm">{selectedCard.projectComments}</p> */}
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
-              <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
-            </div>
-
-            <div className="">
-              <form onClick={handleSubimtComment}>
-                <div className="flex ">
-                  <p
-                    className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
-                    onClick={toggleComment}
-                  >
-                    <AddIcon />
-                    <span>Post Comment</span>
-                  </p>
-                </div>
-                <div>
-                  {isCommenting && (
-                    <div className="mt-4">
-                      <textarea
-                        value={commentDescription}
-                        ref={textareaRef}
-                        rows={2}
-                        placeholder="Post Your Comment"
-                        onChange={(e) => setCommentDescription(e.target.value)}
-                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#6C2D1B]"
-                        style={{
-                          overflow: "hidden", // Hide the scrollbar
-                        }}
-                      />
-                      <div className="mt-2 flex justify-end">
-                        <button
-                          type="submit"
-                          className="flex items-center gap-2 px-4 py-2 bg-[#6C2D1B] text-BackgroundAccent rounded-full hover:bg-[#57281b] font-bold"
-                          // onClick={() => {
-                          //   setCommenting(false);
-                          // }}
-                        >
-                          <SendIcon />
-                          <p>Post</p>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </form>
-              <div className="w-full bg-BackgroundAccent h-0.5 my-4"></div>
-            </div>
-            <div className="flex-1">
-              <div>
-                {selectedCard.comments.map((cards, index) => (
-                  <div key={index}>
-                    <p>{cards.comment_description}</p>
-                    <p>{cards.user_id.user_name}</p>
-                    <p>{new Date(cards.created_at).toLocaleString()}</p>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

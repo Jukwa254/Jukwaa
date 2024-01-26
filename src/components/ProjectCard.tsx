@@ -125,7 +125,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <p className="text-sm">200</p>
               </div>
             </div>
-            <div className="comments">
+            {/* <div className="comments">
               {card.comments.map((comment, index) => (
                 <div key={index} className="comment">
                   <p>{comment.user_id?.user_name}</p>{" "}
@@ -133,7 +133,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   <p>{new Date(comment.created_at).toLocaleString()}</p>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

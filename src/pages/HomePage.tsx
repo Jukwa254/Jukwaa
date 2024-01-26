@@ -10,7 +10,7 @@ import PostPageComponent from "./pageComponents/PostPageComponent";
 import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
 import SearchPageComponent from "./pageComponents/SearchPageComponent";
-import { Comments, PostItem } from "../components/dataComponent";
+import { PostItem } from "../components/dataComponent";
 
 type MenuItem = {
   id: number;
@@ -282,7 +282,7 @@ const HomePage = ({}) => {
             <div className="col-span-5 h-screen">
               <div className="">{renderActiveComponent()}</div>
               <div className="fixed bottom-0 w-screen lg:hidden">
-                <div className="grid grid-cols-4 bg-BackgroundOne">
+                <div className="grid grid-cols-4 bg-BackgroundOne w-full">
                   {menuItems.slice(0, 4).map((item) => (
                     <div
                       key={item.id}
@@ -328,7 +328,7 @@ const HomePage = ({}) => {
                 selectedCard={selectedCard}
               />
             </div>
-            <div className="md:hidden z-50">
+            <div className="md:hidden z-50 px-4">
               <RightPanel
                 postId={selectedCard?.id}
                 isOpen={isPanelOpen}
