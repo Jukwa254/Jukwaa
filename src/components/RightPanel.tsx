@@ -22,11 +22,18 @@ export type RightPanelProps = {
   postId: string | undefined;
 };
 
-export type CommentlProps = {
+export type CommentProps = {
   userId: string | undefined;
+  // id: string | undefined
 };
 
-export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
+
+
+
+
+
+
+export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   isOpen,
   onClose,
   postId,
@@ -110,6 +117,11 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
     }
   };
 
+
+
+
+
+
   const handleSubimtComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -136,8 +148,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
         },
       ])
       .eq("user_id", userId)
-
-      // .single()
       .select();
 
     if (error) {
@@ -153,11 +163,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
     <div className="overflow-y-auto">
       <div
         ref={rightPanelRef}
-        className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${
-          isOpen
-            ? "fixed z-50 translate-x-0" // Use 'fixed' to keep it in place even when scrolling
-            : "translate-x-full hidden"
-        } bg-BackgroundTwo md:static md:translate-x-0`} // 'md:static' resets positioning on medium screens and up
+        className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${isOpen
+          ? "fixed z-50 translate-x-0"
+          : "translate-x-full hidden"
+          } bg-BackgroundTwo md:static md:translate-x-0`}
       >
         {selectedCard && (
           <div className="h-full w-full">
@@ -290,8 +299,8 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
                           new Date(b.created_at).getTime() -
                           new Date(a.created_at).getTime()
                       )
-                      .map((cards, index) => (
-                        <div key={index} className="">
+                      .map((cards) => (
+                        <div key={cards.id} className="">
                           <div className="py-4 border-b border-b-BackgroundOne ">
                             <div className="flex gap-2 items-center">
                               <img
@@ -354,3 +363,4 @@ export const RightPanel: React.FC<RightPanelProps & CommentlProps> = ({
 };
 
 export default RightPanel;
+

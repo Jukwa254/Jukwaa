@@ -17,13 +17,9 @@ interface Post {
   profiles: {
     email: string;
     full_name: string;
-  }[]; // Adjust this according to the actual structure
+  }[];
 }
 
-// interface UserDetailsItem {
-//   email: string;
-//   user_name: string;
-// }
 
 const ProfilePageComponent = () => {
   function handleLogout() {
@@ -149,6 +145,8 @@ const ProfilePageComponent = () => {
     fetchUserProfile();
   }, []);
 
+  // const subDescription = postCard.post_description.;
+
   return (
     <div>
       <div>
@@ -232,11 +230,11 @@ const ProfilePageComponent = () => {
                           key={index}
                           className="border-b-4 pb-4 border-BackgroundTwo"
                         >
-                          <p className="mt-4 font-bold mb-2">
+                          <p className="mt-4 font-bold mb-2 uppercase">
                             {post.post_title}
                           </p>
-                          <div className="lg:flex gap-2">
-                            <p>{post.post_description}</p>
+                          <div className="lg:flex gap-4 items-start">
+                            <p>{post.post_description.substring(0, 109)} ...</p>
                             <img
                               src={post.post_image}
                               alt=""
@@ -244,9 +242,7 @@ const ProfilePageComponent = () => {
                             />
                           </div>
 
-                          {/* <p>
-                            Posted by: {post.users[0]?.user_name || "Unknown"}
-                          </p> */}
+                          <p>{ }</p>
                         </div>
                       ))}
                     </div>

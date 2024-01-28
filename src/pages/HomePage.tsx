@@ -24,7 +24,7 @@ export type LeftPanelProps = {
   selectedCardType: PostItem | null;
 };
 
-const HomePage = ({}) => {
+const HomePage = ({ }) => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -52,7 +52,6 @@ const HomePage = ({}) => {
     setSelectedCard(card);
     setIsPanelOpen(true); // Open the right panel
 
-    // setIsPanelOpen(true); // Open the right panel
   };
 
   const closePanel = () => {
@@ -173,29 +172,26 @@ const HomePage = ({}) => {
                       {menuItems.slice(0, 4).map((item) => (
                         <div
                           key={item.id}
-                          className={`w-full py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${
-                            activeMenu === item.name
-                              ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
-                              : ""
-                          }`}
+                          className={`w-full py-3 px-6 hover:bg-accentBackground hover:bg-BackgroundAccent rounded-full my-1 cursor-pointer duration-200 ${activeMenu === item.name
+                            ? "bg-BackgroundAccent hover:bg-none dark:hover:bg-none"
+                            : ""
+                            }`}
                           onClick={() => handleMenuClick(item.name)}
                         >
                           <div className="flex gap-2 items-center font-semibold text-base">
                             <p
-                              className={`${
-                                activeMenu === item.name
-                                  ? "text-accent"
-                                  : "text-strokeLight"
-                              }`}
+                              className={`${activeMenu === item.name
+                                ? "text-accent"
+                                : "text-strokeLight"
+                                }`}
                             >
                               {item.image}
                             </p>
                             <p
-                              className={`${
-                                activeMenu === item.name
-                                  ? "text-accent"
-                                  : "text-strokeLight"
-                              }`}
+                              className={`${activeMenu === item.name
+                                ? "text-accent"
+                                : "text-strokeLight"
+                                }`}
                             >
                               {item.name}
                             </p>
@@ -208,58 +204,7 @@ const HomePage = ({}) => {
                   <div className="bg-BackgroundTwo p-6 rounded-xl mt-3 flex flex-col flex-1">
                     <div className="flex-1">
                       <div className=""></div>
-                      {/* <div>
-                        <div className="flex justify-between ">
-                          <h1 className="font-bold mb-2">Trending Posts</h1>
-                          <div>
-                            {menuItems.slice(4, 5).map((item) => (
-                              <div
-                                key={item.id}
-                                onClick={() => handleMenuClick(item.name)}
-                              >
-                                <p className="text-sm underline text-textTwo cursor-pointer hover:text-accent">
-                                  {item.name}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {postCards?.slice(0, 3).map((card) => (
-                          <TrendingPostsComponent
-                            key={card.id}
-                            card={card}
-                            onCardClick={handleCardClick}
-                            selectedCard={selectedCard}
-                          />
-                        ))}
-                      </div> */}
-                      {/* <div className="mt-8">
-                        <div>
-                          <div className="flex justify-between ">
-                            <h1 className="font-bold mb-2">Trending Posts</h1>
-                            <div>
-                              {menuItems.slice(4, 5).map((item) => (
-                                <div
-                                  key={item.id}
-                                  onClick={() => handleMenuClick(item.name)}
-                                >
-                                  <p className="text-sm underline text-textTwo cursor-pointer hover:text-accent">
-                                    {item.name}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        {postCards?.slice(3, 5).map((card) => (
-                          <TrendingPostsComponent
-                            key={card.id}
-                            card={card}
-                            onCardClick={handleCardClick}
-                            selectedCard={selectedCard}
-                          />
-                        ))}
-                      </div> */}
+
                     </div>
                     <div>
                       <div className=" pt-4 flex justify-between items-center">
@@ -286,29 +231,26 @@ const HomePage = ({}) => {
                   {menuItems.slice(0, 4).map((item) => (
                     <div
                       key={item.id}
-                      className={`text-strokeLight p-2 ${
-                        activeMenu === item.name
-                          ? "hover:bg-none dark:hover:bg-none font-bold"
-                          : "bg-darkBackgroundTwo"
-                      }`}
+                      className={`text-strokeLight p-2 ${activeMenu === item.name
+                        ? "hover:bg-none dark:hover:bg-none font-bold"
+                        : "bg-darkBackgroundTwo"
+                        }`}
                       onClick={() => handleMenuClick(item.name)}
                     >
                       <div className="flex flex-col items-center gap-1">
                         <p
-                          className={`${
-                            activeMenu === item.name
-                              ? "text-accent"
-                              : "text-strokeLight"
-                          }`}
+                          className={`${activeMenu === item.name
+                            ? "text-accent"
+                            : "text-strokeLight"
+                            }`}
                         >
                           {item.image}
                         </p>
                         <p
-                          className={`${
-                            activeMenu === item.name
-                              ? "text-accent"
-                              : "text-strokeLight"
-                          }`}
+                          className={`${activeMenu === item.name
+                            ? "text-accent"
+                            : "text-strokeLight"
+                            }`}
                         >
                           {item.name}
                         </p>
