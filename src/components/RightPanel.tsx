@@ -36,6 +36,20 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const [commentDescription, setCommentDescription] = useState<string>("");
   const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    let timer: number | undefined;
+    if (successMessage) {
+      timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000) as unknown as number; // Type assertion
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [successMessage]);
 
   const saveScrollPosition = () => {
     if (rightPanelRef.current) {
@@ -113,7 +127,11 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
     } else if (data) {
       console.log("Inserted Comment:", data);
       setCommentDescription("");
+      setSuccessMessage(
+        "Comment Submited Successfully"
+      );
       // onClose();
+
     }
   };
 
@@ -194,6 +212,12 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                     <div>
                       {isCommenting && (
                         <div className="mt-4">
+                          {successMessage && (
+
+                            <div className="flex justify-end">
+                              <div className="bg-successTwo px-4 p-1 text-xs mb-3 rounded-full"> {successMessage}</div>
+                            </div>
+                          )}
                           <textarea
                             value={commentDescription}
                             ref={textareaRef}

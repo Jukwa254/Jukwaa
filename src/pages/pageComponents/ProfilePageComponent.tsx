@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/superbaseClient";
@@ -283,7 +283,7 @@ const ProfilePageComponent = () => {
 
 export default ProfilePageComponent;
 
-interface ProjectFormModalProps {
+export interface ProjectFormModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -296,6 +296,7 @@ export interface ImageData {
 export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   isOpen,
   onClose,
+
 }) => {
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [projectDescription, setProjectDescription] = useState<string>("");
@@ -409,6 +410,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
 
         console.log("Calling onClose to close the modal"); // Debugging statement
         onClose(); // Attempt to close the modal
+        alert("Form Submitted Successfully")
       }
     } catch (error) {
       console.error("Error in form submission:", error);
@@ -508,3 +510,4 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     </div>
   );
 };
+

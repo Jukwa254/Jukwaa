@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 // api.ts
 import supabase from '../config/superbaseClient'; // Adjust the import path to your Supabase client
-import { LikeFilled, LikeRegular, ThumbsDownFilled, ThumbsDownRegular, ThumbsUpFilled, ThumbsUpRegular } from './Icons';
+import { ThumbsDownFilled, ThumbsDownRegular, ThumbsUpFilled, ThumbsUpRegular } from './Icons';
 
 // Get the current reaction of a user on a post
 export const getUserReaction = async (postId: string, userId: string): Promise<string | null> => {
