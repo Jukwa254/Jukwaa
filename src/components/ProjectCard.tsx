@@ -2,6 +2,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { PostItem } from "./dataComponent";
 import LikeDislikeButton from "./LikeDislikeComponent";
+import { Message } from "./Icons";
 
 type ProjectCardProps = {
   card: PostItem;
@@ -61,7 +62,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 className="h-80 w-full rounded-lg object-cover"
               />
             </div>
-            <LikeDislikeButton postId={card.id} userId={currentUserId} />
+            <div className="flex justify-between">
+              <LikeDislikeButton postId={card.id} userId={currentUserId} />
+              <div className="flex items-center">
+                <Message />
+                <p>{card.comments.length}</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
