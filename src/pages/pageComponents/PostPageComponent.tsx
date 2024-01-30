@@ -140,11 +140,10 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
       onClick={() => {
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
-        selectedCard && selectedCard.id === card.id
-          ? "bg-BackgroundOne "
-          : "border-strokeOne"
-      }`}
+      className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${selectedCard && selectedCard.id === card.id
+        ? "bg-BackgroundOne "
+        : "border-strokeOne"
+        }`}
     >
       <div className="flex gap-2 items-start">
         <img
@@ -168,7 +167,7 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
               <p>{card.dislikes} Likes</p>
               <p>{card.likes} Dislikes</p>
             </div>
-            <p>200 Comments</p>
+            <p>{card.comments.length} Comments</p>
           </div>
         </div>
       </div>
@@ -187,11 +186,10 @@ export const TrendingPostsComponent: React.FC<ProjectCardPropsProps> = ({
       onClick={() => {
         onCardClick(card);
       }}
-      className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${
-        selectedCard && selectedCard.id === card.id
-          ? "bg-BackgroundOne "
-          : "border-strokeOne"
-      }`}
+      className={`hover:-translate-y-1 transform duration-200 cursor-pointer px-4 py-4 lg:pb-3 rounded-xl hover:bg-BackgroundOne ${selectedCard && selectedCard.id === card.id
+        ? "bg-BackgroundOne "
+        : "border-strokeOne"
+        }`}
     >
       <div className="flex gap-2 items-start">
         <img src={card.post_image} alt="" className="w-10 h-10 rounded-full" />

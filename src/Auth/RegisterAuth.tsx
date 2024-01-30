@@ -3,10 +3,12 @@ import LoginImage from "../assets/images/signup-image.png";
 import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
 export interface SignupFormData {
+  avatar: string
   user_name: string;
   email: string;
   location: string;
   password: string;
+  phone: number;
 }
 const RegisterAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");

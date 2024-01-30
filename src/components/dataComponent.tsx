@@ -1,13 +1,15 @@
 // Define the structure of the data for a single comment's user
 
 export interface Profile {
+  user_id: string;
   user_name: string;
   email: string;
 }
 
-// Define the structure of the data for a single comment
+
 export interface Comments {
   id: string;
+  post_id: string
   created_at: Date;
   comment_description: string;
   likes: number;
@@ -16,7 +18,7 @@ export interface Comments {
   //   posts: PostItem;
 }
 
-// Define the structure of the data for a single post
+
 export interface PostItem {
   id: string;
   created_at: Date;
@@ -26,7 +28,7 @@ export interface PostItem {
   post_image: string;
   likes: number;
   dislikes: number;
-  profile_id: string; // Assuming this is the ID of the user who made the post
-  profiles: Profile; // This should be an array if a post can have multiple profiles
-  comments: Comments[]; // An array of Comment objects
+  profile_id: string | undefined;
+  profiles: Profile;
+  comments: Comments[];
 }

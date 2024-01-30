@@ -2,24 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import {
   AddIcon,
   BackIcon,
-  LikeFilled,
-  LikeRegular,
   Message,
   SendIcon,
-  ThumbsDownFilled,
-  ThumbsDownRegular,
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
 
 import supabase from "../config/superbaseClient";
 import { PostItem } from "./dataComponent";
 import { User } from "@supabase/auth-helpers-react";
+import LikeDislikeButton from "./LikeDislikeComponent";
 
 export type RightPanelProps = {
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
   postId: string | undefined;
+  currentUserId: string;
 };
 
 export type CommentProps = {
@@ -28,24 +26,30 @@ export type CommentProps = {
 };
 
 
-
-
-
-
-
 export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   isOpen,
   onClose,
   postId,
   selectedCard,
+  currentUserId
 }) => {
   const rightPanelRef = useRef<HTMLDivElement>(null);
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
   const [commentDescription, setCommentDescription] = useState<string>("");
   const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    let timer: number | undefined;
+    if (successMessage) {
+      timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000) as unknown as number; // Type assertion
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [successMessage]);
 
   const saveScrollPosition = () => {
     if (rightPanelRef.current) {
@@ -89,38 +93,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
     setCommenting(!isCommenting);
   };
 
-  const handleLike = () => {
-    if (!liked) {
-      setLikes(likes + 1);
-      setLiked(true);
-      if (disliked) {
-        setDislikes(dislikes - 1);
-        setDisliked(false);
-      }
-    } else {
-      setLikes(likes - 1);
-      setLiked(false);
-    }
-  };
-
-  const handleDislike = () => {
-    if (!disliked) {
-      setDislikes(dislikes + 1);
-      setDisliked(true);
-      if (liked) {
-        setLikes(likes - 1);
-        setLiked(false);
-      }
-    } else {
-      setDislikes(dislikes - 1);
-      setDisliked(false);
-    }
-  };
-
-
-
-
-
 
   const handleSubimtComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -155,7 +127,11 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
     } else if (data) {
       console.log("Inserted Comment:", data);
       setCommentDescription("");
+      setSuccessMessage(
+        "Comment Submited Successfully"
+      );
       // onClose();
+
     }
   };
 
@@ -169,7 +145,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
           } bg-BackgroundTwo md:static md:translate-x-0`}
       >
         {selectedCard && (
-          <div className="h-full w-full">
+          <div className="h-full w-full" key={selectedCard.id}>
             <div className="p-6 rounded-xl flex flex-col">
               <div className="flex-0">
                 <button
@@ -215,40 +191,11 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                     className="h-80 w-full rounded-lg object-cover my-4"
                   />
 
-                  <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
-                    <div className="flex gap-2 text-lg items-center">
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="cursor-pointer text-[#6C2D1B]"
-                          onClick={handleLike}
-                        >
-                          {liked ? <LikeFilled /> : <LikeRegular />}
-                        </span>
-                        <p className="text-sm">{likes + selectedCard.likes}</p>
-                      </div>
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="text-2xl cursor-pointer text-[#6C2D1B]"
-                          onClick={handleDislike}
-                        >
-                          {disliked ? (
-                            <ThumbsDownFilled />
-                          ) : (
-                            <ThumbsDownRegular />
-                          )}
-                        </span>
-                        <p className="text-sm">
-                          {dislikes + selectedCard.dislikes}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex font-semibold items-center">
-                      <span className="">
-                        <Message />
-                      </span>
-                      <p className="text-sm">
-                        {selectedCard.comments.length} Comments
-                      </p>
+                  <div className="flex justify-between">
+                    <LikeDislikeButton postId={selectedCard.id} userId={currentUserId} />
+                    <div className="flex items-center">
+                      <Message />
+                      <p>{selectedCard.comments.length} Comments</p>
                     </div>
                   </div>
 
@@ -265,6 +212,12 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                     <div>
                       {isCommenting && (
                         <div className="mt-4">
+                          {successMessage && (
+
+                            <div className="flex justify-end">
+                              <div className="bg-successTwo px-4 p-1 text-xs mb-3 rounded-full"> {successMessage}</div>
+                            </div>
+                          )}
                           <textarea
                             value={commentDescription}
                             ref={textareaRef}
@@ -306,7 +259,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                               <img
                                 src={selectedCard.post_image}
                                 alt=""
-                                className="w-8 h-8 rounded-full "
+                                className="w-8 h-8 rounded-full"
                               />
                               <div className="">
                                 <p className="font-semibold">
@@ -324,30 +277,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                             <p className="text-textThree font-normal text-base py-2">
                               {cards.comment_description}
                             </p>
-                            <div className="flex justify-between items-center mt-2">
-                              <div className="flex gap-4 text-sm text-[#414141] items-center">
-                                <div
-                                  className="flex items-center gap-1 cursor-pointer font-bold"
-                                  onClick={handleLike}
-                                >
-                                  <span className="text-sm">
-                                    {liked ? <LikeFilled /> : <LikeRegular />}
-                                  </span>
-                                </div>
-                                <div
-                                  className="flex items-center gap-1 cursor-pointer font-bold"
-                                  onClick={handleDislike}
-                                >
-                                  <span className="text-sm">
-                                    {disliked ? (
-                                      <ThumbsDownFilled />
-                                    ) : (
-                                      <ThumbsDownRegular />
-                                    )}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       ))}
