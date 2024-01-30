@@ -95,11 +95,11 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
     <div>
       {" "}
       <div
-        className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 bg-BackgroundTwo lg:rounded-xl p-2 lg:p-4"
+        className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4"
         ref={centerPanelRef}
       >
         <CenterPanelNavBar title={"Search"} />
-        <div>
+        <div className="bg-BackgroundTwo lg:rounded-b-xl p-2 lg:px-4">
           <div>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">

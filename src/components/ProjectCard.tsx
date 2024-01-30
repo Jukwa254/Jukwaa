@@ -30,18 +30,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         : "border-strokeOne"
         }`}
     >
-      <div>
-        <div className="bg-white rounded-lg">
-          <div className="flex gap-2 ">
+      <div className="w-full">
+        <div className="bg-white rounded-lg w-full">
+          <div className="flex gap-2 w-full">
             <img
               src={card.profiles.avatar}
               alt=""
               className="w-12 h-12 rounded-full object-cover"
             />
-            <div>
-              <p className="text-xl font-semibold text-[#2C444E]">
-                {card.profiles?.user_name}
-              </p>
+            <div className="flex justify-between items-start w-full">
+              <div>
+                <p className="text-xl font-semibold text-[#2C444E] leading-none">
+                  {card.profiles?.user_name}
+                </p>
+                <p className="text-[#2C444E] text-sm uppercase mt-2">{card.post_category}</p>
+              </div>
               <p className="text-xs text-[#796552]">
                 {formatDistanceToNow(new Date(card.created_at), {
                   // addSuffix: true,
@@ -51,7 +54,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </div>
           </div>
           <div className="mt-4 text-[#2C444E]">
-            <h1 className="uppercase font-semibold text-xl py-2">
+            <h1 className="uppercase font-semibold text-xl py-2 leading-none">
               {card.post_title}
             </h1>
             <p className="text-base">{card.post_description}</p>

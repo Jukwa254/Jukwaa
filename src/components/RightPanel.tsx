@@ -167,10 +167,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       className="w-14 h-14 object-cover rounded-full border-2 border-BackgroundAccent"
                     />
                     <div>
-                      <p className="text-2xl font-bold">
+                      <p className="text-xl font-bold leading-none">
                         {selectedCard.profiles?.user_name}
                       </p>
-                      <p className="text-xs text-[#796552]">
+                      <p className="text-xs text-[#796552] mt-2">
                         {formatDistanceToNow(
                           new Date(selectedCard.created_at),
                           {
@@ -181,7 +181,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       </p>
                     </div>
                   </div>
-                  <h1 className="uppercase font-semibold text-xl mt-4">
+                  <h1 className="uppercase font-semibold text-xl mt-4 mb-2">
                     {selectedCard.post_title}
                   </h1>
                   <p className="">{paragraphs}</p>
@@ -244,7 +244,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       )}
                     </div>
                   </form>
-                  <div className="w-full bg-BackgroundOne h-0.5 my-4"></div>
+                  <div className="w-full bg-BackgroundOne h-0.5"></div>
                   <div className="">
                     {selectedCard.comments
                       .sort(
@@ -254,10 +254,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       )
                       .map((cards) => (
                         <div key={cards.id} className="">
-                          <div className="py-4 border-b border-b-BackgroundOne ">
+                          <div className="py-1 border-b border-b-BackgroundOne ">
                             <div className="flex gap-2 items-center">
                               <img
-                                src={selectedCard.profiles.avatar}
+                                src={cards.user_id.avatar}
                                 alt=""
                                 className="w-8 h-8 rounded-full"
                               />

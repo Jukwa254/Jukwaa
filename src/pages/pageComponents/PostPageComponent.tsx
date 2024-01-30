@@ -88,11 +88,11 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
   return (
     <div>
       <div
-        className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 bg-BackgroundTwo lg:rounded-xl p-2 lg:p-4"
+        className="h-screen text-strokeLight overflow-y-auto no-scrollbar pb-10 lg:mx-4 mt-4 "
         ref={centerPanelRef}
       >
         <CenterPanelNavBar title={"New Posts"} />
-        <div>
+        <div className="bg-BackgroundTwo  p-2 lg:px-4 lg:rounded-b-xl">
           {isLoading ? (
             <div>
               <Skeleton height={120} />

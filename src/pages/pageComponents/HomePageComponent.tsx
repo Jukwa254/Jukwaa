@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import ProjectCard from "../../components/ProjectCard";
 import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import supabase from "../../config/superbaseClient";
-import Skeleton from "react-loading-skeleton";
 import { PostItem } from "../../components/dataComponent";
 import { User } from "@supabase/auth-helpers-react";
+import Skeleton from "react-loading-skeleton";
 
 export type CenterPanelProps = {
   onCardClick: (card: PostItem) => void;
@@ -81,7 +81,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
       profiles(*),
       comments!comments_post_id_fkey(*,
         user_id (
-          user_name
+          *
         )
     )
     `
@@ -105,16 +105,16 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
       className="h-screen text-strokeLight overflow-y-auto no-scrollbar lg:py-4 pb-10"
       ref={centerPanelRef}
     >
-      <div className="bg-BackgroundTwo p-4 lg:p-6 lg:rounded-xl lg:mx-3">
-        <div>
-          <CenterPanelNavBar title={"Explore"} />
-        </div>
+      <div className="lg:mx-3">
+        <CenterPanelNavBar title={"Explore"} />
+      </div>
+      <div className="bg-BackgroundTwo p-4 lg:px-6 lg:rounded-b-xl lg:mx-3">
         {fetchError && <p>{fetchError}</p>}
         {isLoading ? (
-          <div className="">
-            <Skeleton height={320} />
-            <Skeleton height={320} />
-            <Skeleton height={320} />
+          <div className="flex flex-col">
+            <Skeleton height={200} />
+            <Skeleton height={200} />
+            <Skeleton height={200} />
           </div>
         ) : postCards && postCards.length > 0 ? (
           <div>
@@ -127,10 +127,14 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
                 currentUserId={currentUserId}
               />
             ))}
-
           </div>
         ) : (
-          <p>Fetching Posts ...</p>
+          <div className="flex flex-col">
+            <p>Fetching Posts ...</p>
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+          </div>
         )}
       </div>
     </div>

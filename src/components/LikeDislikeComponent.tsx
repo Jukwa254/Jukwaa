@@ -1,15 +1,14 @@
-// LikeDislikeButton.tsx
+
 import { useState, useEffect } from 'react';
 
-// api.ts
-import supabase from '../config/superbaseClient'; // Adjust the import path to your Supabase client
+import supabase from '../config/superbaseClient';
 import { ThumbsDownFilled, ThumbsDownRegular, ThumbsUpFilled, ThumbsUpRegular } from './Icons';
 
-// Get the current reaction of a user on a post
+
 export const getUserReaction = async (postId: string, userId: string): Promise<string | null> => {
     console.log("userId:", userId, "postId:", postId);
     const { data, error } = await supabase
-        .from('user_reactions') // Replace with your table name
+        .from('user_reactions')
         .select('reaction')
         .eq('post_id', postId)
         .eq('user_id', userId)
@@ -18,37 +17,34 @@ export const getUserReaction = async (postId: string, userId: string): Promise<s
     return error ? null : data?.reaction;
 };
 
-// Update the reaction (like or dislike) of a user on a post
 export const updateReaction = async (postId: string, userId: string, reaction: string | null) => {
     const currentReaction = await getUserReaction(postId, userId);
 
     if (currentReaction) {
         if (currentReaction === reaction || reaction === null) {
-            // Remove the reaction if it's the same or if the new reaction is null
             await supabase
-                .from('user_reactions') // Replace with your table name
+                .from('user_reactions')
                 .delete()
                 .match({ post_id: postId, user_id: userId });
         } else {
-            // Update the reaction
+
             await supabase
-                .from('user_reactions') // Replace with your table name
+                .from('user_reactions')
                 .update({ reaction })
                 .match({ post_id: postId, user_id: userId });
         }
     } else if (reaction !== null) {
-        // Add a new reaction
         await supabase
-            .from('user_reactions') // Replace with your table name
+            .from('user_reactions')
             .insert([{ post_id: postId, user_id: userId, reaction }]);
     }
     await updatePostLikesDislikes(postId);
 };
 
-// Count the number of likes and dislikes for a post
+
 export const countReactions = async (postId: string): Promise<{ likes: number; dislikes: number }> => {
     const { data, error } = await supabase
-        .from('user_reactions') // Replace with your table name
+        .from('user_reactions')
         .select('reaction')
         .eq('post_id', postId);
 
@@ -65,7 +61,6 @@ export const countReactions = async (postId: string): Promise<{ likes: number; d
 };
 
 export const updatePostLikesDislikes = async (postId: string) => {
-    // Count current likes and dislikes
     const { data, error: countError } = await supabase
         .from('user_reactions')
         .select('reaction')
