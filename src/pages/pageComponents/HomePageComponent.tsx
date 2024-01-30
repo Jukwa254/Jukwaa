@@ -4,6 +4,7 @@ import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import supabase from "../../config/superbaseClient";
 import Skeleton from "react-loading-skeleton";
 import { PostItem } from "../../components/dataComponent";
+import { User } from "@supabase/auth-helpers-react";
 
 export type CenterPanelProps = {
   onCardClick: (card: PostItem) => void;
@@ -15,8 +16,22 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
   selectedCard,
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
-  const [postCards, setPostCards] = useState<PostItem[] | null>(null);
+  const [postCards, setPostCards] = useState<PostItem[]>([]);
   const [fetchError] = useState<string>("");
+  const [currentUserId, setCurrentUserId] = useState<string>(String);
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("token");
+    if (!storedUser) {
+      throw new Error("No user data found in session storage.");
+    }
+
+    const user = JSON.parse(storedUser) as User;
+    // const userId = user.id;
+    setCurrentUserId(user?.id);
+  }, []);
+
+
 
   const [isLoading] = useState(false);
 
@@ -83,6 +98,8 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     fetchPostData();
   }, [supabase]);
 
+
+
   return (
     <div
       className="h-screen text-strokeLight overflow-y-auto no-scrollbar lg:py-4 pb-10"
@@ -107,6 +124,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
                 card={card}
                 onCardClick={onCardClick}
                 selectedCard={selectedCard}
+                currentUserId={currentUserId}
               />
             ))}
 

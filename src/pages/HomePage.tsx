@@ -24,11 +24,13 @@ export type LeftPanelProps = {
   selectedCardType: PostItem | null;
 };
 
-const HomePage = ({ }) => {
+const HomePage = () => {
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<PostItem | null>(null);
+  const [currentUserId] = useState<string>();
+
 
   const getSavedScrollPosition = (key: string) => {
     return parseInt(localStorage.getItem(key) || "0", 10);
@@ -162,7 +164,6 @@ const HomePage = ({ }) => {
                   <div className="bg-BackgroundTwo p-6 rounded-xl">
                     <div className="flex justify-between mb-12">
                       <div className="flex items-center gap-2">
-                        <div></div>
                         <h1 className="text-[20px] font-bold text-textOne">
                           Jukwaa
                         </h1>
@@ -270,7 +271,7 @@ const HomePage = ({ }) => {
                 selectedCard={selectedCard}
               />
             </div>
-            <div className="md:hidden z-50 px-4">
+            <div className="lg:hidden z-50 px-4">
               <RightPanel
                 postId={selectedCard?.id}
                 isOpen={isPanelOpen}

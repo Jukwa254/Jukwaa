@@ -28,11 +28,6 @@ export type CommentProps = {
 };
 
 
-
-
-
-
-
 export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   isOpen,
   onClose,
@@ -118,10 +113,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   };
 
 
-
-
-
-
   const handleSubimtComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -169,7 +160,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
           } bg-BackgroundTwo md:static md:translate-x-0`}
       >
         {selectedCard && (
-          <div className="h-full w-full">
+          <div className="h-full w-full" key={selectedCard.id}>
             <div className="p-6 rounded-xl flex flex-col">
               <div className="flex-0">
                 <button
@@ -306,7 +297,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                               <img
                                 src={selectedCard.post_image}
                                 alt=""
-                                className="w-8 h-8 rounded-full "
+                                className="w-8 h-8 rounded-full"
                               />
                               <div className="">
                                 <p className="font-semibold">
@@ -324,30 +315,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                             <p className="text-textThree font-normal text-base py-2">
                               {cards.comment_description}
                             </p>
-                            <div className="flex justify-between items-center mt-2">
-                              <div className="flex gap-4 text-sm text-[#414141] items-center">
-                                <div
-                                  className="flex items-center gap-1 cursor-pointer font-bold"
-                                  onClick={handleLike}
-                                >
-                                  <span className="text-sm">
-                                    {liked ? <LikeFilled /> : <LikeRegular />}
-                                  </span>
-                                </div>
-                                <div
-                                  className="flex items-center gap-1 cursor-pointer font-bold"
-                                  onClick={handleDislike}
-                                >
-                                  <span className="text-sm">
-                                    {disliked ? (
-                                      <ThumbsDownFilled />
-                                    ) : (
-                                      <ThumbsDownRegular />
-                                    )}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       ))}

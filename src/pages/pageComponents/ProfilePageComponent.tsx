@@ -233,7 +233,7 @@ const ProfilePageComponent = () => {
                           <p className="mt-4 font-bold mb-2 uppercase">
                             {post.post_title}
                           </p>
-                          <div className="lg:flex gap-4 items-start">
+                          <div className="lg:flex gap-4 items-start justify-between">
                             <p>{post.post_description.substring(0, 109)} ...</p>
                             <img
                               src={post.post_image}
