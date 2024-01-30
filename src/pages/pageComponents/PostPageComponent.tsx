@@ -147,7 +147,7 @@ export const NewPostsComponent: React.FC<ProjectCardPropsProps> = ({
     >
       <div className="flex gap-2 items-start">
         <img
-          src={card.post_image}
+          src={card.profiles.avatar}
           alt=""
           className="w-10 h-10 rounded-full object-cover"
         />

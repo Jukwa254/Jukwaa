@@ -59,7 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               <img
                 src={card.post_image}
                 alt=""
-                className="h-80 w-full rounded-lg object-cover"
+                className="w-full rounded-lg object-cover border border-BackgroundAccent"
               />
             </div>
             <div className="flex justify-between mt-3">

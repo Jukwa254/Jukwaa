@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import supabase from "../config/superbaseClient";
 import { User } from "@supabase/auth-helpers-react";
 import { v4 as uuidv4 } from "uuid";
+import { Spinner } from "../Auth/RegisterAuth";
 
 export interface ProjectFormModalProps {
     isOpen: boolean;
@@ -24,6 +25,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     const [projectMainImage, setProjectMainImage] = useState<ImageData[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
         let timer: number | undefined;
@@ -49,13 +51,19 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
         console.log("Files selected:", e.target.files);
 
         console.log("User authenticated:", user);
+
+
+
         if (e.target.files && e.target.files[0] && user) {
+            setIsUploading(true);
+
             let file = e.target.files[0];
             const imageId = uuidv4();
             const { data, error } = await supabase.storage
                 .from("post-images")
                 .upload(user.id + "/" + imageId, file);
 
+            setIsUploading(false);
             if (error) {
                 setErrorMessage("Image upload failed: " + error.message); // Display error message
             } else if (data) {
@@ -66,6 +74,9 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                 };
                 setProjectMainImage((prev) => [...prev, newImageData]);
             }
+            setTimeout(() => {
+                setIsUploading(false);
+            }, 5000);
         } else {
             console.log("No file selected or user is not authenticated");
         }
@@ -81,7 +92,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
             projectTitle,
             projectCategory,
             projectDescription,
-            projectMainImage,
+            // projectMainImage,
         });
         setErrorMessage("");
 
@@ -90,10 +101,10 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                 setErrorMessage("Please fill in all the non-file fields");
                 return;
             }
-            if (projectMainImage.length === 0) {
-                setErrorMessage("No image has been uploaded");
-                return;
-            }
+            // if (projectMainImage.length === 0) {
+            //     setErrorMessage("No image has been uploaded");
+            //     return;
+            // }
 
             const token = sessionStorage.getItem("token");
             if (!token) {
@@ -200,22 +211,29 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                                 placeholder="Health"
                             />
                         </div>
-                        <div className="mb-4">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="image"
-                            >
-                                Upload Image
-                            </label>
-                            <input
-                                className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
-                                type="file"
-                                name="image"
-                                id="imageUpload"
-                                onChange={uploadImage}
-                                accept="image/png, image/jpeg, image/jpg"
-                            />
+                        <div className="flex items-center gap-10">
+                            <div className="mb-4">
+                                <label
+                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                    htmlFor="image"
+                                >
+                                    Upload Image
+                                </label>
+                                <input
+                                    className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
+                                    type="file"
+                                    name="image"
+                                    id="imageUpload"
+                                    onChange={uploadImage}
+                                    accept="image/png, image/jpeg, image/jpg"
+                                />
+
+                            </div>
+                            {isUploading && (
+                                <Spinner />
+                            )}
                         </div>
+
 
                         {/* Submit Button */}
                         <button

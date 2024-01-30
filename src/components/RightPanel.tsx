@@ -188,7 +188,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                   <img
                     src={selectedCard.post_image}
                     alt=""
-                    className="h-80 w-full rounded-lg object-cover my-4 border border-BackgroundAccent"
+                    className="w-full rounded-lg object-cover my-4 border border-BackgroundAccent"
                   />
 
                   <div className="flex justify-between">
@@ -257,7 +257,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                           <div className="py-4 border-b border-b-BackgroundOne ">
                             <div className="flex gap-2 items-center">
                               <img
-                                src={selectedCard.post_image}
+                                src={selectedCard.profiles.avatar}
                                 alt=""
                                 className="w-8 h-8 rounded-full"
                               />
