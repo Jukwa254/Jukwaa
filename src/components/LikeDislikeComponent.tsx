@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 
 // api.ts
 import supabase from '../config/superbaseClient'; // Adjust the import path to your Supabase client
-import { LikeFilled, LikeRegular, Message, ThumbsDownFilled, ThumbsDownRegular } from './Icons';
-import { PostItem } from './dataComponent';
+import { LikeFilled, LikeRegular, ThumbsDownFilled, ThumbsDownRegular, ThumbsUpFilled, ThumbsUpRegular } from './Icons';
 
 // Get the current reaction of a user on a post
 export const getUserReaction = async (postId: string, userId: string): Promise<string | null> => {
@@ -100,7 +99,6 @@ const LikeDislikeButton: React.FC<LikeDislikeButtonProps> = ({ postId, userId })
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
     const [userReaction, setUserReaction] = useState<string | null>(null);
-    const [comment] = useState<PostItem>()
 
 
     useEffect(() => {
@@ -124,28 +122,14 @@ const LikeDislikeButton: React.FC<LikeDislikeButtonProps> = ({ postId, userId })
     };
 
     return (
-        // <div className="flex items-center space-x-2">
-        //     <button
-        //         className={`px-4 py-2 rounded ${userReaction === 'like' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        //         onClick={() => handleReaction('like')}
-        //     >
-        //         Like ({likes})
-        //     </button>
-        //     <button
-        //         className={`px-4 py-2 rounded ${userReaction === 'dislike' ? 'bg-red-500 text-white' : 'bg-gray-200'}`}
-        //         onClick={() => handleReaction('dislike')}
-        //     >
-        //         Dislike ({dislikes})
-        //     </button>
-        // </div>
-        <div className="mt-3 flex justify-between mb-1">
+        <div className="flex justify-between mb-1">
             <div className="flex gap-2 text-lg items-center">
-                <div className="flex items-center font-semibold">
+                <div className="flex font-semibold">
                     <span
                         className="cursor-pointer]"
                         onClick={() => handleReaction('like')}
                     >
-                        {userReaction === 'like' ? <LikeFilled /> : <LikeRegular />}
+                        {userReaction === 'like' ? <ThumbsUpFilled /> : <ThumbsUpRegular />}
                     </span>
                     <p className="text-sm">{likes}</p>
                 </div>

@@ -29,7 +29,7 @@ const HomePage = () => {
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<PostItem | null>(null);
-  const [currentUserId] = useState<string>();
+  const [currentUserId] = useState<string>(String);
 
 
   const getSavedScrollPosition = (key: string) => {
@@ -269,6 +269,7 @@ const HomePage = () => {
                 onClose={closePanel}
                 userId={selectedCard?.id}
                 selectedCard={selectedCard}
+                currentUserId={currentUserId}
               />
             </div>
             <div className="lg:hidden z-50 px-4">
@@ -278,6 +279,7 @@ const HomePage = () => {
                 onClose={closePanel}
                 selectedCard={selectedCard}
                 userId={selectedCard?.id}
+                currentUserId={currentUserId}
               />
             </div>
           </div>

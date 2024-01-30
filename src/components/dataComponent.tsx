@@ -28,7 +28,7 @@ export interface PostItem {
   post_image: string;
   likes: number;
   dislikes: number;
-  profile_id: string;
+  profile_id: string | undefined;
   profiles: Profile;
   comments: Comments[];
 }

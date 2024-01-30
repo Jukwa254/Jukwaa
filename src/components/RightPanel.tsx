@@ -2,24 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import {
   AddIcon,
   BackIcon,
-  LikeFilled,
-  LikeRegular,
   Message,
   SendIcon,
-  ThumbsDownFilled,
-  ThumbsDownRegular,
 } from "./Icons";
 import { formatDistanceToNow } from "date-fns";
 
 import supabase from "../config/superbaseClient";
 import { PostItem } from "./dataComponent";
 import { User } from "@supabase/auth-helpers-react";
+import LikeDislikeButton from "./LikeDislikeComponent";
 
 export type RightPanelProps = {
   selectedCard: PostItem | null;
   isOpen: boolean;
   onClose: () => void;
   postId: string | undefined;
+  currentUserId: string;
 };
 
 export type CommentProps = {
@@ -33,12 +31,9 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   onClose,
   postId,
   selectedCard,
+  currentUserId
 }) => {
   const rightPanelRef = useRef<HTMLDivElement>(null);
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
   const [commentDescription, setCommentDescription] = useState<string>("");
   const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
 
@@ -82,34 +77,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
 
   const toggleComment = () => {
     setCommenting(!isCommenting);
-  };
-
-  const handleLike = () => {
-    if (!liked) {
-      setLikes(likes + 1);
-      setLiked(true);
-      if (disliked) {
-        setDislikes(dislikes - 1);
-        setDisliked(false);
-      }
-    } else {
-      setLikes(likes - 1);
-      setLiked(false);
-    }
-  };
-
-  const handleDislike = () => {
-    if (!disliked) {
-      setDislikes(dislikes + 1);
-      setDisliked(true);
-      if (liked) {
-        setLikes(likes - 1);
-        setLiked(false);
-      }
-    } else {
-      setDislikes(dislikes - 1);
-      setDisliked(false);
-    }
   };
 
 
@@ -206,40 +173,11 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                     className="h-80 w-full rounded-lg object-cover my-4"
                   />
 
-                  <div className="mt-3 flex justify-between mb-1 text-[#6C2D1B]">
-                    <div className="flex gap-2 text-lg items-center">
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="cursor-pointer text-[#6C2D1B]"
-                          onClick={handleLike}
-                        >
-                          {liked ? <LikeFilled /> : <LikeRegular />}
-                        </span>
-                        <p className="text-sm">{likes + selectedCard.likes}</p>
-                      </div>
-                      <div className="flex items-center font-semibold">
-                        <span
-                          className="text-2xl cursor-pointer text-[#6C2D1B]"
-                          onClick={handleDislike}
-                        >
-                          {disliked ? (
-                            <ThumbsDownFilled />
-                          ) : (
-                            <ThumbsDownRegular />
-                          )}
-                        </span>
-                        <p className="text-sm">
-                          {dislikes + selectedCard.dislikes}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex font-semibold items-center">
-                      <span className="">
-                        <Message />
-                      </span>
-                      <p className="text-sm">
-                        {selectedCard.comments.length} Comments
-                      </p>
+                  <div className="flex justify-between">
+                    <LikeDislikeButton postId={selectedCard.id} userId={currentUserId} />
+                    <div className="flex items-center">
+                      <Message />
+                      <p>{selectedCard.comments.length} Comments</p>
                     </div>
                   </div>
 

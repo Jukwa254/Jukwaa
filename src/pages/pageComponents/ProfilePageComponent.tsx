@@ -7,17 +7,18 @@ import { AddIcon } from "../../components/Icons";
 import { User } from "@supabase/auth-helpers-react";
 import Skeleton from "react-loading-skeleton";
 import { SignupFormData } from "../../Auth/RegisterAuth";
+import { Profile } from "../../components/dataComponent";
 
 interface Post {
   post_title: string;
   post_description: string;
   post_category: string;
   post_image: string;
-  user_id: string;
-  profiles: {
-    email: string;
-    full_name: string;
-  }[];
+  likes: number;
+  dislikes: number;
+  user_id: string | undefined;
+  profiles: Profile[],
+  // comments: Comments[];
 }
 
 
@@ -93,8 +94,12 @@ const ProfilePageComponent = () => {
                     post_description,
                     post_category,
                     post_image,
+                    likes,
+                    dislikes,
                     user_id,
                     profiles (*)
+                    
+
                 `
           )
           .eq("user_id", user.id);
@@ -234,7 +239,16 @@ const ProfilePageComponent = () => {
                             {post.post_title}
                           </p>
                           <div className="lg:flex gap-4 items-start justify-between">
-                            <p>{post.post_description.substring(0, 109)} ...</p>
+                            <div>
+                              <div>
+                                <p>{post.post_description.substring(0, 109)} ...</p>
+                                <div className="flex gap-10 mt-4 text-sm">
+                                  <p>{post.likes} Likes</p>
+                                  <p>{post.dislikes} Dislikes</p>
+                                </div>
+
+                              </div>
+                            </div>
                             <img
                               src={post.post_image}
                               alt=""
@@ -242,7 +256,6 @@ const ProfilePageComponent = () => {
                             />
                           </div>
 
-                          <p>{ }</p>
                         </div>
                       ))}
                     </div>

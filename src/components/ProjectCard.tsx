@@ -62,7 +62,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 className="h-80 w-full rounded-lg object-cover"
               />
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-3">
               <LikeDislikeButton postId={card.id} userId={currentUserId} />
               <div className="flex items-center">
                 <Message />
