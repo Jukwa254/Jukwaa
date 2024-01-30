@@ -34,7 +34,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="bg-white rounded-lg">
           <div className="flex gap-2 ">
             <img
-              src={card.post_image}
+              src={card.profiles.avatar}
               alt=""
               className="w-12 h-12 rounded-full object-cover"
             />

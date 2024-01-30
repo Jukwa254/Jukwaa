@@ -162,9 +162,9 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                 <div className="h-full">
                   <div className="flex gap-4 items-center">
                     <img
-                      src={selectedCard.post_image}
+                      src={selectedCard.profiles.avatar}
                       alt=""
-                      className="w-14 h-14 object-cover rounded-full"
+                      className="w-14 h-14 object-cover rounded-full border-2 border-BackgroundAccent"
                     />
                     <div>
                       <p className="text-2xl font-bold">
@@ -181,14 +181,14 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       </p>
                     </div>
                   </div>
-                  <h1 className="uppercase font-semibold text-xl py-2 mt-4">
+                  <h1 className="uppercase font-semibold text-xl mt-4">
                     {selectedCard.post_title}
                   </h1>
                   <p className="">{paragraphs}</p>
                   <img
                     src={selectedCard.post_image}
                     alt=""
-                    className="h-80 w-full rounded-lg object-cover my-4"
+                    className="h-80 w-full rounded-lg object-cover my-4 border border-BackgroundAccent"
                   />
 
                   <div className="flex justify-between">

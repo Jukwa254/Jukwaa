@@ -184,9 +184,7 @@ const ProfilePageComponent = () => {
               ) : (
                 <div className="">
                   <div className="bg-BackgroundOne p-4 rounded-lg ">
-                    <div>
-                      <img src={userDetails?.avatar} alt="" className="w-30 object- h-30" />
-                    </div>
+
                     <div className="flex justify-between">
                       <p className="text-lg font-bold pb-4">User Details</p>
                       <button
@@ -196,6 +194,9 @@ const ProfilePageComponent = () => {
                         <EditIcon />
                         <p className="text-sm">Edit Profile</p>
                       </button>
+                    </div>
+                    <div>
+                      <img src={userDetails?.avatar} alt="" className="w-16 h-16 mb-2 object-cover border border-BackgroundAccent rounded-full" />
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <p className="">User Name</p>

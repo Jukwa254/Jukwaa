@@ -54,13 +54,13 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
             let file = e.target.files[0];
             const imageId = uuidv4();
             const { data, error } = await supabase.storage
-                .from("post-images")
+                .from("avatar")
                 .upload(user.id + "/" + imageId, file);
 
             if (error) {
                 setErrorMessage("Image upload failed: " + error.message); // Display error message
             } else if (data) {
-                const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/post-images/${user.id}/${imageId}`;
+                const newImageUrl = `https://hlprrellgqppivpzwwap.supabase.co/storage/v1/object/public/avatar/${user.id}/${imageId}`;
                 const newImageData = {
                     id: imageId,
                     url: newImageUrl,
@@ -100,7 +100,7 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
         });
         setErrorMessage("");
 
-        // const projectImage = projectMainImage[0]?.url;
+        const profileImage = projectMainImage[0]?.url;
         const { data, error } = await supabase
             .from("profiles")
             .update([
@@ -109,7 +109,7 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
                     email: email,
                     phone: phone,
                     location: location,
-                    // post_image: projectImage,
+                    avatar: profileImage,
                     user_id: user.id,
                 },
             ])
@@ -144,7 +144,7 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
                 setEmail(data.email);
                 setPhone(data.phone);
                 setLocation(data.location);
-                // setProjectMainImage([]);
+                setProjectMainImage([]);
                 // setFormSubmitted(true);
             }
         };
@@ -182,6 +182,22 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
 
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4 mt-8">
+                            <label
+                                className="block text-gray-700 text-sm font-bold mb-2"
+                                htmlFor="image"
+                            >
+                                Profile Image
+                            </label>
+                            <input
+                                className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
+                                type="file"
+                                name="image"
+                                id="imageUpload"
+                                onChange={uploadImage}
+                                accept="image/png, image/jpeg, image/jpg"
+                            />
+                        </div>
+                        <div className="mb-4 ">
                             <label htmlFor="projectTitle">User Name</label>
                             <input
                                 type="text"
@@ -224,22 +240,7 @@ export const EditFormComponent: React.FC<ProjectFormModalProps> = ({
                                 placeholder="Nairobi"
                             />
                         </div>
-                        {/* <div className="mb-4">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="image"
-                            >
-                                Upload Image
-                            </label>
-                            <input
-                                className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
-                                type="file"
-                                name="image"
-                                id="imageUpload"
-                                onChange={uploadImage}
-                                accept="image/png, image/jpeg, image/jpg"
-                            />
-                        </div> */}
+
 
                         {/* Submit Button */}
                         <button

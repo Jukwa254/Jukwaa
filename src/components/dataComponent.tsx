@@ -1,9 +1,13 @@
 // Define the structure of the data for a single comment's user
 
 export interface Profile {
-  user_id: string;
+  avatar: string
   user_name: string;
   email: string;
+  location: string;
+  password: string;
+  phone: number;
+  user_id: string
 }
 
 
