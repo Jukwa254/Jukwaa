@@ -39,8 +39,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               className="w-12 h-12 rounded-full object-cover"
             />
             <div className="flex justify-between items-start w-full">
-              <div>
-                <p className="text-xl font-semibold text-[#2C444E] leading-none">
+              <div className="w-full">
+                <p className="text-xl font-semibold text-[#2C444E] leading-none w-11/12">
                   {card.profiles?.user_name}
                 </p>
                 <p className="text-[#2C444E] text-sm uppercase mt-2">{card.post_category}</p>

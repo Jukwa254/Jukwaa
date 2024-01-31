@@ -8,7 +8,7 @@ const CenterPanelNavBar = (props: CenterPanelNavBarProps) => {
   return (
     <div>
       <div className="flex justify-between items-center w-full bg-BackgroundTwo p-4 rounded-t-xl">
-        <p className="uppercase text-[20px] font-bold text-accent">
+        <p className="uppercase text-[20px] font-bold text-accent mx-2">
           {props.title}
         </p>
         <div className="">

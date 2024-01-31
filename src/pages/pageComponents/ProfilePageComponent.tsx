@@ -173,6 +173,16 @@ const ProfilePageComponent = () => {
               <EditFormComponent isOpen={isModalOpenEdit} onClose={closeModalEdit} />
             </div>
             <div className="flex flex-col h-full">
+              <div className="flex justify-between">
+                <p className="text-lg font-bold pb-4">User Details</p>
+                <button
+                  onClick={openModalEdit}
+                  className=" rounded flex items-center gap-2 cursor-pointer hover:text-accent"
+                >
+                  <EditIcon />
+                  <p className="text-sm">Edit Profile</p>
+                </button>
+              </div>
               {isLoading ? (
                 <div>
                   <div className="">
@@ -185,16 +195,7 @@ const ProfilePageComponent = () => {
                 <div className="">
                   <div className="bg-BackgroundOne p-4 rounded-lg ">
 
-                    <div className="flex justify-between">
-                      <p className="text-lg font-bold pb-4">User Details</p>
-                      <button
-                        onClick={openModalEdit}
-                        className=" rounded flex items-center gap-2"
-                      >
-                        <EditIcon />
-                        <p className="text-sm">Edit Profile</p>
-                      </button>
-                    </div>
+
                     <div>
                       <img src={userDetails?.avatar} alt="" className="w-16 h-16 mb-2 object-cover border border-BackgroundAccent rounded-full" />
                     </div>
@@ -218,7 +219,7 @@ const ProfilePageComponent = () => {
                       <p>Logout</p>
                       <button
                         onClick={handleLogout}
-                        className="border px-4 py-2 border-strokeOne rounded-lg"
+                        className="border px-4 py-2 border-strokeOne rounded-lg hover:bg-BackgroundAccent"
                       >
                         Logout
                       </button>
@@ -241,6 +242,8 @@ const ProfilePageComponent = () => {
                   {isLoading ? (
                     <div>
                       <div className="">
+                        <Skeleton height={100} />
+                        <Skeleton height={100} />
                         <Skeleton height={100} />
                         <Skeleton height={100} />
                         <Skeleton height={100} />

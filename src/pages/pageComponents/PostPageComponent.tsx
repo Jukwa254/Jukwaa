@@ -71,7 +71,7 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
       profiles(*),
       comments!comments_post_id_fkey(*,
         user_id (
-          user_name
+          *
         )
     )
     `);
@@ -79,7 +79,7 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
         console.error("Error fetching data:", error);
       } else {
         console.log(data);
-        setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
+        setPostCards(data); // Cast the data to the correct type
       }
     };
     fetchPostData();

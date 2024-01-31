@@ -17,7 +17,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
 }) => {
   const centerPanelRef = useRef<HTMLDivElement>(null);
   const [postCards, setPostCards] = useState<PostItem[]>([]);
-  const [fetchError] = useState<string>("");
+  const [fetchError, setFetchError] = useState<string>("");
   const [currentUserId, setCurrentUserId] = useState<string>(String);
 
   useEffect(() => {
@@ -71,33 +71,80 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     };
   }, []);
 
+  // useEffect(() => {
+  //   const fetchPostData = async () => {
+  //     const { data, error } = await supabase
+  //       .from("posts")
+  //       .select(
+  //         `
+  //     *,
+  //     profiles(*),
+  //     comments!comments_post_id_fkey(*,
+  //       user_id (
+  //         *
+  //       )
+  //   )
+  //   `
+  //       )
+  //       .order("created_at", { ascending: false });
+
+  //     if (error) {
+  //       console.error("Error fetching data:", error);
+  //     } else {
+  //       console.log(data);
+  //       setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
+  //     }
+  //   };
+  //   fetchPostData();
+  // }, [supabase]);
+
+  const fetchPostData = async () => {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        `
+        *,
+        profiles(*),
+        comments!comments_post_id_fkey(*,
+          user_id (
+            *
+          )
+      )
+      `
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching data:", error);
+      setFetchError(error.message);
+    } else {
+      setPostCards(data);
+    }
+  };
+
   useEffect(() => {
-    const fetchPostData = async () => {
-      const { data, error } = await supabase
-        .from("posts")
-        .select(
-          `
-      *,
-      profiles(*),
-      comments!comments_post_id_fkey(*,
-        user_id (
-          *
-        )
-    )
-    `
-        )
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching data:", error);
-      } else {
-        console.log(data);
-        setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
-      }
-    };
     fetchPostData();
-  }, [supabase]);
 
+    const postSubscription = supabase
+      .channel('custom-posts-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, (payload) => {
+        console.log('Post change received!', payload);
+        fetchPostData();
+      })
+      .subscribe();
+
+    const commentsSubscription = supabase
+      .channel('custom-comments-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, (payload) => {
+        console.log('Comment change received!', payload);
+        fetchPostData();
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(postSubscription);
+      supabase.removeChannel(commentsSubscription);
+    };
+  }, []);
 
 
   return (
@@ -130,7 +177,7 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
           </div>
         ) : (
           <div className="flex flex-col">
-            <p>Fetching Posts ...</p>
+            {/* <p>Fetching Posts ...</p> */}
             <Skeleton height={300} />
             <Skeleton height={300} />
             <Skeleton height={300} />

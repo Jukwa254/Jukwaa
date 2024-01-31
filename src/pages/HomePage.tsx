@@ -11,6 +11,7 @@ import ProfilePageComponent from "./pageComponents/ProfilePageComponent";
 import RightPanel from "../components/RightPanel";
 import SearchPageComponent from "./pageComponents/SearchPageComponent";
 import { PostItem } from "../components/dataComponent";
+import { User } from "@supabase/auth-helpers-react";
 
 type MenuItem = {
   id: number;
@@ -29,7 +30,17 @@ const HomePage = () => {
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<PostItem | null>(null);
-  const [currentUserId] = useState<string>(String);
+  const [currentUserId, setCurrentUserId] = useState<string>(String);
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("token");
+    if (!storedUser) {
+      throw new Error("No user data found in session storage.");
+    }
+
+    const user = JSON.parse(storedUser) as User;
+    setCurrentUserId(user?.id);
+  }, []);
 
 
   const getSavedScrollPosition = (key: string) => {
@@ -267,7 +278,7 @@ const HomePage = () => {
                 postId={selectedCard?.id}
                 isOpen={isPanelOpen}
                 onClose={closePanel}
-                userId={selectedCard?.id}
+                userId={selectedCard?.profiles.user_id}
                 selectedCard={selectedCard}
                 currentUserId={currentUserId}
               />
@@ -278,7 +289,7 @@ const HomePage = () => {
                 isOpen={isPanelOpen}
                 onClose={closePanel}
                 selectedCard={selectedCard}
-                userId={selectedCard?.id}
+                userId={selectedCard?.profiles.user_id}
                 currentUserId={currentUserId}
               />
             </div>
