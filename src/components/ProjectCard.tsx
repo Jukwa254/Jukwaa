@@ -47,7 +47,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               </div>
               <p className="text-xs text-[#796552]">
                 {formatDistanceToNow(new Date(card.created_at), {
-                  // addSuffix: true,
+                  addSuffix: false,
                 })}{" "}
                 ago
               </p>

@@ -130,6 +130,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
       setSuccessMessage(
         "Comment Submited Successfully"
       );
+      // window.location.reload();
       // onClose();
 
     }
@@ -139,14 +140,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
     <div className="overflow-y-auto">
       <div
         ref={rightPanelRef}
-        // className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${isOpen
-        //   ? "fixed z-50 translate-x-0"
-        //   : "translate-x-full hidden"
-        //   } bg-BackgroundTwo md:static md:translate-x-0`}
         className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${isOpen
           ? "fixed z-50 translate-x-0 visibility-visible"
-          : "translate-x-full visibility-hidden delay-300"
-          } bg-BackgroundTwo lg:static lg:translate-x-0 lg:visibility-visible`}
+          : "translate-x-full visibility-hidden delay-300 fixed"
+          } bg-BackgroundTwo md:static md:translate-x-0 lg:visibility-visible`}
       >
         {selectedCard && (
           <div className="h-full w-full" key={selectedCard.id}>
