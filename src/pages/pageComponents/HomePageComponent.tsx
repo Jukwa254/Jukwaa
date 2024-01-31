@@ -71,33 +71,6 @@ const HomePageComponent: React.FC<CenterPanelProps> = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   const fetchPostData = async () => {
-  //     const { data, error } = await supabase
-  //       .from("posts")
-  //       .select(
-  //         `
-  //     *,
-  //     profiles(*),
-  //     comments!comments_post_id_fkey(*,
-  //       user_id (
-  //         *
-  //       )
-  //   )
-  //   `
-  //       )
-  //       .order("created_at", { ascending: false });
-
-  //     if (error) {
-  //       console.error("Error fetching data:", error);
-  //     } else {
-  //       console.log(data);
-  //       setPostCards(data as unknown as PostItem[]); // Cast the data to the correct type
-  //     }
-  //   };
-  //   fetchPostData();
-  // }, [supabase]);
-
   const fetchPostData = async () => {
     const { data, error } = await supabase
       .from("posts")

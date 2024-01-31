@@ -139,10 +139,14 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
     <div className="overflow-y-auto">
       <div
         ref={rightPanelRef}
+        // className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${isOpen
+        //   ? "fixed z-50 translate-x-0"
+        //   : "translate-x-full hidden"
+        //   } bg-BackgroundTwo md:static md:translate-x-0`}
         className={`transform top-0 right-0 w-full h-screen transition-transform duration-300 overflow-y-auto no-scrollbar ${isOpen
-          ? "fixed z-50 translate-x-0"
-          : "translate-x-full hidden"
-          } bg-BackgroundTwo md:static md:translate-x-0`}
+          ? "fixed z-50 translate-x-0 visibility-visible"
+          : "translate-x-full visibility-hidden delay-300"
+          } bg-BackgroundTwo lg:static lg:translate-x-0 lg:visibility-visible`}
       >
         {selectedCard && (
           <div className="h-full w-full" key={selectedCard.id}>
@@ -150,7 +154,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
               <div className="flex-0">
                 <button
                   onClick={onClose}
-                  className="md:hidden my-2 py-2.5 rounded-full "
+                  className="lg:hidden mb-2 pb-2.5 rounded-full hover:text-accent"
                 >
                   <div className="flex gap-2 items-center font-medium rounded-full ">
                     <BackIcon />
@@ -254,7 +258,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       )
                       .map((cards) => (
                         <div key={cards.id} className="">
-                          <div className="py-1 border-b border-b-BackgroundOne ">
+                          <div className="py-2 border-b border-b-BackgroundOne ">
                             <div className="flex gap-2 items-center">
                               <img
                                 src={cards.user_id.avatar}
@@ -262,7 +266,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                                 className="w-8 h-8 rounded-full"
                               />
                               <div className="">
-                                <p className="font-semibold">
+                                <p className="font-semibold text-[#2C444E]">
                                   {cards.user_id.user_name}
                                 </p>
                                 <p className="text-xs text-[#796552]">
@@ -274,7 +278,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                                 </p>
                               </div>
                             </div>
-                            <p className="text-textThree font-normal text-base py-2">
+                            <p className=" font-normal py-2">
                               {cards.comment_description}
                             </p>
                           </div>
