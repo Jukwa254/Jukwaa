@@ -40,17 +40,20 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             />
             <div className="flex justify-between items-start w-full">
               <div className="w-full">
-                <p className="text-xl font-semibold text-[#2C444E] leading-none w-11/12">
+                <p className="text-xl font-semibold text-[#2C444E] leading-none">
                   {card.profiles?.user_name}
                 </p>
                 <p className="text-[#2C444E] text-sm uppercase mt-2">{card.post_category}</p>
               </div>
-              <p className="text-xs text-[#796552]">
-                {formatDistanceToNow(new Date(card.created_at), {
-                  addSuffix: false,
-                })}{" "}
-                ago
-              </p>
+              <div className="w-full flex justify-end">
+                <p className="text-xs text-[#796552]">
+                  {formatDistanceToNow(new Date(card.created_at), {
+                    addSuffix: false,
+                  })}{" "}
+                  ago
+                </p>
+              </div>
+
             </div>
           </div>
           <div className="mt-4 text-[#2C444E]">

@@ -10,8 +10,9 @@ import { SignupFormData } from "../../Auth/RegisterAuth";
 import { Profile } from "../../components/dataComponent";
 import { ProjectFormModal } from "../../components/PostFormComponent";
 import { EditFormComponent } from "../../components/EditFormComponent";
+import AddPostComponent from "../../components/AddPostComponent";
 
-interface Post {
+export interface Post {
   post_title: string;
   post_description: string;
   post_category: string;
@@ -228,7 +229,7 @@ const ProfilePageComponent = () => {
                 </div>
               )}
 
-              <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
+              {/* <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
                 <button
                   onClick={openModal}
                   className="bg-accent text-BackgroundOne p-2 rounded flex"
@@ -293,7 +294,8 @@ const ProfilePageComponent = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
+              <AddPostComponent />
             </div>
           </div>
         </div>
