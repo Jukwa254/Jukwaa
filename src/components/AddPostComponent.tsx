@@ -38,7 +38,7 @@ const AddPostComponent = () => {
                     console.error('Error fetching user role', error);
                 } else if (data) {
                     setRole(data.roles);
-                    setPostCard(data)
+                    // setPostCard(data.roles)
                 }
             }
             setIsLoading(false);
@@ -48,9 +48,12 @@ const AddPostComponent = () => {
     }, []);
 
 
-    // Example of conditional rendering based on role
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>
+            <Skeleton height={100} />
+            <Skeleton height={50} />
+            <Skeleton height={50} />
+        </div>;
     }
 
     if (role !== 'admin') {
@@ -58,7 +61,7 @@ const AddPostComponent = () => {
     }
     return (
         <div>
-            <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
+            <div className=" bg-BackgroundOne rounded-lg">
                 <ProjectFormModal isOpen={isModalOpen} onClose={closeModal} />
                 <button
                     onClick={openModal}
@@ -69,7 +72,7 @@ const AddPostComponent = () => {
                 </button>
                 <div className="mt-4"></div>
                 <p className="text-lg font-bold">My Posts</p>
-                <div>
+                {/* <div>
                     {isLoading ? (
                         <div>
                             <div className="">
@@ -114,16 +117,9 @@ const AddPostComponent = () => {
                     ) : (
                         <div>
                             <p className="pb-5">No Posts ...</p>
-                            {/* <button
-                                onClick={openModal}
-                                className="bg-accent text-BackgroundOne p-2 rounded flex"
-                            >
-                                <AddIcon />
-                                <p>Add a Post</p>
-                            </button> */}
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </div>
     )

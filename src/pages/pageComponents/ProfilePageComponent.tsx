@@ -3,7 +3,7 @@ import CenterPanelNavBar from "../../components/CenterPanelNavBar";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/superbaseClient";
 
-import { AddIcon, EditIcon } from "../../components/Icons";
+import { EditIcon } from "../../components/Icons";
 import { User } from "@supabase/auth-helpers-react";
 import Skeleton from "react-loading-skeleton";
 import { SignupFormData } from "../../Auth/RegisterAuth";
@@ -75,7 +75,7 @@ const ProfilePageComponent = () => {
     };
   }, []);
 
-  const openModal = () => setIsModalOpen(true);
+  // const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const closeModalEdit = () => setIsModalOpenEdit(false);
   const openModalEdit = () => setIsModalOpenEdit(true);
@@ -229,16 +229,10 @@ const ProfilePageComponent = () => {
                 </div>
               )}
 
-              {/* <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
-                <button
-                  onClick={openModal}
-                  className="bg-accent text-BackgroundOne p-2 rounded flex"
-                >
-                  <AddIcon />
-                  <p>Add a Post</p>
-                </button>
-                <div className="mt-4"></div>
-                <p className="text-lg font-bold">My Posts</p>
+
+              <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
+                <AddPostComponent />
+
                 <div>
                   {isLoading ? (
                     <div>
@@ -283,19 +277,11 @@ const ProfilePageComponent = () => {
                     </div>
                   ) : (
                     <div>
-                      <p className="pb-5">No Posts ...</p>
-                      <button
-                        onClick={openModal}
-                        className="bg-accent text-BackgroundOne p-2 rounded flex"
-                      >
-                        <AddIcon />
-                        <p>Add a Post</p>
-                      </button>
+
                     </div>
                   )}
                 </div>
-              </div> */}
-              <AddPostComponent />
+              </div>
             </div>
           </div>
         </div>
