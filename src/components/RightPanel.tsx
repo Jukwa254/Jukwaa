@@ -161,7 +161,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
               </div>
               <div className="flex-1">
                 <div className="h-full">
-                  <div className="flex gap-4 items-center">
+                  <div className="flex gap-2 items-center">
                     <img
                       src={selectedCard.profiles.avatar}
                       alt=""
@@ -232,7 +232,7 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                               overflow: "hidden",
                             }}
                           />
-                          <div className="mt-2 flex justify-end">
+                          <div className="mt-2 flex justify-end mb-4">
                             <button
                               type="submit"
                               className="flex items-center gap-2 px-4 py-2 bg-[#6C2D1B] text-BackgroundAccent rounded-full hover:bg-[#57281b] font-bold"
