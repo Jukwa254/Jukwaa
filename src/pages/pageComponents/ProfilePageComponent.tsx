@@ -21,7 +21,6 @@ export interface Post {
   dislikes: number;
   user_id: string | undefined;
   profiles: Profile[],
-  // comments: Comments[];
 }
 
 
@@ -88,7 +87,6 @@ const ProfilePageComponent = () => {
         return;
       }
 
-      // Parse the token to get the user object
       const user = JSON.parse(token) as User;
 
       if (user) {
@@ -128,7 +126,6 @@ const ProfilePageComponent = () => {
       try {
         setIsLoading(true);
 
-        // Retrieve user data from session storage
         const storedUser = sessionStorage.getItem("token");
         if (!storedUser) {
           throw new Error("No user data found in session storage.");
@@ -137,7 +134,6 @@ const ProfilePageComponent = () => {
         const user = JSON.parse(storedUser) as User;
         const userId = user.id;
 
-        // Fetch user profile from Supabase
         const { data, error } = await supabase
           .from("profiles")
           .select("*")
@@ -156,7 +152,6 @@ const ProfilePageComponent = () => {
     fetchUserProfile();
   }, []);
 
-  // const subDescription = postCard.post_description.;
 
   return (
     <div>

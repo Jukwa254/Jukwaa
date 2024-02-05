@@ -217,7 +217,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
                                     className="block text-gray-700 text-sm font-bold mb-2"
                                     htmlFor="image"
                                 >
-                                    Upload Image
+                                    Upload Image (Optional)
                                 </label>
                                 <input
                                     className="border rounded w-full py-2 px-3 bg-darkBackgroundTwo border-strokeDark leading-tight focus:outline-none focus:shadow-outline"
