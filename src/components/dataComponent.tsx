@@ -19,7 +19,6 @@ export interface Comments {
   likes: number;
   dislikes: number;
   user_id: Profile;
-  //   posts: PostItem;
 }
 
 

@@ -37,6 +37,12 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
   const [commentDescription, setCommentDescription] = useState<string>("");
   const paragraphs = selectedCard?.post_description.split(/\n|\r\n/);
   const [successMessage, setSuccessMessage] = useState("");
+  const [comments, setComments] = useState(selectedCard?.comments ?? []);
+
+
+  useEffect(() => {
+    setComments(selectedCard?.comments ?? []);
+  }, [selectedCard]);
 
   useEffect(() => {
     let timer: number | undefined;
@@ -130,11 +136,30 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
       setSuccessMessage(
         "Comment Submited Successfully"
       );
-      // window.location.reload();
-      // onClose();
 
     }
+
+    const { data: updatedComments, error: fetchError } = await supabase
+      .from('comments')
+      .select(`
+      *,
+      user_id (
+        *
+      )
+    `)
+      .eq("post_id", postId)
+      .order("created_at", { ascending: false });
+
+    if (fetchError) {
+      console.log("Error fetching updated comments:" + fetchError.message);
+    } else {
+      console.log("Updated comments:", updatedComments);
+      setComments(updatedComments);
+    }
   };
+
+
+  // const [isLoading] = useState(false);
 
   return (
     <div className="overflow-y-auto">
@@ -174,9 +199,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       <p className="text-xs text-[#796552] mt-2">
                         {formatDistanceToNow(
                           new Date(selectedCard.created_at),
-                          {
-                            // addSuffix: true,
-                          }
                         )}{" "}
                         ago
                       </p>
@@ -199,7 +221,6 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                       <p>{selectedCard.comments.length} Comments</p>
                     </div>
                   </div>
-
                   <form onClick={handleSubimtComment}>
                     <div className="flex py-4">
                       <p
@@ -247,13 +268,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                   </form>
                   <div className="w-full bg-BackgroundOne h-0.5"></div>
                   <div className="">
-                    {selectedCard.comments
-                      .sort(
-                        (a, b) =>
-                          new Date(b.created_at).getTime() -
-                          new Date(a.created_at).getTime()
-                      )
-                      .map((cards) => (
+                    {comments?.length > 0 ? (
+                      comments.sort(
+                        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+                      ).map((cards) => (
                         <div key={cards.id} className="">
                           <div className="py-2 border-b border-b-BackgroundOne ">
                             <div className="flex gap-2 items-center">
@@ -280,7 +298,10 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                             </p>
                           </div>
                         </div>
-                      ))}
+                      ))
+                    ) : (
+                      <p>No comments to display.</p>
+                    )}
                   </div>
                 </div>
               </div>

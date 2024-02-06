@@ -75,7 +75,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <p>{card.comments.length}</p>
               </div>
             </div>
-
+            {/* <div>
+              {card.comments.map((comment) => (
+                <div>
+                  <p>{comment.user_id.user_name}</p>
+                </div>
+              ))}
+            </div> */}
           </div>
         </div>
       </div>
