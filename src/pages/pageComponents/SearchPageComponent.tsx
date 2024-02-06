@@ -34,7 +34,7 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
       profiles(*),
       comments!comments_post_id_fkey(*,
         user_id (
-          user_name
+          *
         )
     )
     `
@@ -127,7 +127,7 @@ const SearchPageComponent: React.FC<CenterPanelProps> = ({
             searchTerm.length > 0 && (
               <div className="mt-8">
                 {searchResults.map((result) => (
-                  <div className="mt-4">
+                  <div className="mt-4" key={result.id}>
                     <NewPostsComponent
                       key={result.id}
                       card={result}
