@@ -112,7 +112,13 @@ const PostPageComponent: React.FC<NewProjectCardProps> = ({
               ))}
             </div>
           ) : (
-            <p>Fetching Posts...</p>
+            <div>
+              {/* <p>Fetching Posts...</p> */}
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+              <Skeleton height={120} />
+            </div>
           )}
         </div>
       </div>

@@ -167,7 +167,7 @@ const HomePage = () => {
   return (
     <div>
       <div className="bg-BackgroundOne text-textOne">
-        <div className="xl:px-40">
+        <div className="xl:px-20">
           <div className="lg:grid grid-cols-12">
             <div className="col-span-3 hidden lg:block">
               <div className="h-screen py-4 overflow-y-auto no-scrollbar">
@@ -191,22 +191,22 @@ const HomePage = () => {
                           onClick={() => handleMenuClick(item.name)}
                         >
                           <div className="flex gap-2 items-center font-semibold text-base">
-                            <p
+                            <div
                               className={`${activeMenu === item.name
                                 ? "text-accent"
                                 : "text-strokeLight"
                                 }`}
                             >
                               {item.image}
-                            </p>
-                            <p
+                            </div>
+                            <div
                               className={`${activeMenu === item.name
                                 ? "text-accent"
                                 : "text-strokeLight"
                                 }`}
                             >
                               {item.name}
-                            </p>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -250,22 +250,22 @@ const HomePage = () => {
                       onClick={() => handleMenuClick(item.name)}
                     >
                       <div className="flex flex-col items-center gap-1">
-                        <p
+                        <div
                           className={`${activeMenu === item.name
                             ? "text-accent"
                             : "text-strokeLight"
                             }`}
                         >
                           {item.image}
-                        </p>
-                        <p
+                        </div>
+                        <div
                           className={`${activeMenu === item.name
                             ? "text-accent"
                             : "text-strokeLight"
                             }`}
                         >
                           {item.name}
-                        </p>
+                        </div>
                       </div>
                     </div>
                   ))}

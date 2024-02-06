@@ -223,13 +223,13 @@ export const RightPanel: React.FC<RightPanelProps & CommentProps> = ({
                   </div>
                   <form onClick={handleSubimtComment}>
                     <div className="flex py-4">
-                      <p
+                      <div
                         className="text-sm items-center flex gap-1 font-bold cursor-pointer border bg-[#6C2D1B] px-2.5 py-1.5 text-BackgroundTwo rounded-full"
                         onClick={toggleComment}
                       >
                         <AddIcon />
                         <span>Post Comment</span>
-                      </p>
+                      </div>
                     </div>
                     <div>
                       {isCommenting && (
