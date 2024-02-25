@@ -1,4 +1,4 @@
-// import { User } from "@supabase/auth-helpers-react";
+import { User } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../config/superbaseClient";
@@ -16,22 +16,22 @@ const AdminAuth = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // useEffect(() => {
-    //     let timer: number | undefined;
-    //     if (errorMessage) {
-    //         timer = setTimeout(() => {
-    //             setErrorMessage("");
-    //         }, 3000) as unknown as number; // Type assertion
-    //     }
+    useEffect(() => {
+        let timer: number | undefined;
+        if (errorMessage) {
+            timer = setTimeout(() => {
+                setErrorMessage("");
+            }, 3000) as unknown as number; // Type assertion
+        }
 
-    //     return () => {
-    //         if (timer) clearTimeout(timer);
-    //     };
-    // }, [errorMessage]);
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [errorMessage]);
 
-    // const setToken = (user: User) => {
-    //     sessionStorage.setItem("token", JSON.stringify(user)); // Store the entire user object
-    // };
+    const setToken = (user: User) => {
+        sessionStorage.setItem("token", JSON.stringify(user)); // Store the entire user object
+    };
 
     const isAuthenticated = () => {
         const token = sessionStorage.getItem("token");
@@ -76,24 +76,10 @@ const AdminAuth = () => {
 
             if (response.data && response.data.user) {
                 console.log(response.data.user);
-
-                const { data: profileData, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('roles')
-                    .eq('user_id', response.data.user.id)
-                    .single();
-
-                if (profileError) {
-                    throw profileError;
-                }
-
-                if (profileData && profileData.roles === "super_admin") {
-                    navigate("/dashboard");
-                } else {
-                    setErrorMessage("You have no permission")
-                }
-
+                setToken(response.data.user); // Save user data in sessionStorage
+                navigate("/dashboard");
                 setIsSubmitting(false);
+
                 window.location.reload();
             } else {
                 setErrorMessage("Login failed. Please try again.");
@@ -108,50 +94,6 @@ const AdminAuth = () => {
             }
         }
     }
-
-    // async function handleSubmit(e: { preventDefault: () => void }) {
-    //     e.preventDefault();
-    //     setErrorMessage("");
-    //     setIsSubmitting(true);
-
-    //     if (!formData.email.trim() || !formData.password.trim()) {
-    //         setErrorMessage("Please fill in all fields.");
-    //         setIsSubmitting(false);
-    //         return;
-    //     }
-
-    //     try {
-    //         const response = await supabase.auth.signInWithPassword({
-    //             email: formData.email,
-    //             password: formData.password,
-    //         });
-
-    //         if (response.error) {
-    //             throw response.error;
-    //         }
-
-    //         if (response.data && response.data.user) {
-    //             console.log(response.data.user);
-    //             setToken(response.data.user); // Save user data in sessionStorage
-    //             navigate("/dashboard");
-    //             setIsSubmitting(false);
-
-    //             window.location.reload();
-    //         } else {
-    //             setErrorMessage("Login failed. Please try again.");
-    //         }
-    //     } catch (error) {
-    //         if (error instanceof Error) {
-    //             setErrorMessage(error.message);
-    //         } else if (typeof error === "string") {
-    //             setErrorMessage(error);
-    //         } else {
-    //             setErrorMessage("An unexpected error occurred.");
-    //         }
-    //     }
-    // }
-
-    console.log(formData);
 
     return (
         <div>

@@ -6,7 +6,7 @@ const Dashboard = () => {
 
     function handleLogout() {
         sessionStorage.removeItem("token");
-        navigate("/super");
+        navigate("/");
     }
     return (
         <div className='text-center'>
