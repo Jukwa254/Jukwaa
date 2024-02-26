@@ -7,7 +7,8 @@ export interface Profile {
   location: string;
   password: string;
   phone: number;
-  user_id: string
+  user_id: string;
+  roles: string;
 }
 
 

@@ -6,6 +6,9 @@ import HomePage from "./pages/HomePage";
 import { Routes, Route } from "react-router-dom";
 import NoPageFound from "./components/NoPageFound";
 import { SkeletonTheme } from "react-loading-skeleton";
+import AdminAuth from "./admin/AdminAuth";
+import Dashboard from "./admin/Dashboard";
+
 
 const App = () => {
   const [token, setToken] = useState(false);
@@ -34,6 +37,13 @@ const App = () => {
           ) : (
             <Route path="/nopage" element={<NoPageFound />} />
           )}
+          <Route path="/super" element={<AdminAuth />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/nopage" element={<NoPageFound />} />
+
+
         </Routes>
       </SkeletonTheme>
     </>
@@ -41,3 +51,5 @@ const App = () => {
 };
 
 export default App;
+
+

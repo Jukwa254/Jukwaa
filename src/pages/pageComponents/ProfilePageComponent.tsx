@@ -11,6 +11,7 @@ import { Profile } from "../../components/dataComponent";
 import { ProjectFormModal } from "../../components/PostFormComponent";
 import { EditFormComponent } from "../../components/EditFormComponent";
 import AddPostComponent from "../../components/AddPostComponent";
+import { AdminComponent } from "../../components/AdminComponent";
 
 export interface Post {
   post_title: string;
@@ -225,9 +226,13 @@ const ProfilePageComponent = () => {
               )}
 
 
+              <div className="mt-4  bg-BackgroundOne p-4 rounded-lg">
+                <AdminComponent />
+              </div>
+
+
               <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
                 <AddPostComponent />
-
                 <div>
                   {isLoading ? (
                     <div>
