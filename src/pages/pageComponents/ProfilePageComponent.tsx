@@ -226,11 +226,13 @@ const ProfilePageComponent = () => {
               )}
 
 
+              <div className="mt-4  bg-BackgroundOne p-4 rounded-lg">
+                <AdminComponent />
+              </div>
+
+
               <div className="my-4  bg-BackgroundOne p-4 rounded-lg">
                 <AddPostComponent />
-
-                <AdminComponent />
-
                 <div>
                   {isLoading ? (
                     <div>

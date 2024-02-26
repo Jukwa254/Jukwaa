@@ -5,6 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { Profile } from "./dataComponent";
 
 
+
 export const AdminComponent = () => {
     const [role, setRole] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +67,6 @@ export const AdminComponent = () => {
                 >
                     <p>Admin Panel</p>
                 </button>
-
             </div>
         </div>
     )
@@ -76,45 +76,51 @@ export const AdminComponent = () => {
 export interface AdminModalProps {
     isOpen: boolean;
     onClose: () => void;
-
 }
 
 export const AdminPanelModal: React.FC<AdminModalProps> = ({
     isOpen,
     onClose,
 }) => {
-    const [fetchError, setFetchError] = useState<string>("");
-    const [userProfile, setUserProfile] = useState<Profile[]>([]);
-    const [isLoading] = useState(false);
-
-
-
-    useEffect(() => {
-        const fetchPostData = async () => {
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("*")
-                .order("created_at", { ascending: false });
-
-            if (error) {
-                console.error("Error fetching data:", error);
-                setFetchError(error.message);
-            } else {
-                setUserProfile(data);
-            }
-        };
-        fetchPostData();
-    }, []);
-
-
-
 
     if (!isOpen) return null;
+
+
+    const [users, setUsers] = useState<Profile[]>([]);
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = async () => {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error('Error fetching users:', error.message);
+        } else {
+            setUsers(data);
+        }
+    };
+
+    const handleUpdateRole = async (userId: string, newRole: string) => {
+        // Update user role in the database
+        const { error } = await supabase
+            .from('profiles')
+            .update({ roles: newRole })
+            .eq('user_id', userId);
+        if (error) {
+            console.error('Error updating user role:', error.message);
+        }
+    };
+
     return (
         <div className="fixed inset-0 bg-textOne bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-20 lg:mx-auto p-5 border mx-4 lg:w-3/5 shadow-lg rounded-md bg-BackgroundTwo">
-                <div className="mt-3">
-                    <div className="flex justify-between">
+            <div className="relative top-20 lg:mx-auto p-8 border mx-4 lg:w-3/5 shadow-lg rounded-md bg-BackgroundTwo">
+                <div className="mt-3 ">
+                    <div className="flex justify-between mb-6">
                         <h3 className="text-xl leading-6 text-accent font-bold">
                             Admin Panel
                         </h3>
@@ -125,47 +131,58 @@ export const AdminPanelModal: React.FC<AdminModalProps> = ({
                             Close
                         </button>
                     </div>
-                    <div className="my-12">
-                        <div className="grid grid-cols-6 uppercase text-sm mb-4">
-                            <p className="col-span-2">User Name</p>
-                            <p>Email</p>
-                            <p>Phone</p>
-                            <p>County</p>
-                            <p>Roles</p>
-                        </div>
-                        <div>
-                            {fetchError && <p>{fetchError}</p>}
-                            {isLoading ? (
-                                <div></div>
-                            ) : userProfile && userProfile.length > 0 ? (
-                                <div>
-                                    {userProfile?.map((card, index) => (
-                                        <div key={index}>
-                                            <div className="grid grid-cols-6 py-4 text-sm text-textThree border-t border-t-BackgroundAccent">
-                                                <div className="flex items-center gap-2 col-span-2">
-                                                    <img src={card.avatar} alt="" className="w-8 h-8 rounded-full" />
-                                                    <p className="leading-none">{card.user_name}</p>
-                                                </div>
-                                                <p>{card.email.substring(0, 6)}...</p>
-                                                <p>(+254) {card.phone.toString().substring(0, 6)}...</p>
-                                                <p>{card.location.substring(0, 3)}...</p>
-                                                <p>{card.roles}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="flex flex-col">
-                                    {/* <p>Fetching Posts ...</p> */}
-                                    <Skeleton height={300} />
-                                    <Skeleton height={300} />
-                                    <Skeleton height={300} />
-                                </div>
-                            )}
-                        </div>
+
+                    <div>
+                        {users.map((user) => (
+                            <UserItem key={user.user_id} user={user} onUpdateRole={handleUpdateRole} />
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
     )
 }
+
+
+interface UserItemProps {
+    user: Profile;
+    onUpdateRole: (userId: string, newRole: string) => void;
+}
+
+export const UserItem: React.FC<UserItemProps> = ({ user, onUpdateRole }) => {
+    const [selectedRole, setSelectedRole] = useState(user.roles);
+
+    const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newRole = e.target.value;
+        setSelectedRole(newRole);
+        onUpdateRole(user.user_id, newRole);
+    };
+
+    return (
+        <div className="">
+            <div className="grid grid-cols-7 py-4 text-sm text-textThree border-t border-t-BackgroundAccent">
+                <div className="flex items-center gap-2 col-span-2">
+                    <img src={user.avatar} alt="" className="w-8 h-8 rounded-full" />
+                    <p className="leading-none">{user.user_name}</p>
+                </div>
+                <p>{user.email.substring(0, 6)}...</p>
+                <p>(+254) {user.phone.toString().substring(0, 3)}...</p>
+                <p>{user.location.substring(0, 3)}...</p>
+                <p>{user.roles}</p>
+                <div>
+                    <select
+                        value={selectedRole}
+                        onChange={handleRoleChange}
+                        className="px-2 py-1 border border-BackgroundAccent rounded"
+                    >
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                        <option value="super_admin">Super Admin</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+
