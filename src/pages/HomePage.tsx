@@ -230,6 +230,7 @@ const HomePage = () => {
                           Contact Us
                         </a>
                       </div>
+                      <p className="text-xs pt-4 text-textTwo text-right">Powered by <a href="https://randytech.co.ke/" className="underline">Randytech</a></p>
                     </div>
                   </div>
                 </div>

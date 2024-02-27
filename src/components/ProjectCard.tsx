@@ -3,6 +3,8 @@ import { formatDistanceToNow } from "date-fns";
 import { PostItem } from "./dataComponent";
 import LikeDislikeButton from "./LikeDislikeComponent";
 import { Message } from "./Icons";
+import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
 
 type ProjectCardProps = {
   card: PostItem;
@@ -12,12 +14,15 @@ type ProjectCardProps = {
 };
 
 
+
 const ProjectCard: React.FC<ProjectCardProps> = ({
   card,
   onCardClick,
   selectedCard,
   currentUserId
 }) => {
+
+  const [isLoading] = useState(false);
 
   return (
     <div
@@ -62,11 +67,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </h1>
             <p className="text-base">{card.post_description}</p>
             <div className="mt-4">
-              <img
-                src={card.post_image}
-                alt=""
-                className="w-full rounded-lg object-cover border border-BackgroundAccent"
-              />
+              {isLoading ? (
+                <Skeleton height={150} duration={500} />
+              ) : (
+                <img
+                  src={card.post_image}
+                  alt=""
+                  className="w-full rounded-lg object-cover border border-BackgroundAccent"
+                />
+              )}
+
             </div>
             <div className="flex justify-between mt-3">
               <LikeDislikeButton postId={card.id} userId={currentUserId} />

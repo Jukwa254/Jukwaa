@@ -131,7 +131,13 @@ export const AdminPanelModal: React.FC<AdminModalProps> = ({
                             Close
                         </button>
                     </div>
-
+                    <div className="grid grid-cols-7 text-base py-2">
+                        <p className="col-span-2">Name</p>
+                        <p>Email</p>
+                        <p>Phone</p>
+                        <p>Location</p>
+                        <p>Roles</p>
+                    </div>
                     <div>
                         {users.map((user) => (
                             <UserItem key={user.user_id} user={user} onUpdateRole={handleUpdateRole} />
@@ -160,6 +166,7 @@ export const UserItem: React.FC<UserItemProps> = ({ user, onUpdateRole }) => {
 
     return (
         <div className="">
+
             <div className="grid grid-cols-7 py-4 text-sm text-textThree border-t border-t-BackgroundAccent">
                 <div className="flex items-center gap-2 col-span-2">
                     <img src={user.avatar} alt="" className="w-8 h-8 rounded-full" />

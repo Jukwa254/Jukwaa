@@ -121,7 +121,7 @@ const LikeDislikeButton: React.FC<LikeDislikeButtonProps> = ({ postId, userId })
             <div className="flex gap-2 text-lg items-center">
                 <div className="flex font-semibold">
                     <span
-                        className="cursor-pointer]"
+                        className="cursor-pointer"
                         onClick={() => handleReaction('like')}
                     >
                         {userReaction === 'like' ? <ThumbsUpFilled /> : <ThumbsUpRegular />}
