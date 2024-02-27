@@ -87,6 +87,7 @@ export const AdminPanelModal: React.FC<AdminModalProps> = ({
 
 
     const [users, setUsers] = useState<Profile[]>([]);
+    const [isLoading] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -139,9 +140,23 @@ export const AdminPanelModal: React.FC<AdminModalProps> = ({
                         <p>Roles</p>
                     </div>
                     <div>
-                        {users.map((user) => (
-                            <UserItem key={user.user_id} user={user} onUpdateRole={handleUpdateRole} />
-                        ))}
+                        {isLoading ? (
+                            <div></div>
+                        ) : users && users.length > 0 ? (
+                            <div>
+                                {users.map((user) => (
+                                    <UserItem key={user.user_id} user={user} onUpdateRole={handleUpdateRole} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div>
+                                <Skeleton height={40} />
+                                <Skeleton height={40} />
+                                <Skeleton height={40} />
+                                <Skeleton height={40} />
+                            </div>
+                        )}
+
                     </div>
                 </div>
             </div>
